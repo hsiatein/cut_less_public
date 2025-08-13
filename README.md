@@ -16,8 +16,8 @@
 
 克隆此仓库
 ```
-git clone https://github.com/hsiatein/cut_less_copy.git
-cd cut_less_copy/
+git clone https://github.com/hsiatein/cut_less_public.git
+cd cut_less_public/
 git submodule update --init --recursive
 mkdir build
 cd build/
