@@ -1,0 +1,15 @@
+[submodule "external/argparse"]
+	path = external/argparse
+	url = https://github.com/p-ranav/argparse.git
+[submodule "external/HiGHS"]
+	path = external/HiGHS
+	url = https://github.com/ERGO-Code/HiGHS.git
+[submodule "external/googletest"]
+	path = external/googletest
+	url = https://github.com/google/googletest.git
+[submodule "external/polyscope"]
+	path = external/polyscope
+	url = https://github.com/nmwsharp/polyscope.git
+[submodule "external/xlnt"]
+	path = external/xlnt
+	url = https://github.com/tfussell/xlnt.git

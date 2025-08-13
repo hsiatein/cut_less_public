@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Cut Less: RawPartType结构体 参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+  $(function() { init_search(); });
+/* @license-end */
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Cut Less
+   </div>
+  </td>
+    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect"                onmouseover="return searchBox.OnSearchSelectShow()"                onmouseout="return searchBox.OnSearchSelectHide()">&#160;</span>
+          <input type="text" id="MSearchField" value="" placeholder="搜索" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.svg" alt=""/></a>
+          </span>
+        </div>
+</td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('struct_raw_part_type.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">载入中...</div>
+<div class="SRStatus" id="Searching">搜索中...</div>
+<div class="SRStatus" id="NoMatches">未找到</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public 成员函数</a> &#124;
+<a href="#pub-attribs">Public 属性</a> &#124;
+<a href="#pub-static-attribs">静态 Public 属性</a> &#124;
+<a href="struct_raw_part_type-members.html">所有成员列表</a>  </div>
+  <div class="headertitle"><div class="title">RawPartType结构体 参考</div></div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public 成员函数</h2></td></tr>
+<tr class="memitem:a0c0292f104499b9b743206801dc615f8" id="r_a0c0292f104499b9b743206801dc615f8"><td class="memItemLeft" align="right" valign="top"><a id="a0c0292f104499b9b743206801dc615f8" name="a0c0292f104499b9b743206801dc615f8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RawPartType</b> (int width, int height, int thick, bool rotatable, int qty, std::string material)</td></tr>
+<tr class="separator:a0c0292f104499b9b743206801dc615f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaa8bd8d79fa4c44500cbcfe67a604d2" id="r_afaa8bd8d79fa4c44500cbcfe67a604d2"><td class="memItemLeft" align="right" valign="top"><a id="afaa8bd8d79fa4c44500cbcfe67a604d2" name="afaa8bd8d79fa4c44500cbcfe67a604d2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RawPartType</b> (int width, int height, int thick, bool rotatable, int qty, std::array&lt; double, 2 &gt; hardness, std::string material)</td></tr>
+<tr class="separator:afaa8bd8d79fa4c44500cbcfe67a604d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add378ac58cbf7ee57c1f8d24f9b7ba31" id="r_add378ac58cbf7ee57c1f8d24f9b7ba31"><td class="memItemLeft" align="right" valign="top"><a id="add378ac58cbf7ee57c1f8d24f9b7ba31" name="add378ac58cbf7ee57c1f8d24f9b7ba31"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RawPartType</b> (int width, int height, int thick, bool rotatable, int qty, std::optional&lt; std::array&lt; double, 2 &gt; &gt; hardness, std::string material)</td></tr>
+<tr class="separator:add378ac58cbf7ee57c1f8d24f9b7ba31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1c773f2912ec08bcfd9597a0ca28428" id="r_ae1c773f2912ec08bcfd9597a0ca28428"><td class="memItemLeft" align="right" valign="top"><a id="ae1c773f2912ec08bcfd9597a0ca28428" name="ae1c773f2912ec08bcfd9597a0ca28428"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>to_string</b> ()</td></tr>
+<tr class="separator:ae1c773f2912ec08bcfd9597a0ca28428"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public 属性</h2></td></tr>
+<tr class="memitem:a4f30621bfca7623b3b3749c78afdc845" id="r_a4f30621bfca7623b3b3749c78afdc845"><td class="memItemLeft" align="right" valign="top"><a id="a4f30621bfca7623b3b3749c78afdc845" name="a4f30621bfca7623b3b3749c78afdc845"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>id</b></td></tr>
+<tr class="separator:a4f30621bfca7623b3b3749c78afdc845"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a020133d44237915d2352290406f650b6" id="r_a020133d44237915d2352290406f650b6"><td class="memItemLeft" align="right" valign="top"><a id="a020133d44237915d2352290406f650b6" name="a020133d44237915d2352290406f650b6"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
+<tr class="separator:a020133d44237915d2352290406f650b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f3230a35f8c3c25db2c3decf15c64d3" id="r_a2f3230a35f8c3c25db2c3decf15c64d3"><td class="memItemLeft" align="right" valign="top"><a id="a2f3230a35f8c3c25db2c3decf15c64d3" name="a2f3230a35f8c3c25db2c3decf15c64d3"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
+<tr class="separator:a2f3230a35f8c3c25db2c3decf15c64d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92c425ba3b1fe03f63aa00f570e2bcbd" id="r_a92c425ba3b1fe03f63aa00f570e2bcbd"><td class="memItemLeft" align="right" valign="top"><a id="a92c425ba3b1fe03f63aa00f570e2bcbd" name="a92c425ba3b1fe03f63aa00f570e2bcbd"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>thick</b></td></tr>
+<tr class="separator:a92c425ba3b1fe03f63aa00f570e2bcbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91a29cf8ede1331b7e448c720cc4025c" id="r_a91a29cf8ede1331b7e448c720cc4025c"><td class="memItemLeft" align="right" valign="top"><a id="a91a29cf8ede1331b7e448c720cc4025c" name="a91a29cf8ede1331b7e448c720cc4025c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>rotatable</b></td></tr>
+<tr class="separator:a91a29cf8ede1331b7e448c720cc4025c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe101bc1b3fd7dad0b6b11398300ad85" id="r_afe101bc1b3fd7dad0b6b11398300ad85"><td class="memItemLeft" align="right" valign="top"><a id="afe101bc1b3fd7dad0b6b11398300ad85" name="afe101bc1b3fd7dad0b6b11398300ad85"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>qty</b></td></tr>
+<tr class="separator:afe101bc1b3fd7dad0b6b11398300ad85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac15036cc249ac16e7ebe8b9354e414ff" id="r_ac15036cc249ac16e7ebe8b9354e414ff"><td class="memItemLeft" align="right" valign="top"><a id="ac15036cc249ac16e7ebe8b9354e414ff" name="ac15036cc249ac16e7ebe8b9354e414ff"></a>
+std::optional&lt; std::array&lt; double, 2 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>hardness</b></td></tr>
+<tr class="separator:ac15036cc249ac16e7ebe8b9354e414ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7385a73dcc2e9a54ca3d6502fedb699" id="r_ae7385a73dcc2e9a54ca3d6502fedb699"><td class="memItemLeft" align="right" valign="top"><a id="ae7385a73dcc2e9a54ca3d6502fedb699" name="ae7385a73dcc2e9a54ca3d6502fedb699"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>material</b></td></tr>
+<tr class="separator:ae7385a73dcc2e9a54ca3d6502fedb699"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+静态 Public 属性</h2></td></tr>
+<tr class="memitem:ab9ed9a08183cde723933d7625c287a7d" id="r_ab9ed9a08183cde723933d7625c287a7d"><td class="memItemLeft" align="right" valign="top"><a id="ab9ed9a08183cde723933d7625c287a7d" name="ab9ed9a08183cde723933d7625c287a7d"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>NEXT_ID</b></td></tr>
+<tr class="separator:ab9ed9a08183cde723933d7625c287a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>该结构体的文档由以下文件生成:<ul>
+<li>/Users/xiatian/Documents/cpp/cut_less/cut_less_lib/include/<a class="el" href="csp__input_8hpp_source.html">csp_input.hpp</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="struct_raw_part_type.html">RawPartType</a></li>
+    <li class="footer">制作者 <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+  </ul>
+</div>
+</body>
+</html>

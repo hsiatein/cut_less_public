@@ -1,0 +1,58 @@
+#include <stage_patterns.hpp>
+
+StagePatterns::StagePatterns(Problem* problem):problem(problem){
+
+}
+
+Node* StagePatterns::to_node(const PatternNode* patternNode){
+    if(patternNode->is_cutloss()){
+        return new Node(problem,patternNode->size.size[0],patternNode->size.size[1],patternNode->size.size[2],patternNode->next_cut_orient);
+    }
+    else if (patternNode->is_struct())
+    {
+        Node* self=new Node(problem,patternNode->size,problem->STRUCT,patternNode->next_cut_orient);
+        for(auto child:patternNode->childs){
+            Node* child_node=to_node(child);
+            self->addChild(child_node);
+        }
+        return self;
+    }
+    else{
+        Pattern pattern(patterns[patternNode->stageLocation.first][patternNode->stageLocation.second],patternNode->rotate);
+        pattern.resize_force(Orient::X,patternNode->size.size[0]);
+        pattern.resize_force(Orient::Y,patternNode->size.size[1]);
+        pattern.resize_force(Orient::Z,patternNode->size.size[2]);
+        Node* top=pattern.top;
+        pattern.top=nullptr;
+        return top;
+    }
+    
+}
+
+json StagePatterns::to_json(const PatternNode* patternNode){
+    Node* node=to_node(patternNode);
+    json result=node->to_json();
+    delete node;
+    return result;
+}
+
+json StagePatterns::to_json(const Blueprint* blueprint){
+    json result;
+    result["Tree"]=to_json(blueprint->top);
+    result["SheetID"]=blueprint->sheetID;
+    return result;
+}
+
+json StagePatterns::to_json(const PatternSolution* solution){
+    json result=json::array();
+    for(const Blueprint* blueprint:solution->blueprints){
+        result.push_back(to_json(blueprint));
+    }
+    for(const GroupNum& gn:solution->groupNums){
+        json j;
+        j["Group"]=gn.first;
+        j["Num"]=gn.second;
+        result.push_back(j);
+    }
+    return result;
+}

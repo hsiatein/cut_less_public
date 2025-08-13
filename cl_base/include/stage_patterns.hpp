@@ -1,0 +1,23 @@
+#pragma once
+#include <pattern_solution.hpp>
+
+
+
+struct StagePatterns{
+    Problem* problem;
+    std::map<size_t,std::vector<Pattern>> patterns;
+    
+    inline void new_stage(size_t stage){
+        patterns[stage]={};
+    }
+
+    StagePatterns(Problem* problem);
+    Node* to_node(const PatternNode* patternNode);
+    json to_json(const PatternNode* patternNode);
+    json to_json(const Blueprint* blueprint);
+    json to_json(const PatternSolution* solution);
+
+    inline std::vector<Pattern>& operator[](size_t stage){
+        return patterns[stage];
+    }
+};

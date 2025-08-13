@@ -1,0 +1,64 @@
+[package]
+project = "cut_less_copy"
+version = "0.1.0"
+cmake_minimum_required = "3.12"
+cpp_standard = "17"
+external_library_path = "./external/"
+
+[[bin]]
+name = "main"
+path = "./main.cpp"
+dependencies = ["cl_solver","cl_visualizer","argparse"]
+
+[[bin]]
+name = "visualize"
+path = "./visualize.cpp"
+dependencies = ["cl_solver","cl_visualizer"]
+
+[[lib]]
+name = "cl_solver"
+path = "./cl_solver/"
+lib_type = "dynamic"
+dependencies = ["highs","cl_base"]
+
+[[lib]]
+name = "cl_visualizer"
+path = "./cl_visualizer/"
+lib_type = "dynamic"
+dependencies = ["polyscope","cl_base"]
+
+[[lib]]
+name = "cl_base"
+path = "./cl_base/"
+lib_type = "dynamic"
+dependencies = []
+
+[[lib]]
+name = "cl_input"
+path = "./cl_input/"
+lib_type = "dynamic"
+dependencies = ["cl_base","xlnt"]
+
+# [[lib]]
+# name = "cl_java"
+# path = "./cl_java/"
+# lib_type = "dynamic"
+# dependencies = ["cl_solver"]
+
+[tests]
+path = "./tests"
+
+[dependencies.gtest]
+url = "https://github.com/google/googletest.git"
+
+[dependencies.argparse]
+url = "https://github.com/p-ranav/argparse.git"
+
+[dependencies.xlnt]
+url = "https://github.com/tfussell/xlnt.git"
+
+[dependencies.polyscope]
+url = "https://github.com/nmwsharp/polyscope.git"
+
+[dependencies.highs]
+url = "https://github.com/ERGO-Code/HiGHS.git"
