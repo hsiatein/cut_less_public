@@ -10,34 +10,34 @@ name = "main"
 path = "./main.cpp"
 dependencies = ["cl_solver","cl_visualizer","argparse"]
 
-[[bin]]
-name = "visualize"
-path = "./visualize.cpp"
-dependencies = ["cl_solver","cl_visualizer"]
+# [[bin]]
+# name = "visualize"
+# path = "./visualize.cpp"
+# dependencies = ["cl_solver","cl_visualizer"]
 
 [[lib]]
 name = "cl_solver"
 path = "./cl_solver/"
-lib_type = "dynamic"
+# lib_type = "dynamic"
 dependencies = ["highs","cl_base"]
 
 [[lib]]
 name = "cl_visualizer"
 path = "./cl_visualizer/"
-lib_type = "dynamic"
+# lib_type = "dynamic"
 dependencies = ["polyscope","cl_base"]
 
 [[lib]]
 name = "cl_base"
 path = "./cl_base/"
-lib_type = "dynamic"
+# lib_type = "dynamic"
 dependencies = []
 
-[[lib]]
-name = "cl_input"
-path = "./cl_input/"
-lib_type = "dynamic"
-dependencies = ["cl_base","xlnt"]
+# [[lib]]
+# name = "cl_input"
+# path = "./cl_input/"
+# lib_type = "dynamic"
+# dependencies = ["cl_base","xlnt"]
 
 # [[lib]]
 # name = "cl_java"
@@ -46,7 +46,8 @@ dependencies = ["cl_base","xlnt"]
 # dependencies = ["cl_solver"]
 
 [tests]
-path = "./tests"
+# path = "./tests"
+path = ""
 
 [dependencies.gtest]
 url = "https://github.com/google/googletest.git"

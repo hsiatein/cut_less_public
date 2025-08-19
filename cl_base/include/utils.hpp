@@ -16,6 +16,9 @@
 #include "hyperparameters.hpp"
 #include "random.hpp"
 #include <iomanip>
+#include <deque>
+#include <algorithm>
+#include <numeric>
 
 #define MAX_INT 2147483647
 

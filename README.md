@@ -16,8 +16,8 @@
 
 克隆此仓库
 ```
-git clone https://github.com/hsiatein/cut_less_public.git
-cd cut_less_public/
+git clone https://github.com/hsiatein/cut_less_windows.git
+cd cut_less_windows/
 git submodule update --init --recursive
 mkdir build
 cd build/
@@ -43,8 +43,8 @@ ninja -j4
 
 ### Input/Output
 
-* cut_less_copy/assets/test_probelms.json是可以接受的数据格式
-* json格式的解默认输出到当前工作目录./output/文件夹，解文件名为main : solution.json
+* cut_less_windows/assets/test_probelms.json是可以接受的数据格式
+* json格式的解默认输出到当前工作目录./output/文件夹，解文件名为main@solution.json
 * 其中尺寸1对应0.1mm，qty为数量
 
 ## Authors

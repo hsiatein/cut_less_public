@@ -15,7 +15,7 @@ void Logger::log(std::string text){
 void Logger::log_json(std::string jsonName,json json){
     if(!(enable && enableJSON)) return;
     // std::cout<<jsonName<<std::endl;
-    std::string output_path = OUTPUT_DIR+name+" : "+jsonName+".json";
+    std::string output_path = OUTPUT_DIR+name+"@"+jsonName+".json";
     std::ofstream jsonFile(output_path);
     jsonFile << json.dump(4);
     jsonFile.close();

@@ -3,6 +3,7 @@
 #include "hyperparameters.hpp"
 #include <vector>
 #include <algorithm>
+#include <numeric>
 
 class Random{
 public:
