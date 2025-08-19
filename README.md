@@ -10,7 +10,7 @@
 
 * 求解器本身应该不需要依赖，但是可视化使用polyscope，可能需要根据build时的报错信息用apt等包管理器安装相关库。
 * 暂不支持windows系统，Ubuntu22.04和MacOs均可使用，其余系统暂未测试。
-* 以下构建方法需要CMake，Git。
+* 以下构建方法需要CMake，Git，Ninja。
 
 ### Installing
 
@@ -21,11 +21,6 @@ cd cut_less_windows/
 git submodule update --init --recursive
 mkdir build
 cd build/
-```
-使用Make构建
-```
-cmake ..
-make -j4
 ```
 使用Ninja构建
 ```
