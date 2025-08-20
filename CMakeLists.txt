@@ -18,10 +18,20 @@ add_subdirectory(./cl_input/)
 add_executable(main ./main.cpp)
 target_compile_features(main PUBLIC cxx_std_17)
 target_link_libraries(main cl_solver cl_visualizer argparse)
+target_compile_definitions(main
+    PRIVATE
+        $<$<CONFIG:Debug>:DEBUG>
+        $<$<CONFIG:Release>:RELEASE>
+)
 
 add_executable(visualize ./visualize.cpp)
 target_compile_features(visualize PUBLIC cxx_std_17)
 target_link_libraries(visualize cl_solver cl_visualizer)
+target_compile_definitions(visualize
+    PRIVATE
+        $<$<CONFIG:Debug>:DEBUG>
+        $<$<CONFIG:Release>:RELEASE>
+)
 
 #tests
 set(TEST_MAIN_FUNC ./external/googletest/googletest/src/gtest_main.cc)

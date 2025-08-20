@@ -2,7 +2,7 @@
     "CUT_LOSS":3,
     "TIME_LIMIT":1000,
     "REMAIN":[5,8,10,15,20],
-    "MAX_STAGE":1,
+    "MAX_STAGE":6,
     "UTILIZATION_RATE_LIMIT":0.95,
     "RANDOM_SEED":0,
     "SHEET_BATCH_SIZE":5,

@@ -14,7 +14,7 @@ bool PatternNode::has_sibling() const{
 bool PatternNode::can_contain(const Size& size) const{
     Vec3i self=this->size.size;
     Vec3i other=size.size;
-    return self[0]>other[0] && self[1]>other[1] && self[2]>other[2];
+    return self[0]>=other[0] && self[1]>=other[1] && self[2]>=other[2];
 }
 
 PatternNode::PatternNode(Size size,Orient orient):groupID(MAX_INT),stageLocation(0,1),size(size),parent(nullptr),next_cut_orient(orient),rotate(RotateOrient::I){

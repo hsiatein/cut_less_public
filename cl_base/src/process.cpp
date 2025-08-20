@@ -4,7 +4,7 @@ Process::Process(){
 
 }
 
-Process::Process(const Process& other):operations(other.operations){
+Process::Process(const Process& other):operations(other.operations),all_options(other.all_options){
     for(auto solution:other.history){
         history.push_back(new PatternSolution(*solution));
     }
@@ -21,6 +21,25 @@ void Process::log_solution(PatternSolution* solution){
     history.push_back(new PatternSolution(*solution));
 }
 
-void Process::log_option(Option option){
-    operations.push_back(option);
+void Process::log_operation(Option option){
+    operations.emplace_back(std::get<0>(option)->sheetID,std::get<1>(option)->size,std::get<2>(option),std::get<4>(option),std::get<6>(option),std::get<7>(option));
+}
+
+void Process::log_options(std::vector<Option> options){
+    all_options.push_back({});
+    for(auto& option:options){
+        all_options.back().emplace_back(std::get<0>(option)->sheetID,std::get<1>(option)->size,std::get<2>(option),std::get<4>(option),std::get<6>(option),std::get<7>(option));
+    }
+}
+
+
+void Process::print_operation(size_t i) const{
+    std::cout<<"Operation: "<<i<<"\n";
+    std::cout<<"Selected:"<<"\n";
+    std::cout<<to_string(operations[i])<<"\n";
+    std::cout<<"Candidates:"<<"\n";
+    for(const auto& cand:all_options[i]){
+        std::cout<<to_string(cand)<<"\n";
+    }
+    std::cout<<std::endl;
 }

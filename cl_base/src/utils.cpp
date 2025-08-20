@@ -154,7 +154,7 @@ json Size::to_json() const{
 }
 
 std::string Size::to_string() const{
-    std::string result="Size:("+std::to_string(size[0])+","+std::to_string(size[1])+","+std::to_string(size[2])+"),Remain:("+std::to_string(remain[0])+","+std::to_string(remain[1])+","+std::to_string(remain[2])+")";
+    std::string result="Size:("+std::to_string(size[0])+","+std::to_string(size[1])+","+std::to_string(size[2])+"), Remain:("+std::to_string(remain[0])+","+std::to_string(remain[1])+","+std::to_string(remain[2])+")";
     return result;
 }
 

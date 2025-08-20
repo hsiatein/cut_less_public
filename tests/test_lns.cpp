@@ -10,7 +10,7 @@ namespace test_lns{
 TEST(LNS,testLNS){
     // Logger logger("test_lns");
     auto start = std::chrono::high_resolution_clock::now();
-    Problem problem=Problem::from_json("../assets/test_problem.json");
+    Problem problem=Problem::from_json("../assets/test_problem2.json");
     read_config("../config.json");
     PatternMerger patternMerger(&problem);
     StagePatterns patterns=patternMerger.generate_patterns();

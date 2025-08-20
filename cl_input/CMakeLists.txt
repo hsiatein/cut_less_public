@@ -7,3 +7,8 @@ set_target_properties(cl_input PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_compile_features(cl_input PUBLIC cxx_std_17)
 target_include_directories(cl_input PUBLIC ./include)
 target_link_libraries(cl_input cl_base xlnt)
+target_compile_definitions(cl_input
+    PRIVATE
+        $<$<CONFIG:Debug>:DEBUG>
+        $<$<CONFIG:Release>:RELEASE>
+)
