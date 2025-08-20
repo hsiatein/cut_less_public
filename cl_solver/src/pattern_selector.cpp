@@ -89,11 +89,12 @@ Scheme PatternSelector::select(){
     Scheme scheme;
     const HighsLp& lp = highs.getLp();
     return_status = highs.setOptionValue("time_limit",2);
-    return_status = highs.setOptionValue("output_flag",true);
+    #ifndef DEBUG
+    return_status = highs.setOptionValue("output_flag",false);
+    #endif
     assert(return_status == HighsStatus::kOk);
     return_status = highs.run();
     assert(return_status == HighsStatus::kOk);
-    // const HighsInfo& info = highs.getInfo();
     const HighsSolution& solution = highs.getSolution();
     std::vector<int> result;
     // for (int col = 0; col < lp.num_col_; col++) {
@@ -105,9 +106,11 @@ Scheme PatternSelector::select(){
     for (int col = 0; col < lp.num_col_; col++) {
         result.push_back((int)(solution.col_value[col]+0.01));
         if(result[col]==0) continue;
-        // std::cout << "Pattern Group" <<col<<": "<< partsnums[col].to_json()["PartsNum"].dump();
-        // std::cout << "; value = " << result[col];
-        // std::cout << std::endl;
+        #ifdef DEBUG
+        std::cout << "Pattern Group" <<col<<": "<< partsnums[col].to_json()["PartsNum"].dump();
+        std::cout << "; value = " << result[col];
+        std::cout << std::endl;
+        #endif
         scheme.emplace_back(partsnums[col],partsnum_of_patterns[partsnums[col]],result[col]);
     }
     return scheme;

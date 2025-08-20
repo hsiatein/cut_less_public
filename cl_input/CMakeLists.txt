@@ -12,3 +12,14 @@ target_compile_definitions(cl_input
         $<$<CONFIG:Debug>:DEBUG>
         $<$<CONFIG:Release>:RELEASE>
 )
+if(WIN32)
+    target_compile_definitions(cl_input
+        PRIVATE cl_input_EXPORT=__declspec\(dllexport\)
+        INTERFACE cl_input_EXPORT=__declspec\(dllimport\)
+    )
+else()
+    target_compile_definitions(cl_input
+        PRIVATE cl_input_EXPORT=
+        INTERFACE cl_input_EXPORT=
+    )
+endif()

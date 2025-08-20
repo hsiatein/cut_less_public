@@ -1,7 +1,7 @@
 #pragma once
 #include <pattern_solution.hpp>
 
-struct Process{
+struct cl_base_EXPORT Process{
     History history;
     std::vector<RecordOption> operations;
     std::vector<std::vector<RecordOption>> all_options;

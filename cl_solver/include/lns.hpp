@@ -3,14 +3,14 @@
 #include "process.hpp"
 #include <stage_patterns.hpp>
 
-enum class LNSStatus{
+enum class cl_solver_EXPORT LNSStatus{
     SUCCESS,
     FAIL
 };
 
 using DeleteOption=std::tuple<Blueprint*,PatternNode*,double>;
 
-class LNS{
+class cl_solver_EXPORT LNS{
 public:
     LNS(Problem* problem,Scheme scheme,StagePatterns& patterns);
     ~LNS();

@@ -7,7 +7,7 @@
 #include <solution.hpp>
 
 
-struct Solver{
+struct cl_solver_EXPORT Solver{
 public:
     Solver(Problem* problem);
     ~Solver();

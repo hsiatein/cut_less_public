@@ -8,7 +8,7 @@
 #include <solution.hpp>
 
 
-class Visualizer{
+class cl_visualizer_EXPORT Visualizer{
 public:
 
     static void init();

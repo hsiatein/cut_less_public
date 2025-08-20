@@ -2,7 +2,7 @@
 #include <pattern_solution.hpp>
 #include <stage_patterns.hpp>
 
-struct Solution
+struct cl_base_EXPORT Solution
 {
     std::vector<Node*> solution;
     std::map<Node*,SheetType> sheets;
