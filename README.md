@@ -9,7 +9,7 @@
 ### Dependencies
 
 * 求解器本身应该不需要依赖，但是可视化使用polyscope，可能需要根据build时的报错信息用apt等包管理器安装相关库。
-* 暂不支持windows系统，Ubuntu22.04和MacOs均可使用，其余系统暂未测试。
+* 正在尝试支持Windows系统，Ubuntu22.04和MacOS均可使用，其余系统暂未测试。
 * 以下构建方法需要CMake，Git。
 
 ### Installing
@@ -45,11 +45,9 @@ ninja -j4
 
 * cut_less_copy/assets/test_probelms.json是可以接受的数据格式
 * json格式的解默认输出到当前工作目录./output/文件夹，解文件名为main : solution.json
-* 其中尺寸1对应0.1mm，qty为数量
+* 无论配置文件还是问题或解的json，其中尺寸数值均为1对应0.1mm，qty为数量
 
 ## Authors
-
-Contributors names and contact info
 
 HsiaTein
 

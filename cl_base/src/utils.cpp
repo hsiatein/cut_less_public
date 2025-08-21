@@ -170,12 +170,12 @@ void read_config(std::string path){
     json config = json::parse(f);
     // std::cout<<1<<std::endl;
     // logger.log_json("testConfig",config);
-    CUT_LOSS=config["CUT_LOSS"].get<int>()*10;
+    CUT_LOSS=config["CUT_LOSS"].get<int>();
     TIME_LIMIT=config["TIME_LIMIT"].get<int>();
     std::vector<int> TEMP_REMAIN;
     // std::cout<<1<<std::endl;
     for(auto& remain:config["REMAIN"]){
-        TEMP_REMAIN.push_back(remain.get<int>()*10);
+        TEMP_REMAIN.push_back(remain.get<int>());
     }
     REMAIN=TEMP_REMAIN;
     
