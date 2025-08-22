@@ -3,7 +3,7 @@
 const std::array<RotateOrient,6> LNS::rotates={RotateOrient::I,RotateOrient::X,RotateOrient::Y,RotateOrient::Z,RotateOrient::XY,RotateOrient::XZ};
 
 
-LNS::LNS(Problem* problem,Scheme scheme,StagePatterns& patterns):lastProcess(nullptr),scheme(scheme),problem(problem),sheetsNum(problem->sheetsNum),solution(new PatternSolution(scheme)),patterns(patterns){
+LNS::LNS(const Problem* problem,Scheme scheme,const StagePatterns& patterns):lastProcess(nullptr),scheme(scheme),problem(problem),sheetsNum(problem->sheetsNum),solution(new PatternSolution(scheme)),patterns(patterns){
 
 }
 

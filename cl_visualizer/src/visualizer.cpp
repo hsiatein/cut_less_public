@@ -8,6 +8,8 @@ std::map<std::string,Vec3i> Visualizer::cubeStatus;
 StagePatterns* Visualizer::patterns=nullptr;
 History* Visualizer::history=nullptr;
 int Visualizer::history_length=0;
+std::vector<Solution>* Visualizer::solutions=nullptr;
+int Visualizer::solutions_length=0;
 std::vector<polyscope::SurfaceMesh*> Visualizer::cuts;
 int Visualizer::current_cut=0;
 char selected[100]="";
@@ -56,6 +58,18 @@ void Callback() {
         Visualizer::current_solution=(Visualizer::current_solution+Visualizer::history_length-1)%Visualizer::history_length;
         polyscope::removeAllStructures();
         Visualizer::from_pattern_solution(Visualizer::patterns,(*Visualizer::history)[Visualizer::current_solution]);
+    }
+
+    if(Visualizer::solutions_length!=0 && ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_UpArrow)){
+        Visualizer::current_solution=(Visualizer::current_solution+1)%Visualizer::solutions_length;
+        polyscope::removeAllStructures();
+        Visualizer::from_solution((*Visualizer::solutions)[Visualizer::current_solution]);
+    }
+
+    if(Visualizer::solutions_length!=0 && ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_DownArrow)){
+        Visualizer::current_solution=(Visualizer::current_solution+Visualizer::solutions_length-1)%Visualizer::solutions_length;
+        polyscope::removeAllStructures();
+        Visualizer::from_solution((*Visualizer::solutions)[Visualizer::current_solution]);
     }
 
     if(ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_LeftArrow)){
@@ -251,4 +265,11 @@ void Visualizer::from_solution(Solution& solution){
     from_cube(layouts[0]);
     polyscope::removeAllStructures();
     Visualizer::display(Visualizer::current);
+}
+
+void Visualizer::from_solutions(std::vector<Solution>* solutions){
+    Visualizer::solutions=solutions;
+    Visualizer::solutions_length=solutions->size();
+    Visualizer::current_solution=0;
+    from_solution((*solutions)[current_solution]);
 }

@@ -4,9 +4,13 @@ PatternSelector::PatternSelector(Problem* problem):problem(problem),patterns_siz
     model.lp_.sense_ = ObjSense::kMinimize;
     model.lp_.a_matrix_.format_ = MatrixFormat::kColwise;
 }
-
 void PatternSelector::partsnum_register(const StagePatterns& patterns){
+    partsnum_register(patterns,patterns.patterns.size()+1);
+}
+
+void PatternSelector::partsnum_register(const StagePatterns& patterns,size_t max_stage){
     for(const auto& [stage,stagePatterns]:patterns.patterns){
+        if(stage>max_stage) break;
         size_t N=stagePatterns.size();
         for(size_t i=0;i<N;++i){
             if(partsnum_of_patterns.find(stagePatterns[i].partsNum)==partsnum_of_patterns.end()){

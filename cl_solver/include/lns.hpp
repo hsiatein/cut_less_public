@@ -12,7 +12,7 @@ using DeleteOption=std::tuple<Blueprint*,PatternNode*,double>;
 
 class cl_solver_EXPORT LNS{
 public:
-    LNS(Problem* problem,Scheme scheme,StagePatterns& patterns);
+    LNS(const Problem* problem,Scheme scheme,const StagePatterns& patterns);
     ~LNS();
     void run();
     
@@ -52,14 +52,14 @@ public:
 
 private:
     int cal_cutnum(Blueprint* blueprint);
-    inline Pattern& get_pattern(StageLocation location){
+    inline const Pattern& get_pattern(StageLocation location){
         return patterns[location.first][location.second];
     }
     Scheme scheme;
-    Problem* problem;
+    const Problem* problem;
     std::vector<int> sheetsNum;
     PatternSolution* solution;
     History history;
-    StagePatterns& patterns;
+    const StagePatterns& patterns;
     const static std::array<RotateOrient,6> rotates;
 };

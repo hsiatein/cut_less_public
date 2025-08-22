@@ -12,11 +12,9 @@ public:
     Solver(Problem* problem);
     ~Solver();
     Solution solve();
-
+    std::vector<Solution> solve_multi_solution();
     Problem* problem;
     
-    PatternSolution* solution;
-
     
 
 private:

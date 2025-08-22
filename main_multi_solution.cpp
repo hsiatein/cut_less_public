@@ -20,19 +20,21 @@ int main(int argc, char *argv[]){
     auto start = std::chrono::high_resolution_clock::now();
 
     Solver solver(&problem);
-    Solution solution=solver.solve();
+    auto solutions=solver.solve_multi_solution();
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> duration = end - start;
     std::cout << std::fixed <<"\033[33m"<< "[Execution time: " << duration.count() << " ms]\033[0m" << std::endl;
 
     // 保存解为json
-    Logger logger("main");
-    logger.log_json("solution",solution.to_json());
+    for(int i=0;i<solutions.size();i++){
+        Logger logger("main");
+        logger.log_json("solution"+std::to_string(i+1),solutions[i].to_json());
+    }
 
     // 可视化
     Visualizer::init();
-    Visualizer::from_solution(solution);
+    Visualizer::from_solutions(&solutions);
     Visualizer::show();
 
     return 0;

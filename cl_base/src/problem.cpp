@@ -90,7 +90,7 @@ Problem& Problem::operator=(const Problem& other) {
     return *this;
 }
 
-SheetType Problem::get_sheet(size_t id){
+SheetType Problem::get_sheet(size_t id) const{
     for(auto sheet:sheets){
         if(sheet.id==id) return sheet;
     }
