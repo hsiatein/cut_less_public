@@ -26,7 +26,7 @@ public:
     std::tuple<std::vector<HighsInt>,std::vector<HighsInt>,std::vector<double>> generate_highs_mat();
     std::vector<PartsNum> partsnums;
 private:
-    Problem* problem;
+    const Problem* problem;
     int patterns_size;
     std::unordered_map<PartsNum,std::vector<StageLocation>,PartsNumHasher> partsnum_of_patterns;
     HighsModel model;

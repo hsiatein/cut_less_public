@@ -16,7 +16,7 @@ public:
     static void from_history(StagePatterns* patterns,History& history);
     static void from_pattern_solution(StagePatterns* patterns,PatternSolution* solution);
     static void from_solution(Solution& solution);
-    static void from_solutions(std::vector<Solution>* solutions);
+    static void from_solutions(Solutions* solutions);
     static void from_process(StagePatterns* patterns,Process* process);
     static void display(int i);
     static std::vector<Cube> layouts;
@@ -27,7 +27,7 @@ public:
     static StagePatterns* patterns;
     static History* history;
     static int history_length;
-    static std::vector<Solution>* solutions;
+    static Solutions* solutions;
     static int solutions_length;
     static std::map<std::string,Vec3i> cubeStatus;
 

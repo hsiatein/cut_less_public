@@ -26,7 +26,7 @@ target_compile_definitions(main
 
 add_executable(main_multi_solution ./main_multi_solution.cpp)
 target_compile_features(main_multi_solution PUBLIC cxx_std_17)
-target_link_libraries(main_multi_solution cl_solver cl_visualizer argparse)
+target_link_libraries(main_multi_solution cl_solver argparse)
 target_compile_definitions(main_multi_solution
     PRIVATE
         $<$<CONFIG:Debug>:DEBUG>

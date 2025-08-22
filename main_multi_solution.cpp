@@ -1,5 +1,5 @@
 #include <solver.hpp>
-#include <visualizer.hpp>
+// #include <visualizer.hpp>
 #include <argparse/argparse.hpp>
 
 
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
     auto start = std::chrono::high_resolution_clock::now();
 
     Solver solver(&problem);
-    auto solutions=solver.solve_multi_solution();
+    auto solutions=solver.solve_multi_solution_multi_thread();
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> duration = end - start;
@@ -29,13 +29,13 @@ int main(int argc, char *argv[]){
     // 保存解为json
     for(int i=0;i<solutions.size();i++){
         Logger logger("main");
-        logger.log_json("solution"+std::to_string(i+1),solutions[i].to_json());
+        logger.log_json("solution"+std::to_string(i+1),solutions[i]->to_json());
     }
 
     // 可视化
-    Visualizer::init();
-    Visualizer::from_solutions(&solutions);
-    Visualizer::show();
+    // Visualizer::init();
+    // Visualizer::from_solutions(&solutions);
+    // Visualizer::show();
 
     return 0;
 }
