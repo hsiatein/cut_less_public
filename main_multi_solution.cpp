@@ -1,5 +1,5 @@
 #include <solver.hpp>
-// #include <visualizer.hpp>
+#include <visualizer.hpp>
 #include <argparse/argparse.hpp>
 
 
@@ -33,9 +33,9 @@ int main(int argc, char *argv[]){
     }
 
     // 可视化
-    // Visualizer::init();
-    // Visualizer::from_solutions(&solutions);
-    // Visualizer::show();
+    Visualizer::init();
+    Visualizer::from_solutions(&solutions);
+    Visualizer::show();
 
     return 0;
 }

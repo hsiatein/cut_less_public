@@ -13,8 +13,8 @@ dependencies = ["cl_solver","cl_visualizer","argparse"]
 [[bin]]
 name = "main_multi_solution"
 path = "./main_multi_solution.cpp"
-# dependencies = ["cl_solver","cl_visualizer","argparse"]
-dependencies = ["cl_solver","argparse"]
+dependencies = ["cl_solver","cl_visualizer","argparse"]
+# dependencies = ["cl_solver","argparse"]
 
 [[bin]]
 name = "visualize"
