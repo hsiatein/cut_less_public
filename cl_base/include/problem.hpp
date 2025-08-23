@@ -2,7 +2,7 @@
 #include "utils.hpp"
 
 
-struct cl_base_EXPORT Problem{
+struct Problem{
     std::vector<PartType> parts;
     std::vector<SheetType> sheets;
     std::vector<int> partsNum;

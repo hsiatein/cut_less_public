@@ -2,7 +2,7 @@
 #include <utils.hpp>
 #include "node.hpp"
 
-struct cl_base_EXPORT Pattern
+struct Pattern
 {
 public:
     Problem* problem;

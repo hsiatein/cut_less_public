@@ -14,7 +14,7 @@ struct PartsNumHasher {
     }
 };
 
-class cl_solver_EXPORT PatternSelector{
+class PatternSelector{
 public:
     PatternSelector(Problem* problem);
     void partsnum_register(const StagePatterns& patterns,size_t max_stage);

@@ -23,21 +23,21 @@
 #define MAX_INT 2147483647
 
 
-enum class cl_base_EXPORT NodeType{
+enum class NodeType{
     PART,
     STRUCT,
     LEFTOVER,
     CUTLOSS,
 };
 
-enum class cl_base_EXPORT Orient{
+enum class Orient{
     X,
     Y,
     Z,
     NONE,
 };
 
-enum class cl_base_EXPORT RotateOrient{
+enum class RotateOrient{
     I,
     X,
     Y,
@@ -54,7 +54,7 @@ using RotateOrientMatch=std::tuple<RotateOrient,RotateOrient,int>;
 using Vec3i=std::array<int,3>;
 
 
-struct cl_base_EXPORT Size{
+struct Size{
     // 0->width, 1->length, 2->thick
     Vec3i size;
     Vec3i remain;
@@ -79,7 +79,7 @@ struct cl_base_EXPORT Size{
     std::string to_string() const;
 };
 
-struct cl_base_EXPORT PartType{
+struct PartType{
     size_t id;
     Size size;
     bool rotatable;
@@ -97,7 +97,7 @@ struct cl_base_EXPORT PartType{
 //     }
 // };
 
-struct cl_base_EXPORT SheetType{
+struct SheetType{
     size_t id;
     Size size;
     bool small;
@@ -115,13 +115,13 @@ struct cl_base_EXPORT SheetType{
 //     }
 // };
 
-cl_base_EXPORT inline void swap(int& a, int& b) {
+inline void swap(int& a, int& b) {
     int temp = a;
     a = b;
     b = temp;
 }
 
-struct cl_base_EXPORT PartsNum{
+struct PartsNum{
     std::map<size_t,int> partsNum;
 
     int& operator[](const size_t& id);
@@ -134,12 +134,12 @@ struct cl_base_EXPORT PartsNum{
 };
 
 
-cl_base_EXPORT std::runtime_error cleanAndError(std::string exception);
+std::runtime_error cleanAndError(std::string exception);
 
-extern cl_base_EXPORT Logger logger;
-extern cl_base_EXPORT Random randomEngine;
+extern Logger logger;
+extern Random randomEngine;
 
-cl_base_EXPORT void read_config(std::string path);
+void read_config(std::string path);
 
 using StageLocation=std::pair<size_t,size_t>;
 using PatternGroup=std::tuple<PartsNum,std::vector<StageLocation>,int>;
@@ -147,4 +147,4 @@ using GroupNum=std::pair<std::vector<StageLocation>,int>;
 using Scheme=std::vector<PatternGroup>;
 using GroupNums=std::vector<GroupNum>;
 
-cl_base_EXPORT std::string to_string(Orient orient);
+std::string to_string(Orient orient);

@@ -5,7 +5,7 @@ using CutOrients=std::array<Orient,3>;
 using OptionCost=std::pair<int,double>;
 
 
-struct cl_base_EXPORT PatternNode{
+struct PatternNode{
     size_t groupID;
     StageLocation stageLocation;
     Size size;

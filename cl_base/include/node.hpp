@@ -6,7 +6,7 @@
 
 
 
-struct cl_base_EXPORT Node{
+struct Node{
     Problem* problem;
     Size size;
     size_t partTypeID;

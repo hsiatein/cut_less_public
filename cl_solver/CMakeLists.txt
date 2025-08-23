@@ -12,14 +12,3 @@ target_compile_definitions(cl_solver
         $<$<CONFIG:Debug>:DEBUG>
         $<$<CONFIG:Release>:RELEASE>
 )
-if(WIN32)
-    target_compile_definitions(cl_solver
-        PRIVATE cl_solver_EXPORT=__declspec\(dllexport\)
-        INTERFACE cl_solver_EXPORT=__declspec\(dllimport\)
-    )
-else()
-    target_compile_definitions(cl_solver
-        PRIVATE cl_solver_EXPORT=
-        INTERFACE cl_solver_EXPORT=
-    )
-endif()

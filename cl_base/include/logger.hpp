@@ -6,7 +6,7 @@
 
 using json = nlohmann::json;
 
-class cl_base_EXPORT Logger{
+class Logger{
 public:
     bool enable;
     bool enableJSON;

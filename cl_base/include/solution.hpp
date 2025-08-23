@@ -2,7 +2,7 @@
 #include <pattern_solution.hpp>
 #include <stage_patterns.hpp>
 
-struct cl_base_EXPORT Solution
+struct Solution
 {
     std::vector<Node*> solution;
     std::map<Node*,SheetType> sheets;
@@ -12,7 +12,7 @@ struct cl_base_EXPORT Solution
     json to_json() const;
 };
 
-struct cl_base_EXPORT Solutions
+struct Solutions
 {
     std::vector<Solution*> solutions;
     Solutions();

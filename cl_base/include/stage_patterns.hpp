@@ -3,7 +3,7 @@
 
 
 
-struct cl_base_EXPORT StagePatterns{
+struct StagePatterns{
     Problem* problem;
     std::map<size_t,std::vector<Pattern>> patterns;
     

@@ -12,14 +12,3 @@ target_compile_definitions(cl_base
         $<$<CONFIG:Debug>:DEBUG>
         $<$<CONFIG:Release>:RELEASE>
 )
-if(WIN32)
-    target_compile_definitions(cl_base
-        PRIVATE cl_base_EXPORT=__declspec\(dllexport\)
-        INTERFACE cl_base_EXPORT=__declspec\(dllimport\)
-    )
-else()
-    target_compile_definitions(cl_base
-        PRIVATE cl_base_EXPORT=
-        INTERFACE cl_base_EXPORT=
-    )
-endif()

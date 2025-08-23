@@ -1,7 +1,7 @@
 #include <utils.hpp>
 
-cl_base_EXPORT Logger logger("runtime");
-cl_base_EXPORT Random randomEngine;
+Logger logger("runtime");
+Random randomEngine;
 
 PartType::PartType(size_t id,int width,int length,int thick,bool rotatable):
 id(id),size({width,length,thick}),rotatable(rotatable){

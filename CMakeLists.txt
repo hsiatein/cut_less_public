@@ -39,13 +39,3 @@ target_compile_definitions(visualize
         $<$<CONFIG:Release>:RELEASE>
 )
 
-#tests
-set(TEST_MAIN_FUNC ./external/googletest/googletest/src/gtest_main.cc)
-file(GLOB TEST_FILES ./tests/*.cpp)
-foreach(file ${TEST_FILES})
-    get_filename_component(name ${file} NAME_WE)
-    add_executable(${name} ${file} ${TEST_MAIN_FUNC})
-    target_link_libraries(${name} gtest cl_base cl_solver cl_visualizer cl_input)
-endforeach()
-add_executable(test_all ${TEST_MAIN_FUNC} ${TEST_FILES})
-target_link_libraries(test_all gtest cl_base cl_solver cl_visualizer cl_input)

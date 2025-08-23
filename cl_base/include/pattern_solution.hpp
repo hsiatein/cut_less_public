@@ -2,7 +2,7 @@
 #include "blueprint.hpp"
 
 
-struct cl_base_EXPORT PatternSolution{
+struct PatternSolution{
 public:
     std::vector<Blueprint*> blueprints;
     GroupNums groupNums;

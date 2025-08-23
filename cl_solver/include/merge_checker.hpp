@@ -2,7 +2,7 @@
 #include "node.hpp"
 
 
-class cl_solver_EXPORT MergeChecker{
+class MergeChecker{
 public:
     MergeChecker(Problem* problem);
     bool parts_num_fit(const PartsNum& left,const PartsNum& right) const;

@@ -8,7 +8,7 @@
 #include <thread>
 
 
-struct cl_solver_EXPORT Solver{
+struct Solver{
 public:
     Solver(Problem* problem);
     ~Solver();

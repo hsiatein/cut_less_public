@@ -4,7 +4,7 @@
 #include <exist_checker.hpp>
 #include <stage_patterns.hpp>
 
-struct cl_solver_EXPORT PatternMerger
+struct PatternMerger
 {
     Problem* problem;
     MergeChecker mergeChecker;
