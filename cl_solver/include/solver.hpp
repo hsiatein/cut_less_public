@@ -5,18 +5,18 @@
 #include "lns.hpp"
 #include <pattern_merger.hpp>
 #include <solution.hpp>
+#include <thread>
 
 
-struct Solver{
+struct cl_solver_EXPORT Solver{
 public:
     Solver(Problem* problem);
     ~Solver();
     Solution solve();
-
+    Solutions solve_multi_solution_multi_thread();
+    Solutions solve_multi_solution_single_thread();
     Problem* problem;
     
-    PatternSolution* solution;
-
     
 
 private:

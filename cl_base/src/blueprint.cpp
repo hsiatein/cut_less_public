@@ -40,3 +40,21 @@ std::vector<PatternNode*> Blueprint::get_empty_structs(){
 double Blueprint::get_volume() const{
     return top->size.get_volume();
 }
+
+std::string to_string(const Option& op){
+    std::string result="Sheet: "+std::to_string(std::get<0>(op)->sheetID)+", Space: "+std::get<1>(op)->size.to_string()+"\nGroupID: "+std::to_string(std::get<2>(op))+", Size: "+std::get<4>(op).to_string()+"\nCut Orient: ";
+    for(auto o:std::get<6>(op)){
+        result+=to_string(o)+" ";
+    }
+    result+="Cost: ("+std::to_string(std::get<7>(op).first)+", "+std::to_string(std::get<7>(op).second)+")";
+    return result;
+}
+
+std::string to_string(const RecordOption& op){
+    std::string result="Sheet: "+std::to_string(std::get<0>(op))+", Space: "+std::get<1>(op).to_string()+"\nGroupID: "+std::to_string(std::get<2>(op))+", Size: "+std::get<3>(op).to_string()+"\nCut Orient: ";
+    for(auto o:std::get<4>(op)){
+        result+=to_string(o)+" ";
+    }
+    result+="Cost: ("+std::to_string(std::get<5>(op).first)+", "+std::to_string(std::get<5>(op).second)+")";
+    return result;
+}

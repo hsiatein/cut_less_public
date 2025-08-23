@@ -2,7 +2,7 @@
 #include <pattern.hpp>
 
 
-struct Cube{
+struct cl_visualizer_EXPORT Cube{
 public:
     Vec3i location;
     Vec3i size;

@@ -4,9 +4,13 @@ PatternSelector::PatternSelector(Problem* problem):problem(problem),patterns_siz
     model.lp_.sense_ = ObjSense::kMinimize;
     model.lp_.a_matrix_.format_ = MatrixFormat::kColwise;
 }
-
 void PatternSelector::partsnum_register(const StagePatterns& patterns){
+    partsnum_register(patterns,patterns.patterns.size()+1);
+}
+
+void PatternSelector::partsnum_register(const StagePatterns& patterns,size_t max_stage){
     for(const auto& [stage,stagePatterns]:patterns.patterns){
+        if(stage>max_stage) break;
         size_t N=stagePatterns.size();
         for(size_t i=0;i<N;++i){
             if(partsnum_of_patterns.find(stagePatterns[i].partsNum)==partsnum_of_patterns.end()){
@@ -89,11 +93,12 @@ Scheme PatternSelector::select(){
     Scheme scheme;
     const HighsLp& lp = highs.getLp();
     return_status = highs.setOptionValue("time_limit",2);
-    return_status = highs.setOptionValue("output_flag",true);
+    #ifndef DEBUG
+    return_status = highs.setOptionValue("output_flag",false);
+    #endif
     assert(return_status == HighsStatus::kOk);
     return_status = highs.run();
     assert(return_status == HighsStatus::kOk);
-    // const HighsInfo& info = highs.getInfo();
     const HighsSolution& solution = highs.getSolution();
     std::vector<int> result;
     // for (int col = 0; col < lp.num_col_; col++) {
@@ -105,9 +110,11 @@ Scheme PatternSelector::select(){
     for (int col = 0; col < lp.num_col_; col++) {
         result.push_back((int)(solution.col_value[col]+0.01));
         if(result[col]==0) continue;
-        // std::cout << "Pattern Group" <<col<<": "<< partsnums[col].to_json()["PartsNum"].dump();
-        // std::cout << "; value = " << result[col];
-        // std::cout << std::endl;
+        #ifdef DEBUG
+        std::cout << "Pattern Group" <<col<<": "<< partsnums[col].to_json()["PartsNum"].dump();
+        std::cout << "; value = " << result[col];
+        std::cout << std::endl;
+        #endif
         scheme.emplace_back(partsnums[col],partsnum_of_patterns[partsnums[col]],result[col]);
     }
     return scheme;

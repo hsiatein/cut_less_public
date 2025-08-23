@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <numeric>
 
-class Random{
+class cl_base_EXPORT Random{
 public:
     Random();
     int rand_int(int a,int b);

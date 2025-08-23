@@ -25,7 +25,7 @@ struct ExistUnitEqual {
     }
 };
 
-class ExistChecker
+class cl_solver_EXPORT ExistChecker
 {
 private:
     std::unordered_set<ExistUnit,ExistUnitHash,ExistUnitEqual> existPatterns;

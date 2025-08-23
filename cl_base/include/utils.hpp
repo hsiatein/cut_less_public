@@ -23,21 +23,21 @@
 #define MAX_INT 2147483647
 
 
-enum class NodeType{
+enum class cl_base_EXPORT NodeType{
     PART,
     STRUCT,
     LEFTOVER,
     CUTLOSS,
 };
 
-enum class Orient{
+enum class cl_base_EXPORT Orient{
     X,
     Y,
     Z,
     NONE,
 };
 
-enum class RotateOrient{
+enum class cl_base_EXPORT RotateOrient{
     I,
     X,
     Y,
@@ -54,7 +54,7 @@ using RotateOrientMatch=std::tuple<RotateOrient,RotateOrient,int>;
 using Vec3i=std::array<int,3>;
 
 
-struct Size{
+struct cl_base_EXPORT Size{
     // 0->width, 1->length, 2->thick
     Vec3i size;
     Vec3i remain;
@@ -79,7 +79,7 @@ struct Size{
     std::string to_string() const;
 };
 
-struct PartType{
+struct cl_base_EXPORT PartType{
     size_t id;
     Size size;
     bool rotatable;
@@ -97,7 +97,7 @@ struct PartType{
 //     }
 // };
 
-struct SheetType{
+struct cl_base_EXPORT SheetType{
     size_t id;
     Size size;
     bool small;
@@ -115,13 +115,13 @@ struct SheetType{
 //     }
 // };
 
-inline void swap(int& a, int& b) {
+cl_base_EXPORT inline void swap(int& a, int& b) {
     int temp = a;
     a = b;
     b = temp;
 }
 
-struct PartsNum{
+struct cl_base_EXPORT PartsNum{
     std::map<size_t,int> partsNum;
 
     int& operator[](const size_t& id);
@@ -134,12 +134,12 @@ struct PartsNum{
 };
 
 
-std::runtime_error cleanAndError(std::string exception);
+cl_base_EXPORT std::runtime_error cleanAndError(std::string exception);
 
-extern Logger logger;
-extern Random randomEngine;
+extern cl_base_EXPORT Logger logger;
+extern cl_base_EXPORT Random randomEngine;
 
-void read_config(std::string path);
+cl_base_EXPORT void read_config(std::string path);
 
 using StageLocation=std::pair<size_t,size_t>;
 using PatternGroup=std::tuple<PartsNum,std::vector<StageLocation>,int>;
@@ -147,4 +147,4 @@ using GroupNum=std::pair<std::vector<StageLocation>,int>;
 using Scheme=std::vector<PatternGroup>;
 using GroupNums=std::vector<GroupNum>;
 
-std::string to_string(Orient orient);
+cl_base_EXPORT std::string to_string(Orient orient);

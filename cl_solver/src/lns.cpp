@@ -3,7 +3,7 @@
 const std::array<RotateOrient,6> LNS::rotates={RotateOrient::I,RotateOrient::X,RotateOrient::Y,RotateOrient::Z,RotateOrient::XY,RotateOrient::XZ};
 
 
-LNS::LNS(Problem* problem,Scheme scheme,StagePatterns& patterns):lastProcess(nullptr),scheme(scheme),problem(problem),sheetsNum(problem->sheetsNum),solution(new PatternSolution(scheme)),patterns(patterns){
+LNS::LNS(const Problem* problem,Scheme scheme,const StagePatterns& patterns):lastProcess(nullptr),scheme(scheme),problem(problem),sheetsNum(problem->sheetsNum),solution(new PatternSolution(scheme)),patterns(patterns){
 
 }
 
@@ -75,6 +75,14 @@ void LNS::run(){
             <<"\033[34mtotal cuts: "<<cal_cutnum(history.back())<<"\033[0m"<<std::endl;
             if(lastProcess!=nullptr) delete lastProcess;
             lastProcess=new Process(process);
+            #ifdef DEBUG
+            std::cout<< "\033[36m";
+            std::cout<< "Process:\n";
+            for(size_t i=0;i<lastProcess->operations.size();i++){
+                lastProcess->print_operation(i);
+            }
+            std::cout<< "\033[0m";
+            #endif
             // for(auto solution:lastProcess->history){
             //     std::cout<<"remain num: "<<solution->remain_groups()<<std::endl;
             //     std::cout<<"placed num: "<<solution->placed_pattern()<<std::endl;
@@ -146,7 +154,15 @@ void LNS::recreate(Process& process){
             solution->blueprints.insert(solution->blueprints.end(),keeped.begin(),keeped.end());
 
             // std::cout<<"placed num: "<<solution->placed_pattern()<<std::endl;
-            process.log_option(bestOption);
+            #ifdef DEBUG
+            process.log_operation(bestOption);
+            std::vector<Option> record;
+            for(auto op:options){
+                if(std::get<0>(op)!=std::get<0>(bestOption) || std::get<1>(op)!=std::get<1>(bestOption)) continue;
+                record.push_back(op);
+            }
+            process.log_options(record);
+            #endif
             process.log_solution(solution);
         }
         else{
@@ -154,7 +170,15 @@ void LNS::recreate(Process& process){
             insert(bestOption);
 
             // std::cout<<"placed num: "<<solution->placed_pattern()<<std::endl;
-            process.log_option(bestOption);
+            #ifdef DEBUG
+            process.log_operation(bestOption);
+            std::vector<Option> record;
+            for(auto op:options){
+                if(std::get<0>(op)!=std::get<0>(bestOption) || std::get<1>(op)!=std::get<1>(bestOption)) continue;
+                record.push_back(op);
+            }
+            process.log_options(record);
+            #endif
             process.log_solution(solution);
         }
         // std::cout<<"remain num: "<<process.history.back()->remain_groups()<<std::endl;

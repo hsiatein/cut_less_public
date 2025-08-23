@@ -4,7 +4,7 @@ StagePatterns::StagePatterns(Problem* problem):problem(problem){
 
 }
 
-Node* StagePatterns::to_node(const PatternNode* patternNode){
+Node* StagePatterns::to_node(const PatternNode* patternNode) const{
     if(patternNode->is_cutloss()){
         return new Node(problem,patternNode->size.size[0],patternNode->size.size[1],patternNode->size.size[2],patternNode->next_cut_orient);
     }
@@ -18,7 +18,7 @@ Node* StagePatterns::to_node(const PatternNode* patternNode){
         return self;
     }
     else{
-        Pattern pattern(patterns[patternNode->stageLocation.first][patternNode->stageLocation.second],patternNode->rotate);
+        Pattern pattern(patterns.at(patternNode->stageLocation.first)[patternNode->stageLocation.second],patternNode->rotate);
         pattern.resize_force(Orient::X,patternNode->size.size[0]);
         pattern.resize_force(Orient::Y,patternNode->size.size[1]);
         pattern.resize_force(Orient::Z,patternNode->size.size[2]);

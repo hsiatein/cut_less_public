@@ -2,7 +2,7 @@
 #include "pattern_node.hpp"
 
 
-struct Blueprint
+struct cl_base_EXPORT Blueprint
 {
     size_t sheetID;
     PatternNode* top;
@@ -16,5 +16,9 @@ struct Blueprint
 
 };
 
+/// @brief blueprint, pattern node, group ID, stage location, pattern size, rotate, cut orient, cost
 using Option=std::tuple<Blueprint*,PatternNode*,size_t,StageLocation,Size,RotateOrient,CutOrients,OptionCost>;
-
+/// @brief blueprint sheet id, pattern node size, group ID, pattern size, cut orient, cost
+using RecordOption=std::tuple<size_t,Size,size_t,Size,CutOrients,OptionCost>;
+cl_base_EXPORT std::string to_string(const Option& op);
+cl_base_EXPORT std::string to_string(const RecordOption& op);
