@@ -1,7 +1,7 @@
 #include "../include/node.hpp"
 
-Node::Node():problem(nullptr),partTypeID(0),next_cut_orient(Orient::NONE){
-}
+// Node::Node():problem(nullptr),partTypeID(0),next_cut_orient(Orient::NONE){
+// }
 
 Node::Node(Problem* problem,int width,int height,int thick,size_t partTypeID,Node* parent,Orient next_cut_orient)
 :problem(problem),size({width,height,thick},REMAIN[0]),partTypeID(partTypeID),parent(parent),next_cut_orient(next_cut_orient)
@@ -15,11 +15,11 @@ Node::Node(Problem* problem,int width,int height,int thick,Orient next_cut_orien
     size.set(next_cut_orient,{size[next_cut_orient].first,0});
 }
 
-Node::Node(Problem* problem,int width,int height,int thick,Orient next_cut_orient,const Vec3i& remain)
-:problem(problem),size({width,height,thick},remain),partTypeID(problem->STRUCT),parent(nullptr),next_cut_orient(next_cut_orient)
-{
-
-}
+// Node::Node(Problem* problem,int width,int height,int thick,Orient next_cut_orient,const Vec3i& remain)
+// :problem(problem),size({width,height,thick},remain),partTypeID(problem->STRUCT),parent(nullptr),next_cut_orient(next_cut_orient)
+// {
+//
+// }
 
 Node::Node(Problem* problem,const Size& size,int partTypeID,Orient next_cut_orient)
 :problem(problem),size(size),partTypeID(partTypeID),parent(nullptr),next_cut_orient(next_cut_orient){
@@ -31,6 +31,7 @@ Node::Node(Problem* problem,const PartType& partType)
 {
     size.remain={REMAIN[0],REMAIN[0],REMAIN[0]};
 }
+
 Node::Node(Problem* problem,const PartType& partType,const Vec3i& remain)
 :problem(problem),size(partType.size.size,remain),partTypeID(partType.id),parent(nullptr),next_cut_orient(Orient::NONE)
 {
@@ -45,15 +46,15 @@ Node::Node(const Node& node)
     }   
 }
 
-Node::Node(Node&& other)
-:problem(other.problem),size(other.size),partTypeID(other.partTypeID),parent(other.parent),next_cut_orient(other.next_cut_orient)
-{
-    for(auto want_to_move:other.childs){
-        addChild(want_to_move);
-    }
-    other.parent = nullptr;
-    other.childs.clear();
-}
+// Node::Node(Node&& other)
+// :problem(other.problem),size(other.size),partTypeID(other.partTypeID),parent(other.parent),next_cut_orient(other.next_cut_orient)
+// {
+//     for(auto want_to_move:other.childs){
+//         addChild(want_to_move);
+//     }
+//     other.parent = nullptr;
+//     other.childs.clear();
+// }
 
 Node::~Node(){
     for(auto ptr:this->childs){
