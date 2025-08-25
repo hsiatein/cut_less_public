@@ -77,22 +77,22 @@ std::vector<OrientMatch> Pattern::collect_match_1D(const Pattern& other) const{
     return result;
 }
 
-std::vector<OrientMatchPair> Pattern::collect_match_2D(const Pattern& other,const std::vector<OrientMatch>& match) const{
-    std::vector<OrientMatchPair> result;
-    size_t matchesize=match.size();
-    for(int i=0;i<matchesize;i++){
-        for(int j=i+1;j<matchesize;j++){
-            OrientMatch first=match[i];
-            OrientMatch second=match[j];
-            if(std::get<0>(first)!=std::get<0>(second) && std::get<1>(first)!=std::get<1>(second)){
-                result.emplace_back(first,second);
-            }
-
-        }
-    }
-
-    return result;
-}
+// std::vector<OrientMatchPair> Pattern::collect_match_2D(const Pattern& other,const std::vector<OrientMatch>& match) const{
+//     std::vector<OrientMatchPair> result;
+//     size_t matchesize=match.size();
+//     for(int i=0;i<matchesize;i++){
+//         for(int j=i+1;j<matchesize;j++){
+//             OrientMatch first=match[i];
+//             OrientMatch second=match[j];
+//             if(std::get<0>(first)!=std::get<0>(second) && std::get<1>(first)!=std::get<1>(second)){
+//                 result.emplace_back(first,second);
+//             }
+//
+//         }
+//     }
+//
+//     return result;
+// }
 
 void Pattern::merge(Pattern& other,Orient orient){
     //logger.log_json("merge_other",other.top->to_json());

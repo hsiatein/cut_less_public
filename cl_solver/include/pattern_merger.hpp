@@ -8,16 +8,16 @@ struct PatternMerger
 {
     Problem* problem;
     MergeChecker mergeChecker;
-    PatternMerger(Problem* problem);
+    explicit PatternMerger(Problem* problem);
     PatternMerger(Problem* problem,MergeChecker mergeChecker);
     // inline Pattern& get_pattern(StageLocation location){
     //     return patterns[location.first][location.second];
     // }
-    StagePatterns generate_patterns();
+    [[nodiscard]] StagePatterns generate_patterns(int level=0) const;
     static std::vector<Pattern> generate_merged_pattern(const Pattern& p1,const Pattern& p2);
     static std::vector<Pattern> generate_merged_pattern_with_check(const MergeChecker& mergeCheck,const Pattern& p1,const Pattern& p2);
     static std::vector<RotateOrientMatch> matches_to_rotateOrientMatches(const std::vector<OrientMatch>& matches);
     static RotateOrientPair regularizeRotate(Orient orient);
-    std::vector<std::pair<size_t,size_t>> get_subpattern_pair(size_t i);
+    static std::vector<std::pair<size_t,size_t>> get_subpattern_pair(size_t i);
 
 };

@@ -23,7 +23,7 @@ public:
     // void refresh();
     std::optional<int> match(const Pattern& other, Orient left, Orient right) const;
     std::vector<OrientMatch> collect_match_1D(const Pattern& other) const;
-    std::vector<OrientMatchPair> collect_match_2D(const Pattern& other,const std::vector<OrientMatch>& match) const;
+    // std::vector<OrientMatchPair> collect_match_2D(const Pattern& other,const std::vector<OrientMatch>& match) const;
     bool resize(Orient orient,int newSize);
     void resize_force(Orient orient,int newSize);
     void resize_or_merge(Orient orient,int newSize);

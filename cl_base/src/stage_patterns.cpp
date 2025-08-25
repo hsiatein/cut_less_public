@@ -11,7 +11,7 @@ Node* StagePatterns::to_node(const PatternNode* patternNode) const{
     }
     if (patternNode->is_struct())
     {
-        Node* self=new Node(patternNode->size,problem->get_node_status(problem->STRUCT),patternNode->next_cut_orient);
+        Node* self=new Node(patternNode->size,{NodeType::STRUCT,problem->STRUCT},patternNode->next_cut_orient);
         for(auto child:patternNode->childs){
             Node* child_node=to_node(child);
             self->addChild(child_node);

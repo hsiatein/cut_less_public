@@ -12,23 +12,23 @@ struct Problem{
     size_t SHEET_ID;
     Problem();
     Problem(const Problem& other);
-    Problem(json json);
+    explicit Problem(json json);
     Problem& operator=(const Problem& other);
     static Problem from_json(std::string path);
     void addPart(int width,int length,int thick,bool rotatable,int qty);
     void addSheet(int width,int length,int thick,int qty,bool small);
-    SheetType get_sheet(size_t id) const;
-    json to_json() const;
-    json parts_to_json() const;
-    json sheets_to_json() const;
-    inline NodeStatus get_node_status(size_t partTypeID) const {
-        if (partTypeID == STRUCT) {
-            return {NodeType::STRUCT,partTypeID};
-        }
-        if (partTypeID == CUTLOSS) {
-            return {NodeType::CUTLOSS,partTypeID};
-        }
-        return {NodeType::PART,partTypeID};
-    }
+    [[nodiscard]] SheetType get_sheet(size_t id) const;
+    [[nodiscard]] json to_json() const;
+    [[nodiscard]] json parts_to_json() const;
+    [[nodiscard]] json sheets_to_json() const;
+    // inline NodeStatus get_node_status(size_t partTypeID) const {
+    //     if (partTypeID == STRUCT) {
+    //         return {NodeType::STRUCT,partTypeID};
+    //     }
+    //     if (partTypeID == CUTLOSS) {
+    //         return {NodeType::CUTLOSS,partTypeID};
+    //     }
+    //     return {NodeType::PART,partTypeID};
+    // }
 };
 

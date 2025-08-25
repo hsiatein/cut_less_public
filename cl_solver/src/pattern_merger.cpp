@@ -4,9 +4,8 @@ PatternMerger::PatternMerger(Problem* problem):problem(problem),mergeChecker(thi
 }
 
 /// @brief 模式生成
-StagePatterns PatternMerger::generate_patterns(){
+StagePatterns PatternMerger::generate_patterns(const int level) const{
     StagePatterns patterns(problem);
-    int level=0;
     size_t pattern_stage=1;
     patterns.new_stage(pattern_stage);
     for(const auto& part:problem->parts){
@@ -34,8 +33,7 @@ StagePatterns PatternMerger::generate_patterns(){
         
         for(auto stagePair:stagePairs){
             // std::cout<<stagePair.first<<","<<stagePair.second<<std::endl;
-            size_t leftStage=stagePair.first;
-            size_t rightStage=stagePair.second;
+            auto [leftStage,rightStage]=stagePair;
             if(patterns[leftStage].size()*patterns[rightStage].size()==0) continue;
             // std::cout<<"000"<<std::endl;
             for(const auto& left:patterns[leftStage])
@@ -119,14 +117,14 @@ std::vector<Pattern> PatternMerger::generate_merged_pattern_with_check(const Mer
         Pattern pattern_right(p2,std::get<1>(match));
         pattern_left.resize(Orient::X,std::get<2>(match));
         pattern_right.resize(Orient::X,std::get<2>(match));
-        int newSizeZ=std::max(pattern_left.top->size[Orient::Z].first,pattern_right.top->size[Orient::Z].first);
+        const int newSizeZ=std::max(pattern_left.top->size[Orient::Z].first,pattern_right.top->size[Orient::Z].first);
         pattern_left.resize_or_merge(Orient::Z,newSizeZ);
         pattern_right.resize_or_merge(Orient::Z,newSizeZ);
         logger.log(pattern_left.to_string());
         logger.log(pattern_right.to_string());
         // 判断是否达到利用率界限
-        double newVolume=pattern_left.top->size.get_volume()+pattern_right.top->size.get_volume();
-        double partsVolume=pattern_left.get_parts_volume()+pattern_right.get_parts_volume();
+        const double newVolume=pattern_left.top->size.get_volume()+pattern_right.top->size.get_volume();
+        const double partsVolume=pattern_left.get_parts_volume()+pattern_right.get_parts_volume();
         logger.log(std::to_string(partsVolume));
         logger.log(std::to_string(newVolume));
         logger.log(std::to_string(partsVolume/newVolume));
@@ -148,26 +146,26 @@ std::vector<Pattern> PatternMerger::generate_merged_pattern_with_check(const Mer
 std::vector<RotateOrientMatch> PatternMerger::matches_to_rotateOrientMatches(const std::vector<OrientMatch>& matches){
     std::vector<RotateOrientMatch> rotateOrientmatches;
     for(const auto& match:matches){
-        RotateOrientPair pair1=regularizeRotate(std::get<0>(match));
-        RotateOrientPair pair2=regularizeRotate(std::get<1>(match));
+        auto [left_rotate_method_1, left_rotate_method_2]=regularizeRotate(std::get<0>(match));
+        auto [right_rotate_method_1,right_rotate_method_2]=regularizeRotate(std::get<1>(match));
         int newSize=std::get<2>(match);
-        rotateOrientmatches.emplace_back(pair1.first,pair2.first,newSize);
-        rotateOrientmatches.emplace_back(pair1.first,pair2.second,newSize);
-        rotateOrientmatches.emplace_back(pair1.second,pair2.first,newSize);
-        rotateOrientmatches.emplace_back(pair1.second,pair2.second,newSize);
+        rotateOrientmatches.emplace_back(left_rotate_method_1,right_rotate_method_1,newSize);
+        rotateOrientmatches.emplace_back(left_rotate_method_1,right_rotate_method_2,newSize);
+        rotateOrientmatches.emplace_back(left_rotate_method_2,right_rotate_method_1,newSize);
+        rotateOrientmatches.emplace_back(left_rotate_method_2,right_rotate_method_2,newSize);
     }
     return rotateOrientmatches;
 }
 
 
-RotateOrientPair PatternMerger::regularizeRotate(Orient orient){
+RotateOrientPair PatternMerger::regularizeRotate(const Orient orient){
     switch (orient){
         case Orient::X:
-            return RotateOrientPair(RotateOrient::I,RotateOrient::X);
+            return {RotateOrient::I,RotateOrient::X};
         case Orient::Y:
-            return RotateOrientPair(RotateOrient::Z,RotateOrient::XY);
+            return {RotateOrient::Z,RotateOrient::XY};
         case Orient::Z:
-            return RotateOrientPair(RotateOrient::XZ,RotateOrient::Y);
+            return {RotateOrient::XZ,RotateOrient::Y};
         default:
             break;
     }
