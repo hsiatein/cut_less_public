@@ -1,8 +1,10 @@
 #include <pattern_selector.hpp>
 
-PatternSelector::PatternSelector(const Problem& problem):problem(problem),patterns_size(0){
+PatternSelector::PatternSelector(const Problem& problem,Timer timer):problem(problem),patterns_size(0),timer(timer){
     model.lp_.sense_ = ObjSense::kMinimize;
     model.lp_.a_matrix_.format_ = MatrixFormat::kColwise;
+    highs.setOptionValue("time_limit",timer.get_remain_time()/2000);
+    highs.setOptionValue("output_flag",INFO_HIGHS_INFO);
 }
 void PatternSelector::partsnum_register(const StagePatterns& patterns){
     partsnum_register(patterns,patterns.patterns.size()+1);
@@ -92,11 +94,8 @@ Scheme PatternSelector::select(){
     HighsStatus return_status;
     Scheme scheme;
     const HighsLp& lp = highs.getLp();
-    return_status = highs.setOptionValue("time_limit",2);
-    return_status = highs.setOptionValue("output_flag",INFO_HIGHS_INFO);
-    assert(return_status == HighsStatus::kOk);
     return_status = highs.run();
-    assert(return_status == HighsStatus::kOk);
+    // assert(return_status == HighsStatus::kOk);
     const HighsSolution& solution = highs.getSolution();
     std::vector<int> result;
     // for (int col = 0; col < lp.num_col_; col++) {

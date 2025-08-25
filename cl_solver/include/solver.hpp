@@ -15,9 +15,7 @@ public:
     Solution solve();
     Solutions solve_multi_solution_multi_thread();
     Solutions solve_multi_solution_single_thread();
-    Problem* problem;
-    
-    
+    Problem* problem;    
 
 private:
     

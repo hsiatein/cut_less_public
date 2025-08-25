@@ -16,7 +16,7 @@ struct PartsNumHasher {
 
 class PatternSelector{
 public:
-    PatternSelector(const Problem& problem);
+    PatternSelector(const Problem& problem,Timer timer);
     void partsnum_register(const StagePatterns& patterns,size_t max_stage);
     void partsnum_register(const StagePatterns& patterns);
     json to_json() const;
@@ -31,5 +31,6 @@ private:
     std::unordered_map<PartsNum,std::vector<StageLocation>,PartsNumHasher> partsnum_of_patterns;
     HighsModel model;
     Highs highs;
+    Timer timer;
 };
 

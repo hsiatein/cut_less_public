@@ -5,6 +5,7 @@
 
 
 int main(int argc, char** argv) {
+    Timer timer;
     Logger logger("main");
     Problem problem_obj=Problem::from_json("../assets/test_problem.json");
     Problem* problem=&problem_obj;  
@@ -13,7 +14,7 @@ int main(int argc, char** argv) {
     PatternMerger patternMerger(problem);
     StagePatterns patterns=patternMerger.generate_patterns();
 
-    PatternSelector patternSelector(*problem);
+    PatternSelector patternSelector(*problem,timer);
     patternSelector.partsnum_register(patterns);
     Scheme scheme=patternSelector.select();
 

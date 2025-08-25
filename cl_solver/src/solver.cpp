@@ -11,14 +11,15 @@ Solver::~Solver(){
 /// @brief 单线程求解
 /// @return CSP问题的解
 Solution Solver::solve(){
+    Timer timer;
     Solution result;
 
     PatternMerger patternMerger(problem);
     StagePatterns patterns=patternMerger.generate_patterns();
+    // time_limit=get_remain_time();
 
 
-
-    PatternSelector patternSelector(*problem);
+    PatternSelector patternSelector(*problem,timer);
     patternSelector.partsnum_register(patterns);
     Scheme scheme=patternSelector.select();
 
@@ -27,20 +28,23 @@ Solution Solver::solve(){
     Solution lns_solution(*problem,patterns,lns.get_best());
     result.merge(lns_solution);
 
+
+
     return result;
 }
 
 /// @brief 多线程求多个解
 /// @return CSP问题的多个解
 Solutions Solver::solve_multi_solution_multi_thread(){
+    Timer timer;
     Solutions result;
     PatternMerger patternMerger(problem);
     StagePatterns patterns=patternMerger.generate_patterns();
 
     size_t solutions_size=patterns.patterns.size()-1;
     result.solutions.resize(solutions_size);
-    auto select_and_lns=[this,&patterns,&result](size_t max_stage){
-        PatternSelector patternSelector(*problem);
+    auto select_and_lns=[this,&patterns,&result,&timer](size_t max_stage){
+        PatternSelector patternSelector(*problem,timer);
         patternSelector.partsnum_register(patterns,max_stage);
         Scheme scheme=patternSelector.select();
 
@@ -61,12 +65,13 @@ Solutions Solver::solve_multi_solution_multi_thread(){
 /// @brief 单线程求多个解
 /// @return CSP问题的多个解
 Solutions Solver::solve_multi_solution_single_thread(){
+    Timer timer;
     Solutions result;
     PatternMerger patternMerger(problem);
     StagePatterns patterns=patternMerger.generate_patterns();
 
     for(size_t max_stage=1;max_stage<patterns.patterns.size();max_stage++){
-        PatternSelector patternSelector(*problem);
+        PatternSelector patternSelector(*problem,timer);
         patternSelector.partsnum_register(patterns,max_stage);
         Scheme scheme=patternSelector.select();
 

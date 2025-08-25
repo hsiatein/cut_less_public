@@ -15,7 +15,6 @@ extern bool MERGE_SIZE_CHECK;
 
 extern double AVERAGE_CUT_PUNISH;
 
-extern int LNS_TIME;
 extern int PATTERN_BATCH_SIZE;
 extern int SHEET_BATCH_SIZE;
 extern int SHEET_DISCARD_PROB;

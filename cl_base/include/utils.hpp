@@ -48,6 +48,13 @@ enum class RotateOrient{
     XZ,
 };
 
+enum class Color{
+    GREEN,
+    YELLOW,
+    BLUE,
+    NONE,
+};
+
 using OrientPair=std::pair<Orient,Orient>;
 using OrientMatch=std::tuple<Orient,Orient,int>;
 using OrientMatchPair=std::pair<OrientMatch,OrientMatch>;
@@ -150,3 +157,53 @@ using Scheme=std::vector<PatternGroup>;
 using GroupNums=std::vector<GroupNum>;
 
 std::string to_string(Orient orient);
+
+struct Timer{
+public:
+    Timer();
+    bool is_overtime() const;
+    /// @brief 获取运行时间
+    /// @return 运行时间（ms）
+    double get_runtime() const;
+    /// @brief 获取剩余时间
+    /// @return 剩余时间（ms）
+    double get_remain_time() const;
+
+    /// @brief 根据颜色打印字符串
+    /// @param color 
+    /// @param str 要打印的字符串
+    template <typename... Args>
+    void print(Color color, const Args&... str) {
+        std::string color_str="\033[0m";
+        switch (color)
+        {
+        case Color::BLUE:
+            color_str="\033[34m";
+            break;
+        case Color::GREEN:
+            color_str="\033[32m";
+            break;
+        case Color::YELLOW:
+            color_str="\033[33m";
+            break;
+        default:
+            break;
+        }
+        std::cout << color_str;
+        print_str(str...);
+        std::cout << "\033[0m";
+    }
+private:
+    std::chrono::_V2::system_clock::time_point start;
+
+    template <typename T>
+    void print_str(const T& str) {
+        std::cout << str;
+    }
+
+    template <typename T, typename... Args>
+    void print_str(const T& first, const Args&... rest) {
+        std::cout << first;
+        print_str(rest...);
+    }
+};

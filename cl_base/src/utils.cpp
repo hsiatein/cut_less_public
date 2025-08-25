@@ -186,14 +186,13 @@ void read_config(std::string path){
 
     AVERAGE_CUT_PUNISH=config["AVERAGE_CUT_PUNISH"].get<double>();
 
-    LNS_TIME=config["LNS_TIME"].get<int>();
     SHEET_BATCH_SIZE=config["SHEET_BATCH_SIZE"].get<int>();
     SHEET_DISCARD_PROB=config["SHEET_DISCARD_PROB"].get<int>();
     BLINK_PROB=config["BLINK_PROB"].get<int>();
 
     DESTROY_RATE=config["DESTROY_RATE"].get<int>();
     CLOSE_SHEET_PROB=config["CLOSE_SHEET_PROB"].get<int>();
-    
+
     SOLUTION_GET_BEST_PROB=config["SOLUTION_GET_BEST_PROB"].get<int>();
     
     VISUALIZE=config["VISUALIZE"].get<bool>();
@@ -219,4 +218,20 @@ std::string to_string(Orient orient){
     default:
         return "NONE";
     }
+}
+
+Timer::Timer():start(std::chrono::high_resolution_clock::now()){
+}
+
+double Timer::get_runtime() const{
+    std::chrono::duration<double, std::milli> duration = std::chrono::high_resolution_clock::now() - start;
+    return duration.count();
+}
+
+bool Timer::is_overtime() const{
+    return get_runtime()>=TIME_LIMIT;
+}
+
+double Timer::get_remain_time() const{
+    return (double)TIME_LIMIT-get_runtime();
 }

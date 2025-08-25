@@ -65,7 +65,7 @@ void LNS::run(){
         Process process;
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> duration = end - start;
-        if(duration.count()>LNS_TIME) break;
+        if(duration.count()>TIME_LIMIT) break;
 
         recreate(process);
         if(history.empty() || greater(solution,history.back())){
