@@ -12,7 +12,7 @@ struct Node{
     size_t partTypeID;
     // PartType partType;
     std::vector<Node*> childs;
-    Node* parent;
+    // Node* parent;
     Orient next_cut_orient;
 
     // Node();
