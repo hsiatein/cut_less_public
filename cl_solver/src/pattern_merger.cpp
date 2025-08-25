@@ -97,7 +97,7 @@ std::vector<Pattern> PatternMerger::generate_merged_pattern(const Pattern& p1,co
         logger.log(std::to_string(partsVolume/newVolume));
         if(partsVolume/newVolume<UTILIZATION_RATE_LIMIT) continue;
         // 达到利用率界限的模式继续生成
-        Pattern cutLoss(pattern_left.problem,pattern_left.top->size[Orient::X].first,CUT_LOSS,pattern_left.top->size[Orient::Z].first,Orient::Y);
+        Pattern cutLoss(pattern_left.PROBLEM_STRUCT,pattern_left.top->size[Orient::X].first,CUT_LOSS,pattern_left.top->size[Orient::Z].first,Orient::Y);
         logger.log(pattern_left.to_string());
         logger.log(pattern_right.to_string());
         pattern_left.merge(cutLoss,Orient::Y);
@@ -133,7 +133,7 @@ std::vector<Pattern> PatternMerger::generate_merged_pattern_with_check(const Mer
         if(partsVolume/newVolume<UTILIZATION_RATE_LIMIT) continue;
         if(!mergeCheck.size_fit({std::get<2>(match),newSizeZ,pattern_left.top->size[Orient::Y].first+pattern_right.top->size[Orient::Y].first})) continue;
         // 达到利用率界限的模式继续生成
-        Pattern cutLoss(pattern_left.problem,pattern_left.top->size[Orient::X].first,CUT_LOSS,pattern_left.top->size[Orient::Z].first,Orient::Y);
+        Pattern cutLoss(pattern_left.PROBLEM_STRUCT,pattern_left.top->size[Orient::X].first,CUT_LOSS,pattern_left.top->size[Orient::Z].first,Orient::Y);
         logger.log(pattern_left.to_string());
         logger.log(pattern_right.to_string());
         pattern_left.merge(cutLoss,Orient::Y);

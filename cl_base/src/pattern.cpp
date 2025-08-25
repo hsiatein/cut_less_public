@@ -1,18 +1,18 @@
 #include <pattern.hpp>
 
-Pattern::Pattern():problem(nullptr),top(nullptr),level(0){
-
-}
+// Pattern::Pattern():problem(nullptr),PROBLEM_STRUCT(0),top(nullptr),level(0){
+//
+// }
 
 Pattern::~Pattern(){
-    if(top!=nullptr) delete top;
+    delete top;
 }
 
-Pattern::Pattern(Problem* problem,int width,int height,int thick,Orient next_cut_orient)
-:problem(problem),top(new Node(Size({width,height,thick},{MAX_INT,MAX_INT,MAX_INT}),problem->get_node_status(problem->CUTLOSS),next_cut_orient)),level(0)
+Pattern::Pattern(size_t PROBLEM_STRUCT,int width,int height,int thick,Orient next_cut_orient)
+:PROBLEM_STRUCT(PROBLEM_STRUCT),top(new Node(Size({width,height,thick},{MAX_INT,MAX_INT,MAX_INT}),{NodeType::CUTLOSS,PROBLEM_STRUCT+1},next_cut_orient)),level(0)
 {
     top->size.set(next_cut_orient,{top->size[next_cut_orient].first,0});
-    partsNum[problem->CUTLOSS]=1;
+    partsNum[PROBLEM_STRUCT+1]=1;
 }
 
 
@@ -21,25 +21,29 @@ Pattern::Pattern(Problem* problem,int width,int height,int thick,Orient next_cut
 //     partsNum[partType.id]=1;
 // }
 
-Pattern::Pattern(Problem* problem,const PartType& partType, const int level):problem(problem),top(new Node(partType,{REMAIN[level],REMAIN[level],REMAIN[level]})),level(level){
+Pattern::Pattern(const Problem* problem,const PartType& partType, const int level)
+:PROBLEM_STRUCT(problem->STRUCT),top(new Node(partType,{REMAIN[level],REMAIN[level],REMAIN[level]})),level(level){
     partsNum[partType.id]=1;
 }
 
-Pattern::Pattern(Problem* problem,const Size& size,Orient next_cut_orient,const int level):problem(problem),top(new Node(Size(size.size,{MAX_INT,MAX_INT,MAX_INT}),problem->get_node_status(problem->STRUCT),next_cut_orient)),level(level){
+Pattern::Pattern(size_t PROBLEM_STRUCT,const Size& size,Orient next_cut_orient,const int level)
+:PROBLEM_STRUCT(PROBLEM_STRUCT),top(new Node(Size(size.size,{MAX_INT,MAX_INT,MAX_INT}),{NodeType::STRUCT,PROBLEM_STRUCT},next_cut_orient)),level(level){
 
 }
 
-Pattern::Pattern(const Pattern& pattern,RotateOrient rotateOrient):problem(pattern.problem),top(new Node(*(pattern.top))),partsNum(pattern.partsNum),level(pattern.level){
+Pattern::Pattern(const Pattern& pattern,RotateOrient rotateOrient)
+:PROBLEM_STRUCT(pattern.PROBLEM_STRUCT),top(new Node(*(pattern.top))),partsNum(pattern.partsNum),level(pattern.level){
     top->rotate(rotateOrient);
 }
 
-Pattern::Pattern(const Pattern& pattern):problem(pattern.problem),top(new Node(*(pattern.top))),partsNum(pattern.partsNum),level(pattern.level){
+Pattern::Pattern(const Pattern& pattern)
+:PROBLEM_STRUCT(pattern.PROBLEM_STRUCT),top(new Node(*(pattern.top))),partsNum(pattern.partsNum),level(pattern.level){
 
 }
 
 Pattern& Pattern::operator=(const Pattern& other) {
     if (this != &other) {
-        problem=other.problem;
+        PROBLEM_STRUCT=other.PROBLEM_STRUCT;
         top=new Node(*(other.top));
         partsNum=other.partsNum;
         level=other.level;
@@ -47,9 +51,9 @@ Pattern& Pattern::operator=(const Pattern& other) {
     return *this;
 }
 
-Pattern::Pattern(Pattern&& pattern):problem(pattern.problem),top(pattern.top),partsNum(std::move(pattern.partsNum)),level(pattern.level){
-    pattern.top=nullptr;
-}
+// Pattern::Pattern(Pattern&& pattern):problem(pattern.problem),top(pattern.top),partsNum(std::move(pattern.partsNum)),level(pattern.level){
+//     pattern.top=nullptr;
+// }
 
 std::optional<int> Pattern::match(const Pattern& other, const Orient left, const Orient right) const{
     const std::pair<int,int> leftSize = top->size[left];
@@ -93,7 +97,7 @@ std::vector<OrientMatchPair> Pattern::collect_match_2D(const Pattern& other,cons
 void Pattern::merge(Pattern& other,Orient orient){
     //logger.log_json("merge_other",other.top->to_json());
     Size newSize=merge_size(*this,other,orient);
-    Node* newTop=new Node(newSize,problem->get_node_status(problem->STRUCT),orient);
+    Node* newTop=new Node(newSize,{NodeType::STRUCT,-1},orient);
     newTop->addChild(this->top);
     newTop->addChild(other.top);
     this->top=newTop;
@@ -203,13 +207,13 @@ void Pattern::resize_or_merge(Orient orient,int newSize){
     resize(orient,top->size[orient].first+top->size[orient].second);
     Size size=top->size;
     size.set(orient,{CUT_LOSS,0});
-    Pattern cutLoss(problem,size.size[0],size.size[1],size.size[2],orient);
+    Pattern cutLoss(PROBLEM_STRUCT,size.size[0],size.size[1],size.size[2],orient);
     // logger.log_json("resize_or_merge",cutLoss.top->to_json());
     // std::cout<<1<<std::endl;
     merge(cutLoss,orient);
     size.set(orient,{newStructSize,0});
-    Pattern newStruct(problem,size,orient,level);
-    newStruct.partsNum[problem->STRUCT]=1;
+    Pattern newStruct(PROBLEM_STRUCT,size,orient,level);
+    newStruct.partsNum[PROBLEM_STRUCT]=1;
     merge(newStruct,orient);
 }
 

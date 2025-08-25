@@ -5,19 +5,20 @@
 struct Pattern
 {
 public:
-    Problem* problem;
+    // Problem* problem;
+    size_t PROBLEM_STRUCT;
     Node* top;
     PartsNum partsNum;
     int level;
 
-    Pattern();
-    Pattern(Problem* problem,int width,int height,int thick,Orient next_cut_orient);
+    // Pattern();
+    Pattern(size_t PROBLEM_STRUCT,int width,int height,int thick,Orient next_cut_orient);
     // Pattern(Problem* problem,const PartType& partType);
-    Pattern(Problem* problem,const Size& size,Orient next_cut_orientconst,int level);
-    Pattern(Problem* problem,const PartType& partType,int level);
+    Pattern(size_t PROBLEM_STRUCT,const Size& size,Orient next_cut_orientconst,int level);
+    Pattern(const Problem* problem,const PartType& partType,int level);
     Pattern(const Pattern& pattern,RotateOrient rotateOrient);
     Pattern(const Pattern& pattern);
-    Pattern(Pattern&& pattern);
+    // Pattern(Pattern&& pattern);
     ~Pattern();
     // void refresh();
     std::optional<int> match(const Pattern& other, Orient left, Orient right) const;
