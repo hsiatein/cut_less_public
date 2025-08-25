@@ -6,8 +6,10 @@ struct Solution
 {
     std::vector<Node*> solution;
     std::map<Node*,SheetType> sheets;
+    Solution();
     Solution(const Problem& problem,const StagePatterns& patterns,const PatternSolution& p_solution);
     Solution(const Solution& other);
+    void merge(Solution& other);
     ~Solution();
     json to_json() const;
 };

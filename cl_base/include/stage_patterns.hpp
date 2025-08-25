@@ -2,7 +2,7 @@
 #include <pattern_solution.hpp>
 
 
-
+/// @brief 按照stage存储模式的数据结构，key为stage，值为该stage下模式的列表
 struct StagePatterns{
     Problem* problem;
     std::map<size_t,std::vector<Pattern>> patterns;

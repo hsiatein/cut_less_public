@@ -1,5 +1,9 @@
 #include <solution.hpp>
 
+Solution::Solution(){
+    
+}
+
 Solution::Solution(const Problem& problem,const StagePatterns& patterns,const PatternSolution& p_solution){
     for(const auto blueprint:p_solution.blueprints){
         Node* node=patterns.to_node(blueprint->top);
@@ -14,6 +18,14 @@ Solution::Solution(const Solution& other){
         solution.push_back(node);
         sheets[node]=other.sheets.at(other_node);
     }
+}
+
+void Solution::merge(Solution& other){
+    for(Node* other_node:other.solution){
+        solution.push_back(other_node);
+        sheets[other_node]=other.sheets.at(other_node);
+    }
+    other.solution.clear();
 }
 
 Solution::~Solution(){

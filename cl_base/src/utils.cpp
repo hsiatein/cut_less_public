@@ -178,18 +178,24 @@ void read_config(std::string path){
         TEMP_REMAIN.push_back(remain.get<int>());
     }
     REMAIN=TEMP_REMAIN;
+    randomEngine.set_seed(config["RANDOM_SEED"].get<int>());
     
     MAX_STAGE=config["MAX_STAGE"].get<int>();
     UTILIZATION_RATE_LIMIT=config["UTILIZATION_RATE_LIMIT"].get<double>();
-    randomEngine.set_seed(config["RANDOM_SEED"].get<int>());
+    MERGE_SIZE_CHECK=config["MERGE_SIZE_CHECK"].get<bool>();
+
+    AVERAGE_CUT_PUNISH=config["AVERAGE_CUT_PUNISH"].get<double>();
+
+    LNS_TIME=config["LNS_TIME"].get<int>();
     SHEET_BATCH_SIZE=config["SHEET_BATCH_SIZE"].get<int>();
     SHEET_DISCARD_PROB=config["SHEET_DISCARD_PROB"].get<int>();
-    LNS_TIME=config["LNS_TIME"].get<int>();
-    DESTROY_RATE=config["DESTROY_RATE"].get<int>();
     BLINK_PROB=config["BLINK_PROB"].get<int>();
+
+    DESTROY_RATE=config["DESTROY_RATE"].get<int>();
     CLOSE_SHEET_PROB=config["CLOSE_SHEET_PROB"].get<int>();
+    
     SOLUTION_GET_BEST_PROB=config["SOLUTION_GET_BEST_PROB"].get<int>();
-    AVERAGE_CUT_PUNISH=config["AVERAGE_CUT_PUNISH"].get<double>();
+    
     VISUALIZE=config["VISUALIZE"].get<bool>();
     logger.enable=config["RUNTIME_LOG"].get<bool>();
     std::filesystem::path dir = OUTPUT_DIR;

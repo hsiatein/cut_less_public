@@ -8,9 +8,15 @@ Solver::Solver(Problem* problem):problem(problem){
 Solver::~Solver(){
 }
 
+/// @brief 单线程求解
+/// @return CSP问题的解
 Solution Solver::solve(){
+    Solution result;
+
     PatternMerger patternMerger(problem);
     StagePatterns patterns=patternMerger.generate_patterns();
+
+
 
     PatternSelector patternSelector(*problem);
     patternSelector.partsnum_register(patterns);
@@ -18,10 +24,14 @@ Solution Solver::solve(){
 
     LNS lns(problem,scheme,patterns);
     lns.run();
+    Solution lns_solution(*problem,patterns,lns.get_best());
+    result.merge(lns_solution);
 
-    return Solution(*problem,patterns,lns.get_best());
+    return result;
 }
 
+/// @brief 多线程求多个解
+/// @return CSP问题的多个解
 Solutions Solver::solve_multi_solution_multi_thread(){
     Solutions result;
     PatternMerger patternMerger(problem);
@@ -48,6 +58,8 @@ Solutions Solver::solve_multi_solution_multi_thread(){
     return result;
 }
 
+/// @brief 单线程求多个解
+/// @return CSP问题的多个解
 Solutions Solver::solve_multi_solution_single_thread(){
     Solutions result;
     PatternMerger patternMerger(problem);
