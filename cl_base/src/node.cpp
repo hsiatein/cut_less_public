@@ -140,21 +140,21 @@ void Node::rotate(RotateOrient rotateOrient){
     }
 }
 
-PartsNum Node::count(){
-    std::deque<Node*> openList;
-    PartsNum result;
-    openList.push_back(this);
-    while(!openList.empty()){
-        Node* u=openList[0];
-        openList.pop_front();
-        for(Node* v:u->childs){
-            openList.push_back(v);
-        }
-        if(u->partTypeID==problem->STRUCT && !u->childs.empty()) continue;
-        result[u->partTypeID]++;
-    }
-    return result;
-}
+// PartsNum Node::count(){
+//     std::deque<Node*> openList;
+//     PartsNum result;
+//     openList.push_back(this);
+//     while(!openList.empty()){
+//         Node* u=openList[0];
+//         openList.pop_front();
+//         for(Node* v:u->childs){
+//             openList.push_back(v);
+//         }
+//         if(u->partTypeID==problem->STRUCT && !u->childs.empty()) continue;
+//         result[u->partTypeID]++;
+//     }
+//     return result;
+// }
 
 NodeType Node::getType() const{
     if(partTypeID==problem->STRUCT){

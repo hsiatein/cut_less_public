@@ -170,10 +170,10 @@ Size Pattern::merge_size(const Pattern& p1,const Pattern& p2,const Orient orient
     return Size(size,remain);
 }
 
-void Pattern::refresh(){
-    partsNum=top->count();
+// void Pattern::refresh(){
+//     partsNum=top->count();
 
-}
+// }
 
 bool Pattern::resize(Orient orient,int newSize){
     int increment=newSize-top->size[orient].first;

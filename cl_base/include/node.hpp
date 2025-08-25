@@ -37,7 +37,7 @@ struct Node{
     void resize_force(Orient orient,int increment);
     std::vector<int> distribute(int num);
     NodeType getType() const;
-    PartsNum count();
+    // PartsNum count();
     // only rotate itself
     void rotate(RotateOrient rotateOrient);
     json to_json() const;

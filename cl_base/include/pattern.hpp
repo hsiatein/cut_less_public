@@ -19,7 +19,7 @@ public:
     Pattern(const Pattern& pattern);
     Pattern(Pattern&& pattern);
     ~Pattern();
-    void refresh();
+    // void refresh();
     std::optional<int> match(const Pattern& other, const Orient left, const Orient right) const;
     std::vector<OrientMatch> collect_match_1D(const Pattern& other) const;
     std::vector<OrientMatchPair> collect_match_2D(const Pattern& other,const std::vector<OrientMatch>& match) const;
