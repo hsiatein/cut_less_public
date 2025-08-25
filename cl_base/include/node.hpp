@@ -28,9 +28,9 @@ struct Node{
     /// @brief 添加子节点
     /// @param child 
     void addChild(Node* child);
-    void addChild(int width,int height,int thick,size_t partTypeID,Orient next_cut_orient);
-    void addChild(PartType partType);
-    void addChild(const Node& node);
+    // void addChild(int width,int height,int thick,size_t partTypeID,Orient next_cut_orient);
+    // void addChild(PartType partType);
+    // void addChild(const Node& node);
     bool containChild(const Node* child);
     void deleteChild(Node* child);
     void liftChild(Node* child);

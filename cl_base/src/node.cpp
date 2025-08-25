@@ -83,20 +83,20 @@ void Node::addChild(Node* child){
     }
 }
 
-void Node::addChild(int width,int height,int thick,size_t partTypeID,Orient next_cut_orient){
-    Node* child=new Node(problem,width,height,thick,partTypeID,nullptr,next_cut_orient);
-    addChild(child);
-}
+// void Node::addChild(int width,int height,int thick,size_t partTypeID,Orient next_cut_orient){
+//     Node* child=new Node(problem,width,height,thick,partTypeID,nullptr,next_cut_orient);
+//     addChild(child);
+// }
 
-void Node::addChild(PartType partType){
-    Node* child=new Node(problem,partType);
-    addChild(child);
-}
+// void Node::addChild(PartType partType){
+//     Node* child=new Node(problem,partType);
+//     addChild(child);
+// }
 
-void Node::addChild(const Node& node){
-    Node* child=new Node(node);
-    addChild(child);
-}
+// void Node::addChild(const Node& node){
+//     Node* child=new Node(node);
+//     addChild(child);
+// }
 
 void Node::liftChild(Node* child){
     for(auto want_to_lift:child->childs){
