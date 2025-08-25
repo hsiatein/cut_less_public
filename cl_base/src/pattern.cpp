@@ -9,23 +9,23 @@ Pattern::~Pattern(){
 }
 
 Pattern::Pattern(Problem* problem,int width,int height,int thick,Orient next_cut_orient)
-:problem(problem),top(new Node(problem,Size({width,height,thick},{MAX_INT,MAX_INT,MAX_INT}),problem->CUTLOSS,next_cut_orient)),level(0)
+:problem(problem),top(new Node(Size({width,height,thick},{MAX_INT,MAX_INT,MAX_INT}),problem->get_node_status(problem->CUTLOSS),next_cut_orient)),level(0)
 {
     top->size.set(next_cut_orient,{top->size[next_cut_orient].first,0});
     partsNum[problem->CUTLOSS]=1;
 }
 
 
-Pattern::Pattern(Problem* problem,const PartType& partType):problem(problem),top(new Node(problem,partType)),level(0)
-{
+// Pattern::Pattern(Problem* problem,const PartType& partType):problem(problem),top(new Node(problem,partType)),level(0)
+// {
+//     partsNum[partType.id]=1;
+// }
+
+Pattern::Pattern(Problem* problem,const PartType& partType, const int level):problem(problem),top(new Node(partType,{REMAIN[level],REMAIN[level],REMAIN[level]})),level(level){
     partsNum[partType.id]=1;
 }
 
-Pattern::Pattern(Problem* problem,const PartType& partType,const int level):problem(problem),top(new Node(problem,partType,{REMAIN[level],REMAIN[level],REMAIN[level]})),level(level){
-    partsNum[partType.id]=1;
-}
-
-Pattern::Pattern(Problem* problem,const Size& size,Orient next_cut_orient,const int level):problem(problem),top(new Node(problem,Size(size.size,{MAX_INT,MAX_INT,MAX_INT}),problem->STRUCT,next_cut_orient)),level(level){
+Pattern::Pattern(Problem* problem,const Size& size,Orient next_cut_orient,const int level):problem(problem),top(new Node(Size(size.size,{MAX_INT,MAX_INT,MAX_INT}),problem->get_node_status(problem->STRUCT),next_cut_orient)),level(level){
 
 }
 
@@ -93,7 +93,7 @@ std::vector<OrientMatchPair> Pattern::collect_match_2D(const Pattern& other,cons
 void Pattern::merge(Pattern& other,Orient orient){
     //logger.log_json("merge_other",other.top->to_json());
     Size newSize=merge_size(*this,other,orient);
-    Node* newTop=new Node(problem,newSize,problem->STRUCT,orient);
+    Node* newTop=new Node(newSize,problem->get_node_status(problem->STRUCT),orient);
     newTop->addChild(this->top);
     newTop->addChild(other.top);
     this->top=newTop;

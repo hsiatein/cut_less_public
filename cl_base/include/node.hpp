@@ -7,21 +7,22 @@
 
 
 struct Node{
-    Problem* problem;
+    // Problem* problem;
     Size size;
     size_t partTypeID;
-    // PartType partType;
+    NodeStatus status;
     std::vector<Node*> childs;
     // Node* parent;
     Orient next_cut_orient;
 
     // Node();
-    Node(Problem* problem,int width,int height,int thick,size_t partTypeID,Node* parent,Orient next_cut_orient);
-    Node(Problem* problem,int width,int height,int thick,Orient next_cut_orient);
+    // Node(Problem* problem,int width,int height,int thick,size_t partTypeID,Orient next_cut_orient);
+    // Node(Problem* problem,int width,int height,int thick,Orient next_cut_orient);
     // Node(Problem* problem,int width,int height,int thick,Orient next_cut_orient,const Vec3i& remain);
-    Node(Problem* problem,const Size& size,int partTypeID,Orient next_cut_orient);
-    Node(Problem* problem,const PartType& partType);
-    Node(Problem* problem,const PartType& partType,const Vec3i& remain);
+    // Node(Problem* problem,const Size& size,int partTypeID,Orient next_cut_orient);
+    Node(const Size& size,NodeStatus status,Orient next_cut_orient);
+    // Node(Problem* problem,const PartType& partType);
+    Node(const PartType& partType,const Vec3i& remain);
     Node(const Node& node);
     // Node(Node&& other);
     ~Node();

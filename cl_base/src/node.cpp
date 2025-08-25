@@ -3,17 +3,17 @@
 // Node::Node():problem(nullptr),partTypeID(0),next_cut_orient(Orient::NONE){
 // }
 
-Node::Node(Problem* problem,int width,int height,int thick,size_t partTypeID,Node* parent,Orient next_cut_orient)
-:problem(problem),size({width,height,thick},REMAIN[0]),partTypeID(partTypeID),next_cut_orient(next_cut_orient)
-{
+// Node::Node(Problem* problem,int width,int height,int thick,size_t partTypeID,Orient next_cut_orient)
+// :problem(problem),size({width,height,thick},REMAIN[0]),partTypeID(partTypeID),next_cut_orient(next_cut_orient)
+// {
+//
+// }
 
-}
-
-Node::Node(Problem* problem,int width,int height,int thick,Orient next_cut_orient)
-:problem(problem),size({width,height,thick},{MAX_INT,MAX_INT,MAX_INT}),partTypeID(problem->CUTLOSS),next_cut_orient(next_cut_orient)
-{
-    size.set(next_cut_orient,{size[next_cut_orient].first,0});
-}
+// Node::Node(Problem* problem,int width,int height,int thick,Orient next_cut_orient)
+// :problem(problem),size({width,height,thick},{MAX_INT,MAX_INT,MAX_INT}),partTypeID(problem->CUTLOSS),status(NodeType::CUTLOSS,problem->CUTLOSS),next_cut_orient(next_cut_orient)
+// {
+//     size.set(next_cut_orient,{size[next_cut_orient].first,0});
+// }
 
 // Node::Node(Problem* problem,int width,int height,int thick,Orient next_cut_orient,const Vec3i& remain)
 // :problem(problem),size({width,height,thick},remain),partTypeID(problem->STRUCT),parent(nullptr),next_cut_orient(next_cut_orient)
@@ -21,24 +21,29 @@ Node::Node(Problem* problem,int width,int height,int thick,Orient next_cut_orien
 //
 // }
 
-Node::Node(Problem* problem,const Size& size,int partTypeID,Orient next_cut_orient)
-:problem(problem),size(size),partTypeID(partTypeID),next_cut_orient(next_cut_orient){
+// Node::Node(Problem* problem,const Size& size,int partTypeID,Orient next_cut_orient)
+// :problem(problem),size(size),partTypeID(partTypeID),status(NodeType::CUTLOSS,partTypeID),next_cut_orient(next_cut_orient){
+//
+// }
+
+Node::Node(const Size& size,NodeStatus status,Orient next_cut_orient)
+:size(size),partTypeID(status.second),status(status),next_cut_orient(next_cut_orient){
 
 }
 
-Node::Node(Problem* problem,const PartType& partType)
-:problem(problem),size(partType.size),partTypeID(partType.id),next_cut_orient(Orient::NONE)
-{
-    size.remain={REMAIN[0],REMAIN[0],REMAIN[0]};
-}
+// Node::Node(Problem* problem,const PartType& partType)
+// :problem(problem),size(partType.size),partTypeID(partType.id),next_cut_orient(Orient::NONE)
+// {
+//     size.remain={REMAIN[0],REMAIN[0],REMAIN[0]};
+// }
 
-Node::Node(Problem* problem,const PartType& partType,const Vec3i& remain)
-:problem(problem),size(partType.size.size,remain),partTypeID(partType.id),next_cut_orient(Orient::NONE)
+Node::Node(const PartType& partType,const Vec3i& remain)
+:size(partType.size.size,remain),partTypeID(partType.id),status(NodeType::PART,partTypeID),next_cut_orient(Orient::NONE)
 {
 }
 
 Node::Node(const Node& node)
-:problem(node.problem),size(node.size),partTypeID(node.partTypeID),next_cut_orient(node.next_cut_orient)
+:size(node.size),partTypeID(node.partTypeID),status(node.status),next_cut_orient(node.next_cut_orient)
 {
     for(Node* child:node.childs){
         Node* newChild=new Node(*child);
@@ -158,17 +163,12 @@ void Node::rotate(RotateOrient rotateOrient){
 // }
 
 NodeType Node::getType() const{
-    if(partTypeID==problem->STRUCT){
+    if(status.first==NodeType::STRUCT){
         if(childs.empty()) return NodeType::LEFTOVER;
-        else return NodeType::STRUCT;
+        return NodeType::STRUCT;
     }
-    else if(partTypeID==problem->CUTLOSS){
-        return NodeType::CUTLOSS;
-    }
-    else if(partTypeID<problem->STRUCT && partTypeID>=0){
-        return NodeType::PART;
-    }
-    else throw cleanAndError("Node::getType : ID错误");
+    return status.first;
+    // throw cleanAndError("Node::getType : ID错误");
 }
 
 json Node::to_json() const{

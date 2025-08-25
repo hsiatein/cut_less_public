@@ -30,6 +30,8 @@ enum class NodeType{
     CUTLOSS,
 };
 
+using NodeStatus=std::pair<NodeType,size_t>;
+
 enum class Orient{
     X,
     Y,

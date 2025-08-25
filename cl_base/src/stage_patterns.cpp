@@ -6,26 +6,25 @@ StagePatterns::StagePatterns(Problem* problem):problem(problem){
 
 Node* StagePatterns::to_node(const PatternNode* patternNode) const{
     if(patternNode->is_cutloss()){
-        return new Node(problem,patternNode->size.size[0],patternNode->size.size[1],patternNode->size.size[2],patternNode->next_cut_orient);
+        // return new Node(problem,patternNode->size.size[0],patternNode->size.size[1],patternNode->size.size[2],patternNode->next_cut_orient);
+        return new Node(Size({patternNode->size.size[0],patternNode->size.size[1],patternNode->size.size[2]}),{NodeType::CUTLOSS,problem->CUTLOSS},patternNode->next_cut_orient);
     }
-    else if (patternNode->is_struct())
+    if (patternNode->is_struct())
     {
-        Node* self=new Node(problem,patternNode->size,problem->STRUCT,patternNode->next_cut_orient);
+        Node* self=new Node(patternNode->size,problem->get_node_status(problem->STRUCT),patternNode->next_cut_orient);
         for(auto child:patternNode->childs){
             Node* child_node=to_node(child);
             self->addChild(child_node);
         }
         return self;
     }
-    else{
-        Pattern pattern(patterns.at(patternNode->stageLocation.first)[patternNode->stageLocation.second],patternNode->rotate);
-        pattern.resize_force(Orient::X,patternNode->size.size[0]);
-        pattern.resize_force(Orient::Y,patternNode->size.size[1]);
-        pattern.resize_force(Orient::Z,patternNode->size.size[2]);
-        Node* top=pattern.top;
-        pattern.top=nullptr;
-        return top;
-    }
+    Pattern pattern(patterns.at(patternNode->stageLocation.first)[patternNode->stageLocation.second],patternNode->rotate);
+    pattern.resize_force(Orient::X,patternNode->size.size[0]);
+    pattern.resize_force(Orient::Y,patternNode->size.size[1]);
+    pattern.resize_force(Orient::Z,patternNode->size.size[2]);
+    Node* top=pattern.top;
+    pattern.top=nullptr;
+    return top;
     
 }
 

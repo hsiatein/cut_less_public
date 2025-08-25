@@ -21,5 +21,14 @@ struct Problem{
     json to_json() const;
     json parts_to_json() const;
     json sheets_to_json() const;
+    inline NodeStatus get_node_status(size_t partTypeID) const {
+        if (partTypeID == STRUCT) {
+            return {NodeType::STRUCT,partTypeID};
+        }
+        if (partTypeID == CUTLOSS) {
+            return {NodeType::CUTLOSS,partTypeID};
+        }
+        return {NodeType::PART,partTypeID};
+    }
 };
 
