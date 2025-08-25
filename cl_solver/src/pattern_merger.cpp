@@ -1,6 +1,6 @@
 #include <pattern_merger.hpp>
 
-PatternMerger::PatternMerger(Problem* problem):problem(problem),mergeChecker(problem){
+PatternMerger::PatternMerger(Problem* problem):problem(problem),mergeChecker(this->problem){
 }
 
 /// @brief 模式生成

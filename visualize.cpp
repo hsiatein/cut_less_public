@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
     PatternMerger patternMerger(problem);
     StagePatterns patterns=patternMerger.generate_patterns();
 
-    PatternSelector patternSelector(problem);
+    PatternSelector patternSelector(*problem);
     patternSelector.partsnum_register(patterns);
     Scheme scheme=patternSelector.select();
 

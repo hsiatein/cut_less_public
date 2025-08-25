@@ -189,10 +189,16 @@ void read_config(std::string path){
     BLINK_PROB=config["BLINK_PROB"].get<int>();
     CLOSE_SHEET_PROB=config["CLOSE_SHEET_PROB"].get<int>();
     SOLUTION_GET_BEST_PROB=config["SOLUTION_GET_BEST_PROB"].get<int>();
-
+    AVERAGE_CUT_PUNISH=config["AVERAGE_CUT_PUNISH"].get<double>();
+    VISUALIZE=config["VISUALIZE"].get<bool>();
+    logger.enable=config["RUNTIME_LOG"].get<bool>();
     std::filesystem::path dir = OUTPUT_DIR;
     if (!std::filesystem::exists(dir)) std::filesystem::create_directory(dir);
     // OUTPUT_DIR=config["output_dir"];
+    auto info=config["INFO"];
+    INFO_OPERATION=info["OPERATION"].get<bool>();
+    INFO_HIGHS_INFO=info["HIGHS_INFO"].get<bool>();
+    INFO_SELECT_RESULT=info["SELECT_RESULT"].get<bool>();
 }
 
 std::string to_string(Orient orient){

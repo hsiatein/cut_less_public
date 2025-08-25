@@ -11,5 +11,13 @@
     "DESTROY_RATE":80,
     "BLINK_PROB":10,
     "SOLUTION_GET_BEST_PROB":50,
-    "CLOSE_SHEET_PROB":80
+    "CLOSE_SHEET_PROB":80,
+    "AVERAGE_CUT_PUNISH":2.0,
+    "VISUALIZE":false,
+    "RUNTIME_LOG":false,
+    "INFO":{
+        "OPERATION":false,
+        "HIGHS_INFO":false,
+        "SELECT_RESULT":true
+    }
 }

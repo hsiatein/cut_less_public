@@ -9,6 +9,7 @@ struct PatternMerger
     Problem* problem;
     MergeChecker mergeChecker;
     PatternMerger(Problem* problem);
+    PatternMerger(Problem* problem,MergeChecker mergeChecker);
     // inline Pattern& get_pattern(StageLocation location){
     //     return patterns[location.first][location.second];
     // }

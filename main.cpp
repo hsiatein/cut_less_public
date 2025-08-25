@@ -32,9 +32,11 @@ int main(int argc, char *argv[]){
     logger.log_json("solution",solution.to_json());
 
     // 可视化
-    Visualizer::init();
-    Visualizer::from_solution(solution);
-    Visualizer::show();
+    if(VISUALIZE){
+        Visualizer::init();
+        Visualizer::from_solution(solution);
+        Visualizer::show();
+    }
 
     return 0;
 }
