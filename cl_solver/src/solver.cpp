@@ -12,6 +12,7 @@ Solver::~Solver(){
 /// @return CSP问题的解
 Solution Solver::solve(){
     Timer timer;
+    timer.print(Color::YELLOW,"[start solving]\n");
     Solution result;
 
     PatternMerger patternMerger(problem,timer);
@@ -23,13 +24,12 @@ Solution Solver::solve(){
     patternSelector.partsnum_register(patterns);
     Scheme scheme=patternSelector.select();
 
-    LNS lns(problem,scheme,patterns);
+    LNS lns(problem,scheme,patterns,timer);
     lns.run();
     Solution lns_solution(*problem,patterns,lns.get_best());
     result.merge(lns_solution);
 
-
-
+    timer.print(Color::YELLOW,"[Execution time: ",timer.get_runtime()," ms]\n");
     return result;
 }
 
@@ -48,7 +48,7 @@ Solutions Solver::solve_multi_solution_multi_thread(){
         patternSelector.partsnum_register(patterns,max_stage);
         Scheme scheme=patternSelector.select();
 
-        LNS lns(problem,scheme,patterns);
+        LNS lns(problem,scheme,patterns,timer);
         lns.run();
         result.solutions[max_stage-1]=new Solution(*problem,patterns,lns.get_best());
     };
@@ -75,7 +75,7 @@ Solutions Solver::solve_multi_solution_single_thread(){
         patternSelector.partsnum_register(patterns,max_stage);
         Scheme scheme=patternSelector.select();
 
-        LNS lns(problem,scheme,patterns);
+        LNS lns(problem,scheme,patterns,timer);
         lns.run();
         result.push(new Solution(*problem,patterns,lns.get_best()));
         // logger.log_json("test"+std::to_string(max_stage),result.back().to_json());

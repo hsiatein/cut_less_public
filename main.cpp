@@ -4,7 +4,6 @@
 
 
 int main(int argc, char *argv[]){
-    std::cout << "Begin" << std::endl;
     // 初始化CLI
     argparse::ArgumentParser program("cut_less", "0.1.0");
     program.add_argument("-p", "--problem").help("转换成json格式的问题").default_value("../assets/test_problem.json");
@@ -17,15 +16,9 @@ int main(int argc, char *argv[]){
     if(config_path!="") read_config(config_path);
     Problem problem=Problem::from_json(problem_path);
 
-    // 求解 & 计时
-    auto start = std::chrono::high_resolution_clock::now();
-
+    // 求解
     Solver solver(&problem);
     Solution solution=solver.solve();
-
-    auto end = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double, std::milli> duration = end - start;
-    std::cout << std::fixed <<"\033[33m"<< "[Execution time: " << duration.count() << " ms]\033[0m" << std::endl;
 
     // 保存解为json
     Logger logger("main");

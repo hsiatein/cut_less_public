@@ -3,7 +3,7 @@
 const std::array<RotateOrient,6> LNS::rotates={RotateOrient::I,RotateOrient::X,RotateOrient::Y,RotateOrient::Z,RotateOrient::XY,RotateOrient::XZ};
 
 
-LNS::LNS(const Problem* problem,Scheme scheme,const StagePatterns& patterns):lastProcess(nullptr),scheme(scheme),problem(problem),sheetsNum(problem->sheetsNum),solution(new PatternSolution(scheme)),patterns(patterns){
+LNS::LNS(const Problem* problem,Scheme scheme,const StagePatterns& patterns,Timer timer):lastProcess(nullptr),scheme(scheme),problem(problem),sheetsNum(problem->sheetsNum),solution(new PatternSolution(scheme)),patterns(patterns),timer(timer){
 
 }
 
@@ -61,27 +61,26 @@ void LNS::replace_solution(){
 void LNS::run(){
     int n=0;
     std::chrono::time_point start = std::chrono::high_resolution_clock::now();
-    while(true && n<1000000){
+    while(!timer.is_overtime()){
         Process process;
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> duration = end - start;
         if(duration.count()>TIME_LIMIT) break;
 
         recreate(process);
+
         if(history.empty() || greater(solution,history.back())){
             replace_best();
-            std::cout<<"\033[32m["<< std::fixed << std::setprecision(3)<<duration.count()<<" ms]\033[0m\n"
-            <<"\033[34mtotal volume: "<<std::defaultfloat<<history.back()->get_volume()*1e-12<<"\033[0m\n"
-            <<"\033[34mtotal cuts: "<<cal_cutnum(history.back())<<"\033[0m"<<std::endl;
+            timer.print_time(Color::GREEN);
+            timer.print(Color::BLUE,"\ntotal volume: ",history.back()->get_volume()*1e-12,"\ntotal cuts: ",cal_cutnum(history.back()),"\n");
+
             if(lastProcess!=nullptr) delete lastProcess;
             lastProcess=new Process(process);
             if(INFO_OPERATION){
-                std::cout<< "\033[36m";
-                std::cout<< "Process:\n";
+                timer.print(Color::RED,"Process:\n");
                 for(size_t i=0;i<lastProcess->operations.size();i++){
-                    lastProcess->print_operation(i);
+                    lastProcess->print_operation(i,timer);
                 }
-                std::cout<< "\033[0m";
             }
             // for(auto solution:lastProcess->history){
             //     std::cout<<"remain num: "<<solution->remain_groups()<<std::endl;
@@ -125,7 +124,7 @@ void LNS::ruin_all(){
 
 void LNS::recreate(Process& process){
     // std::cout<<"sheet num: "<<solution->blueprints.size()<<std::endl;
-    while(true){
+    while(!timer.is_overtime()){
         // 选择一批模式
         auto [groupID,group]=get_next_group();
         if(group.empty()) break;
@@ -140,50 +139,40 @@ void LNS::recreate(Process& process){
         }
 
         // 当前使用的母板找不到选项时使用新母板
-        
+        std::vector<Blueprint*> blueprints;
         if(options.empty()){
-            std::vector<Blueprint*> blueprints=open_sheets(batch_patterns);
+            blueprints=open_sheets(batch_patterns);
             for(auto [stageLocation,size]:batch_patterns){
                 std::vector<Option> tempOptions=generate_options(groupID,stageLocation,size,blueprints);
                 // std::cout<<tempOptions.size()<<std::endl;
                 options.insert(options.end(),tempOptions.begin(),tempOptions.end());
             }
-            Option bestOption=select_option(options);
-            insert(bestOption);
-            auto keeped=keep_nonempty_sheets(blueprints);
-            solution->blueprints.insert(solution->blueprints.end(),keeped.begin(),keeped.end());
-
-            // std::cout<<"placed num: "<<solution->placed_pattern()<<std::endl;
-            if(INFO_OPERATION){
-                process.log_operation(bestOption);
-                std::vector<Option> record;
-                for(auto op:options){
-                    if(std::get<0>(op)!=std::get<0>(bestOption) || std::get<1>(op)!=std::get<1>(bestOption)) continue;
-                    record.push_back(op);
-                }
-                process.log_options(record);
-            }
-            process.log_solution(solution);
-        }
-        else{
-            Option bestOption=select_option(options);
-            insert(bestOption);
-
-            // std::cout<<"placed num: "<<solution->placed_pattern()<<std::endl;
-            if(INFO_OPERATION){
-                process.log_operation(bestOption);
-                std::vector<Option> record;
-                for(auto op:options){
-                    if(std::get<0>(op)!=std::get<0>(bestOption) || std::get<1>(op)!=std::get<1>(bestOption)) continue;
-                    record.push_back(op);
-                }
-                process.log_options(record);
-            }
-            process.log_solution(solution);
         }
         // std::cout<<"remain num: "<<process.history.back()->remain_groups()<<std::endl;
         // std::cout<<"placed num: "<<process.history.back()->placed_pattern()<<std::endl;
 
+        // 获得一个选项，插入
+        if(options.empty()) break;
+        Option bestOption=select_option(options);
+        insert(bestOption);
+
+        // 关闭没有使用的原料，把使用了的原料加入solution
+        if(blueprints.size()>0){
+            auto keeped=keep_nonempty_sheets(blueprints);
+            solution->blueprints.insert(solution->blueprints.end(),keeped.begin(),keeped.end());
+        }
+
+        // 记录过程
+        if(INFO_OPERATION){
+            process.log_operation(bestOption);
+            std::vector<Option> record;
+            for(auto op:options){
+                if(std::get<0>(op)!=std::get<0>(bestOption) || std::get<1>(op)!=std::get<1>(bestOption)) continue;
+                record.push_back(op);
+            }
+            process.log_options(record);
+        }
+        process.log_solution(solution);
     }
     // for(auto solution:process.history){
     //     std::cout<<"placed num: "<<solution->placed_pattern()<<std::endl;
@@ -385,17 +374,6 @@ DeleteOption LNS::select_delete_option(const std::vector<DeleteOption>& options)
     return best;
 }
 
-PatternSolution& LNS::get_solution() const{
-    return *solution;
-}
-
-PatternSolution& LNS::get_best() const{
-    return *history.back();
-}
-
-std::vector<PatternSolution*>& LNS::get_history(){
-    return history;
-}
 
 // Node* LNS::to_node(const PatternNode* patternNode) const{
 //     if(patternNode->is_cutloss()){

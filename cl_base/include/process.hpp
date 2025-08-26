@@ -11,5 +11,5 @@ struct Process{
     void log_solution(PatternSolution* solution);
     void log_operation(Option option);
     void log_options(std::vector<Option> options);
-    void print_operation(size_t i) const;
+    void print_operation(size_t i,const Timer& timer) const;
 };

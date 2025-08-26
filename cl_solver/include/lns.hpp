@@ -12,7 +12,7 @@ using DeleteOption=std::tuple<Blueprint*,PatternNode*,double>;
 
 class LNS{
 public:
-    LNS(const Problem* problem,Scheme scheme,const StagePatterns& patterns);
+    LNS(const Problem* problem,Scheme scheme,const StagePatterns& patterns,Timer timer);
     ~LNS();
     void run();
     
@@ -39,9 +39,17 @@ public:
     void close_sheets();
 
 
-    PatternSolution& get_solution() const;
-    PatternSolution& get_best() const;
-    History& get_history();
+    inline PatternSolution& get_solution() const{
+        return *solution;
+    }
+    
+    inline PatternSolution& get_best() const{
+        return *history.back();
+    }
+
+    inline History& get_history(){
+        return history;
+    }
     // Node* to_node(const PatternNode* patternNode) const;
     // json to_json(const PatternNode* patternNode);
     // json to_json(const Blueprint* blueprint);
@@ -62,4 +70,5 @@ private:
     History history;
     const StagePatterns& patterns;
     const static std::array<RotateOrient,6> rotates;
+    Timer timer;
 };

@@ -52,6 +52,9 @@ enum class Color{
     GREEN,
     YELLOW,
     BLUE,
+    PURPLE,
+    CYAN,
+    RED,
     NONE,
 };
 
@@ -164,7 +167,7 @@ public:
     /// @brief 检查是否超时
     /// @param limit 时间限制
     /// @return 是否超时
-    inline bool is_overtime(double limit) const{
+    inline bool is_overtime(double limit=TIME_LIMIT) const{
         return get_runtime()>=limit;
     }
 
@@ -197,6 +200,15 @@ public:
             break;
         case Color::YELLOW:
             color_str="\033[33m";
+            break;
+        case Color::PURPLE:
+            color_str="\033[35m";
+            break;
+        case Color::CYAN:
+            color_str="\033[36m";
+            break;
+        case Color::RED:
+            color_str="\033[31m";
             break;
         default:
             break;

@@ -51,7 +51,7 @@ std::string to_string(const Option& op){
 }
 
 std::string to_string(const RecordOption& op){
-    std::string result="Sheet: "+std::to_string(std::get<0>(op))+", Space: "+std::get<1>(op).to_string()+"\nGroupID: "+std::to_string(std::get<2>(op))+", Size: "+std::get<3>(op).to_string()+"\nCut Orient: ";
+    std::string result="Sheet: "+std::to_string(std::get<0>(op))+", Space: "+std::get<1>(op).size_to_json().dump()+"\nGroupID: "+std::to_string(std::get<2>(op))+", Size: "+std::get<3>(op).to_string()+"\nCut Orient: ";
     for(auto o:std::get<4>(op)){
         result+=to_string(o)+" ";
     }

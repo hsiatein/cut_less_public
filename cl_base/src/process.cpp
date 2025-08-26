@@ -33,13 +33,12 @@ void Process::log_options(std::vector<Option> options){
 }
 
 
-void Process::print_operation(size_t i) const{
-    std::cout<<"Operation: "<<i<<"\n";
-    std::cout<<"Selected:"<<"\n";
-    std::cout<<to_string(operations[i])<<"\n";
-    std::cout<<"Candidates:"<<"\n";
+void Process::print_operation(size_t i,const Timer& timer) const{
+    timer.print(Color::PURPLE,"Operation: ",i,"\n");
+    timer.print(Color::BLUE,"Selected:\n");
+    timer.print(Color::CYAN,to_string(operations[i]),"\n");
+    timer.print(Color::BLUE,"Candidates:\n");
     for(const auto& cand:all_options[i]){
-        std::cout<<to_string(cand)<<"\n";
+        timer.print(Color::CYAN,to_string(cand),"\n");
     }
-    std::cout<<std::endl;
 }

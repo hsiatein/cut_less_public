@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
     patternSelector.partsnum_register(patterns);
     Scheme scheme=patternSelector.select();
 
-    LNS lns(problem,scheme,patterns);
+    LNS lns(problem,scheme,patterns,timer);
     lns.run();
     logger.log_json("testLNSjson",patterns.to_json(lns.get_history().back()));
     auto end = std::chrono::high_resolution_clock::now();
