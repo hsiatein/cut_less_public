@@ -16,8 +16,9 @@
     "VISUALIZE":false,
     "RUNTIME_LOG":false,
     "INFO":{
-        "OPERATION":false,
-        "HIGHS_INFO":true,
-        "SELECT_RESULT":false
+        "GENERATE_RESULT":false,
+        "HIGHS_INFO":false,
+        "SELECT_RESULT":false,
+        "OPERATION":false
     }
 }

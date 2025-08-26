@@ -14,7 +14,7 @@ Solution Solver::solve(){
     Timer timer;
     Solution result;
 
-    PatternMerger patternMerger(problem);
+    PatternMerger patternMerger(problem,timer);
     StagePatterns patterns=patternMerger.generate_patterns();
     // time_limit=get_remain_time();
 
@@ -38,7 +38,7 @@ Solution Solver::solve(){
 Solutions Solver::solve_multi_solution_multi_thread(){
     Timer timer;
     Solutions result;
-    PatternMerger patternMerger(problem);
+    PatternMerger patternMerger(problem,timer);
     StagePatterns patterns=patternMerger.generate_patterns();
 
     size_t solutions_size=patterns.patterns.size()-1;
@@ -67,7 +67,7 @@ Solutions Solver::solve_multi_solution_multi_thread(){
 Solutions Solver::solve_multi_solution_single_thread(){
     Timer timer;
     Solutions result;
-    PatternMerger patternMerger(problem);
+    PatternMerger patternMerger(problem,timer);
     StagePatterns patterns=patternMerger.generate_patterns();
 
     for(size_t max_stage=1;max_stage<patterns.patterns.size();max_stage++){

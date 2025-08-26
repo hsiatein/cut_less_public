@@ -23,6 +23,7 @@ int CLOSE_SHEET_PROB=80;
 int SOLUTION_GET_BEST_PROB=50;
 
 bool VISUALIZE=true;
-bool INFO_OPERATION=false;
+bool INFO_GENERATE_RESULT=false;
 bool INFO_HIGHS_INFO=false;
 bool INFO_SELECT_RESULT=false;
+bool INFO_OPERATION=false;

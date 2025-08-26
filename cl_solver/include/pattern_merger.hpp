@@ -8,7 +8,8 @@ struct PatternMerger
 {
     Problem* problem;
     MergeChecker mergeChecker;
-    explicit PatternMerger(Problem* problem);
+    Timer timer;
+    explicit PatternMerger(Problem* problem,Timer timer);
     // PatternMerger(Problem* problem,MergeChecker mergeChecker);
 
     /// @brief 根据配置文件，生成所有满足要求的模式

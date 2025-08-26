@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
     Problem* problem=&problem_obj;  
     read_config("../config.json");
     auto start = std::chrono::high_resolution_clock::now();
-    PatternMerger patternMerger(problem);
+    PatternMerger patternMerger(problem,timer);
     StagePatterns patterns=patternMerger.generate_patterns();
 
     PatternSelector patternSelector(*problem,timer);

@@ -1,6 +1,6 @@
 #include <pattern_merger.hpp>
 
-PatternMerger::PatternMerger(Problem* problem):problem(problem),mergeChecker(this->problem){
+PatternMerger::PatternMerger(Problem* problem,Timer timer):problem(problem),mergeChecker(this->problem),timer(timer){
 }
 
 // PatternMerger::PatternMerger(Problem* problem,MergeChecker mergeChecker):problem(problem),mergeChecker(mergeChecker){
@@ -15,7 +15,8 @@ StagePatterns PatternMerger::generate_patterns(const int level) const{
         Pattern pattern(problem,part,level);
         patterns[1].push_back(std::move(pattern));
     }
-    while(true){
+    double time_limit=timer.get_remain_time()/3;
+    while(!timer.is_overtime(time_limit)){
         ++pattern_stage;
         patterns.new_stage(pattern_stage);
         ExistChecker existChecker;
@@ -35,12 +36,15 @@ StagePatterns PatternMerger::generate_patterns(const int level) const{
         std::vector<std::pair<size_t,size_t>> stagePairs=get_subpattern_pair(pattern_stage);
         
         for(auto stagePair:stagePairs){
+            if(timer.is_overtime(time_limit)) break;
             // std::cout<<stagePair.first<<","<<stagePair.second<<std::endl;
             auto [leftStage,rightStage]=stagePair;
             if(patterns[leftStage].size()*patterns[rightStage].size()==0) continue;
             // std::cout<<"000"<<std::endl;
-            for(const auto& left:patterns[leftStage])
+            for(const auto& left:patterns[leftStage]){
+                if(timer.is_overtime(time_limit)) break;
                 for(const auto& right:patterns[rightStage]){
+                    if(timer.is_overtime(time_limit)) break;
                     if(!mergeChecker.parts_num_fit(left.partsNum,right.partsNum)) continue;
                     logger.log(left.partsNum.to_json().dump()+"   "+right.partsNum.to_json().dump()+" can merge");
                     std::vector<Pattern> generatedPatterns;
@@ -56,10 +60,18 @@ StagePatterns PatternMerger::generate_patterns(const int level) const{
                         patterns[pattern_stage].push_back(std::move(pattern));
                     }
                 }
+            }
 
         }
 
-
+    }
+    timer.print_time(Color::GREEN);
+    timer.print(Color::BLUE,"\n模式生成完成\n");
+    if(INFO_GENERATE_RESULT){
+        for(const auto [stage,stage_patterns]:patterns.patterns){
+            if(stage_patterns.size()==0) continue;
+            timer.print(Color::BLUE,"Stage ",stage," 模式数量 ",stage_patterns.size()," \n");
+        }
     }
     return patterns;
 }

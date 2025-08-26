@@ -201,9 +201,10 @@ void read_config(std::string path){
     if (!std::filesystem::exists(dir)) std::filesystem::create_directory(dir);
     // OUTPUT_DIR=config["output_dir"];
     auto info=config["INFO"];
-    INFO_OPERATION=info["OPERATION"].get<bool>();
+    INFO_GENERATE_RESULT=info["GENERATE_RESULT"].get<bool>();
     INFO_HIGHS_INFO=info["HIGHS_INFO"].get<bool>();
     INFO_SELECT_RESULT=info["SELECT_RESULT"].get<bool>();
+    INFO_OPERATION=info["OPERATION"].get<bool>();
 }
 
 std::string to_string(Orient orient){

@@ -26,6 +26,7 @@ extern int CLOSE_SHEET_PROB;
 extern int SOLUTION_GET_BEST_PROB;
 
 extern bool VISUALIZE;
-extern bool INFO_OPERATION;
+extern bool INFO_GENERATE_RESULT;
 extern bool INFO_HIGHS_INFO;
 extern bool INFO_SELECT_RESULT;
+extern bool INFO_OPERATION;

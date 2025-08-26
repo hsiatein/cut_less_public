@@ -185,7 +185,7 @@ public:
     /// @param color 
     /// @param str 要打印的字符串
     template <typename... Args>
-    void print(Color color, const Args&... str) {
+    void print(Color color, const Args&... str) const{
         std::string color_str="\033[0m";
         switch (color)
         {
@@ -208,19 +208,19 @@ public:
 
     /// @brief 打印当前runtime
     /// @param color 颜色
-    inline void print_time(Color color){
+    inline void print_time(Color color) const{
         print(color,std::fixed,std::setprecision(3),"[",get_runtime()," ms]");
     }
 private:
     std::chrono::_V2::system_clock::time_point start;
 
     template <typename T>
-    void print_str(const T& str) {
+    void print_str(const T& str) const{
         std::cout << str;
     }
 
     template <typename T, typename... Args>
-    void print_str(const T& first, const Args&... rest) {
+    void print_str(const T& first, const Args&... rest) const{
         std::cout << first;
         print_str(rest...);
     }
