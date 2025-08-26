@@ -4,7 +4,7 @@
 
 // 1 -> 0.1mm
 extern int CUT_LOSS;
-extern int TIME_LIMIT;
+extern double TIME_LIMIT;
 extern std::vector<int> REMAIN;
 extern std::string OUTPUT_DIR;
 extern int RANDOM_SEED;

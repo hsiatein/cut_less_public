@@ -1,7 +1,7 @@
 #include "../include/hyperparameters.hpp"
 
 int CUT_LOSS=30;
-int TIME_LIMIT=1000;
+double TIME_LIMIT=1000;
 std::vector<int> REMAIN={50,80,100,150,200};
 std::string OUTPUT_DIR="./output/";
 int RANDOM_SEED=0;

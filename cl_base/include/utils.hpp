@@ -161,13 +161,25 @@ std::string to_string(Orient orient);
 struct Timer{
 public:
     Timer();
-    bool is_overtime() const;
+    /// @brief 检查是否超时
+    /// @param limit 时间限制
+    /// @return 是否超时
+    inline bool is_overtime(double limit) const{
+        return get_runtime()>=limit;
+    }
+
     /// @brief 获取运行时间
     /// @return 运行时间（ms）
-    double get_runtime() const;
+    inline double get_runtime() const{
+        std::chrono::duration<double, std::milli> duration = std::chrono::high_resolution_clock::now() - start;
+        return duration.count();
+    }
+
     /// @brief 获取剩余时间
     /// @return 剩余时间（ms）
-    double get_remain_time() const;
+    inline double get_remain_time() const{
+        return TIME_LIMIT-get_runtime();
+    }
 
     /// @brief 根据颜色打印字符串
     /// @param color 
@@ -193,6 +205,12 @@ public:
         print_str(str...);
         std::cout << "\033[0m";
     }
+
+    /// @brief 打印当前runtime
+    /// @param color 颜色
+    inline void print_time(Color color){
+        print(color,std::fixed,std::setprecision(3),"[",get_runtime()," ms]");
+    }
 private:
     std::chrono::_V2::system_clock::time_point start;
 
@@ -207,3 +225,4 @@ private:
         print_str(rest...);
     }
 };
+

@@ -171,7 +171,7 @@ void read_config(std::string path){
     // std::cout<<1<<std::endl;
     // logger.log_json("testConfig",config);
     CUT_LOSS=config["CUT_LOSS"].get<int>();
-    TIME_LIMIT=config["TIME_LIMIT"].get<int>();
+    TIME_LIMIT=config["TIME_LIMIT"].get<double>();
     std::vector<int> TEMP_REMAIN;
     // std::cout<<1<<std::endl;
     for(auto& remain:config["REMAIN"]){
@@ -223,15 +223,3 @@ std::string to_string(Orient orient){
 Timer::Timer():start(std::chrono::high_resolution_clock::now()){
 }
 
-double Timer::get_runtime() const{
-    std::chrono::duration<double, std::milli> duration = std::chrono::high_resolution_clock::now() - start;
-    return duration.count();
-}
-
-bool Timer::is_overtime() const{
-    return get_runtime()>=TIME_LIMIT;
-}
-
-double Timer::get_remain_time() const{
-    return (double)TIME_LIMIT-get_runtime();
-}
