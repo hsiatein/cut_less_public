@@ -13,7 +13,7 @@
     "SOLUTION_GET_BEST_PROB":50,
     "CLOSE_SHEET_PROB":80,
     "AVERAGE_CUT_PUNISH":2.0,
-    "VISUALIZE":true,
+    "VISUALIZE":false,
     "RUNTIME_LOG":false,
     "INFO":{
         "GENERATE_RESULT":false,

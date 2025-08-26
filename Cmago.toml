@@ -11,6 +11,11 @@ path = "./main.cpp"
 dependencies = ["cl_solver","cl_visualizer","argparse"]
 
 [[bin]]
+name = "main_json"
+path = "./main_json.cpp"
+dependencies = ["cl_solver","cl_visualizer","argparse"]
+
+[[bin]]
 name = "main_multi_solution"
 path = "./main_multi_solution.cpp"
 dependencies = ["cl_solver","cl_visualizer","argparse"]

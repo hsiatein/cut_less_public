@@ -173,33 +173,26 @@ NodeType Node::getType() const{
 
 json Node::to_json() const{
     json result;
-    // json sizeJson=size.to_json();
-    // result["Size"]=sizeJson["Size"];
-    // result["Remain"]=sizeJson["Remain"];
-    // result.push_back(size.to_json());
-    std::string field3="3)NodeType";
+    result["Size"]=size.size_to_json();
+    std::string field3="NodeType";
     switch (getType())
     {
     case NodeType::STRUCT:
-        result.merge_patch(size.to_json());
         result[field3]="Struct";
         break;
     case NodeType::LEFTOVER:
-        result["1)Size"]=size.size_to_json();
         result[field3]="Leftover";
         break;
     case NodeType::CUTLOSS:
-        result["1)Size"]=size.size_to_json();
         result[field3]="Cutloss";
         break;
     case NodeType::PART:
-        result.merge_patch(size.to_json());
         result[field3]="Part:"+std::to_string(partTypeID);
         break;
     default:
         break;
     }
-    std::string field4="4)Orient";
+    std::string field4="Orient";
     switch (next_cut_orient)
     {
     case Orient::NONE:
@@ -221,7 +214,7 @@ json Node::to_json() const{
     for(const auto& child:childs){
         j_childs.push_back(child->to_json());
     }
-    result["5)Childs"]=j_childs;
+    result["Childs"]=j_childs;
 
     return result;
 }
