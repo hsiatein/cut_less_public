@@ -168,6 +168,10 @@ json Size::size_to_json() const{
 void read_config(std::string path){
     std::ifstream f(path);
     json config = json::parse(f);
+    read_config_json(config);
+}
+
+void read_config_json(json config){
     // std::cout<<1<<std::endl;
     // logger.log_json("testConfig",config);
     CUT_LOSS=config["CUT_LOSS"].get<int>();

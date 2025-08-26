@@ -4,13 +4,15 @@ use std::process::{Command, Stdio};
 use std::env;
 use std::fs;
 use cl_web_api::CliError;
+use cl_web_api::part::Part;
+use cl_web_api::sheet::Sheet;
 
 #[derive(Serialize,Deserialize)]
 struct RequestData {
     #[serde(rename = "Parts")]
-    parts: Vec<cl_web_api::Part>,
+    parts: Vec<Part>,
     #[serde(rename = "Sheets")]
-    sheets: Vec<cl_web_api::Sheet>,
+    sheets: Vec<Sheet>,
 }
 
 #[derive(Serialize,Deserialize)]

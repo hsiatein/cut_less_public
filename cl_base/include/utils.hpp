@@ -152,6 +152,7 @@ extern Logger logger;
 extern Random randomEngine;
 
 void read_config(std::string path);
+void read_config_json(json config);
 
 using StageLocation=std::pair<size_t,size_t>;
 using PatternGroup=std::tuple<PartsNum,std::vector<StageLocation>,int>;

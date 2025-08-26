@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [[bin]]
-name = "server"
-path = "src/server.rs"
+name = "server_v1"
+path = "src/server_v1.rs"
 
 [[bin]]
 name = "client"
