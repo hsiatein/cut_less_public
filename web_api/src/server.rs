@@ -3,39 +3,25 @@ use serde::{Deserialize, Serialize};
 use std::process::{Command, Stdio};
 use std::env;
 use std::fs;
+use cl_web_api::CliError;
 
-#[derive(Debug)]
-struct CliError(String);
-impl warp::reject::Reject for CliError {
-    
-}
-
-#[derive(Deserialize)]
+#[derive(Serialize,Deserialize)]
 struct RequestData {
-    problem: String,
+    #[serde(rename = "Parts")]
+    parts: Vec<cl_web_api::Part>,
+    #[serde(rename = "Sheets")]
+    sheets: Vec<cl_web_api::Sheet>,
 }
 
 #[derive(Serialize,Deserialize)]
 struct ApiResponse {
-    solution: Vec<Node>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Node {
-    #[serde(rename = "Size")]
-    size: Vec<i32>,
-    #[serde(rename = "NodeType")]
-    node_type: String,
-    #[serde(rename = "Orient")]
-    orient: String,
-    #[serde(rename = "Childs")]
-    children: Vec<Node>,
+    solution: Vec<cl_web_api::Node>,
 }
 
 #[tokio::main]
 async fn main() {
     let process_route = warp::post()
-        .and(warp::path("process"))
+        .and(warp::path("cut_less"))
         .and(warp::body::json())
         .and_then(handle_request);
 
@@ -56,7 +42,7 @@ async fn handle_request(data: RequestData) -> Result<warp::reply::Json, warp::Re
     let output = Command::new(cl_path)
         .arg("-c").arg(config_path.to_str().unwrap())
         .arg("-o").arg(output_path.to_str().unwrap())
-        .arg("-p").arg(data.problem)
+        .arg("-p").arg(serde_json::to_string(&data).unwrap())
         .stdout(Stdio::piped())
         .output();
 

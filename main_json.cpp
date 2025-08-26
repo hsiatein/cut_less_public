@@ -28,12 +28,5 @@ int main(int argc, char *argv[]){
     Logger logger("main");
     logger.log_json("solution",solution.to_json());
 
-    // 可视化
-    if(VISUALIZE){
-        Visualizer::init();
-        Visualizer::from_solution(solution);
-        Visualizer::show();
-    }
-
     return 0;
 }
