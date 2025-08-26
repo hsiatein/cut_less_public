@@ -98,19 +98,17 @@ Scheme PatternSelector::select(){
     // assert(return_status == HighsStatus::kOk);
     const HighsSolution& solution = highs.getSolution();
     std::vector<int> result;
-    // for (int col = 0; col < lp.num_col_; col++) {
-    //     std::cout << "Pattern Group" <<col<<": "<< partsnums[col].to_json()["PartsNum"].dump();
-    //     std::cout << "; value = " << solution.col_value[col];
-    //     std::cout << std::endl;
-    // }
-    // std::cout << std::endl;
+
+    timer.print_time(Color::GREEN);
+    timer.print(Color::BLUE,"\n模式选择完成\n");
     for (int col = 0; col < lp.num_col_; col++) {
         result.push_back((int)(solution.col_value[col]+0.01));
         if(result[col]==0) continue;
         if(INFO_SELECT_RESULT){
-            std::cout << "Pattern Group" <<col<<": "<< partsnums[col].to_json()["PartsNum"].dump();
-            std::cout << "; value = " << result[col];
-            std::cout << std::endl;
+            timer.print(Color::BLUE,"Pattern Group ",col,": ",partsnums[col].to_json()["PartsNum"].dump(),"; num = ",result[col],"\n");
+            // std::cout << "Pattern Group" <<col<<": "<< partsnums[col].to_json()["PartsNum"].dump();
+            // std::cout << "; value = " << result[col];
+            // std::cout << std::endl;
         }
         scheme.emplace_back(partsnums[col],partsnum_of_patterns[partsnums[col]],result[col]);
     }
