@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['logger_0',['Logger',['../class_logger.html',1,'']]]
+  ['cube_38',['Cube',['../structCube.html',1,'']]]
 ];

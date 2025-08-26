@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['blueprint_0',['Blueprint',['../struct_blueprint.html',1,'']]]
+  ['blueprint_37',['Blueprint',['../structBlueprint.html',1,'']]]
 ];

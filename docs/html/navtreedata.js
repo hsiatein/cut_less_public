@@ -41,7 +41,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html"
+"annotated.html",
+"structProcess.html#a990776d181dbbde7ff8ac12713d814b3"
 ];
 
 var SYNCONMSG = '点击 关闭 面板同步';

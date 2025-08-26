@@ -50,12 +50,6 @@ dependencies = []
 # lib_type = "dynamic"
 # dependencies = ["cl_base","xlnt"]
 
-# [[lib]]
-# name = "cl_java"
-# path = "./cl_java/"
-# lib_type = "dynamic"
-# dependencies = ["cl_solver"]
-
 [tests]
 # path = "./tests"
 path = ""

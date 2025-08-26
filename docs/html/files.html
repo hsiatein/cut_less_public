@@ -1,26 +1,24 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="zh">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=11"/>
-<meta name="generator" content="Doxygen 1.13.2"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Cut Less: 文件列表</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
-<script type="text/javascript" src="clipboard.js"></script>
 <link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
 <script type="text/javascript" src="navtreedata.js"></script>
 <script type="text/javascript" src="navtree.js"></script>
-<script type="text/javascript" src="resize.js"></script>
-<script type="text/javascript" src="cookie.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-  $(function() { init_search(); });
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+  $(document).ready(function() { init_search(); });
 /* @license-end */
 </script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
@@ -30,15 +28,18 @@
 <div id="titlearea">
 <table cellspacing="0" cellpadding="0">
  <tbody>
- <tr id="projectrow">
-  <td id="projectalign">
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Cut Less
    </div>
   </td>
-    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+   <td>        <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
-          <span id="MSearchSelect"                onmouseover="return searchBox.OnSearchSelectShow()"                onmouseout="return searchBox.OnSearchSelectHide()">&#160;</span>
-          <input type="text" id="MSearchField" value="" placeholder="搜索" accesskey="S"
+          <img id="MSearchSelect" src="search/mag_sel.svg"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="搜索" accesskey="S"
                onfocus="searchBox.OnSearchFieldFocus(true)" 
                onblur="searchBox.OnSearchFieldFocus(false)" 
                onkeyup="searchBox.OnSearchFieldChange(event)"/>
@@ -52,15 +53,10 @@
 </table>
 </div>
 <!-- end header part -->
-<!-- 制作者 Doxygen 1.13.2 -->
+<!-- 制作者 Doxygen 1.9.1 -->
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-var searchBox = new SearchBox("searchBox", "search/",'.html');
-/* @license-end */
-</script>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function() { codefold.init(0); });
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'搜索','.html');
 /* @license-end */
 </script>
 </div><!-- top -->
@@ -75,8 +71,8 @@ $(function() { codefold.init(0); });
   </div>
 </div>
 <script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('files.html',''); initResizable(true); });
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(document).ready(function(){initNavTree('files.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -89,36 +85,45 @@ $(function(){initNavTree('files.html',''); initResizable(true); });
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
-<div id="MSearchResults">
-<div class="SRPage">
-<div id="SRIndex">
-<div id="SRResults"></div>
-<div class="SRStatus" id="Loading">载入中...</div>
-<div class="SRStatus" id="Searching">搜索中...</div>
-<div class="SRStatus" id="NoMatches">未找到</div>
-</div>
-</div>
-</div>
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">文件列表</div></div>
+  <div class="headertitle">
+<div class="title">文件列表</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock">这里列出了所有文档化的文件，并附带简要说明:</div><div class="directory">
-<div class="levels">[详情级别 <span onclick="javascript:dynsection.toggleLevel(1);">1</span><span onclick="javascript:dynsection.toggleLevel(2);">2</span><span onclick="javascript:dynsection.toggleLevel(3);">3</span>]</div><table class="directory">
-<tr id="row_0_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_0_" class="arrow" onclick="dynsection.toggleFolder('0_')">&#9660;</span><span id="img_0_" class="iconfopen" onclick="dynsection.toggleFolder('0_')">&#160;</span><a class="el" href="dir_95637a1fe4ed77aa845d545a5f2e3962.html" target="_self">cut_less_lib</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_" class="odd"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_0_0_" class="arrow" onclick="dynsection.toggleFolder('0_0_')">&#9660;</span><span id="img_0_0_" class="iconfopen" onclick="dynsection.toggleFolder('0_0_')">&#160;</span><a class="el" href="dir_4c75a325a683683f35592c0fb0cc6b31.html" target="_self">include</a></td><td class="desc"></td></tr>
+<div class="levels">[详情级别 <span onclick="javascript:toggleLevel(1);">1</span><span onclick="javascript:toggleLevel(2);">2</span><span onclick="javascript:toggleLevel(3);">3</span>]</div><table class="directory">
+<tr id="row_0_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_0_" class="arrow" onclick="toggleFolder('0_')">&#9660;</span><span id="img_0_" class="iconfopen" onclick="toggleFolder('0_')">&#160;</span><a class="el" href="dir_55f0297dfb2811d52a78a5c46a9bb4b2.html" target="_self">cl_base</a></td><td class="desc"></td></tr>
+<tr id="row_0_0_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_0_0_" class="arrow" onclick="toggleFolder('0_0_')">&#9660;</span><span id="img_0_0_" class="iconfopen" onclick="toggleFolder('0_0_')">&#160;</span><a class="el" href="dir_f9334a3de164da7d741c37957a5294ff.html" target="_self">include</a></td><td class="desc"></td></tr>
 <tr id="row_0_0_0_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="blueprint_8hpp_source.html"><span class="icondoc"></span></a><b>blueprint.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_1_" class="odd"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="csp__input_8hpp_source.html"><span class="icondoc"></span></a><b>csp_input.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_2_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="hyperparameters_8hpp_source.html"><span class="icondoc"></span></a><b>hyperparameters.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_3_" class="odd"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="json__input_8hpp_source.html"><span class="icondoc"></span></a><b>json_input.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_4_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="logger_8hpp_source.html"><span class="icondoc"></span></a><b>logger.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_5_" class="odd"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="node_8hpp_source.html"><span class="icondoc"></span></a><b>node.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_6_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="pattern_8hpp_source.html"><span class="icondoc"></span></a><b>pattern.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_7_" class="odd"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="problem_8hpp_source.html"><span class="icondoc"></span></a><b>problem.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_8_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="solver_8hpp_source.html"><span class="icondoc"></span></a><b>solver.hpp</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_9_" class="odd"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="utils_8hpp_source.html"><span class="icondoc"></span></a><b>utils.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_1_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="hyperparameters_8hpp_source.html"><span class="icondoc"></span></a><b>hyperparameters.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_2_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="logger_8hpp_source.html"><span class="icondoc"></span></a><b>logger.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_3_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="node_8hpp_source.html"><span class="icondoc"></span></a><b>node.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_4_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="pattern_8hpp_source.html"><span class="icondoc"></span></a><b>pattern.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_5_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="pattern__node_8hpp_source.html"><span class="icondoc"></span></a><b>pattern_node.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_6_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="pattern__solution_8hpp_source.html"><span class="icondoc"></span></a><b>pattern_solution.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_7_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="problem_8hpp_source.html"><span class="icondoc"></span></a><b>problem.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_8_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="process_8hpp_source.html"><span class="icondoc"></span></a><b>process.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_9_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="random_8hpp_source.html"><span class="icondoc"></span></a><b>random.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_10_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="solution_8hpp_source.html"><span class="icondoc"></span></a><b>solution.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_11_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="stage__patterns_8hpp_source.html"><span class="icondoc"></span></a><b>stage_patterns.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_0_0_12_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="utils_8hpp_source.html"><span class="icondoc"></span></a><b>utils.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_1_" class="arrow" onclick="toggleFolder('1_')">&#9660;</span><span id="img_1_" class="iconfopen" onclick="toggleFolder('1_')">&#160;</span><a class="el" href="dir_2cbc83ea11654c22aca2df776d9fe1a7.html" target="_self">cl_solver</a></td><td class="desc"></td></tr>
+<tr id="row_1_0_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_1_0_" class="arrow" onclick="toggleFolder('1_0_')">&#9660;</span><span id="img_1_0_" class="iconfopen" onclick="toggleFolder('1_0_')">&#160;</span><a class="el" href="dir_fffc248171cefb0f282816e16700f8d8.html" target="_self">include</a></td><td class="desc"></td></tr>
+<tr id="row_1_0_0_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="exist__checker_8hpp_source.html"><span class="icondoc"></span></a><b>exist_checker.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_0_1_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="lns_8hpp_source.html"><span class="icondoc"></span></a><b>lns.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_0_2_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="merge__checker_8hpp_source.html"><span class="icondoc"></span></a><b>merge_checker.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_0_3_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="pattern__merger_8hpp_source.html"><span class="icondoc"></span></a><b>pattern_merger.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_0_4_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="pattern__selector_8hpp_source.html"><span class="icondoc"></span></a><b>pattern_selector.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_1_0_5_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="solver_8hpp_source.html"><span class="icondoc"></span></a><b>solver.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_2_"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_2_" class="arrow" onclick="toggleFolder('2_')">&#9660;</span><span id="img_2_" class="iconfopen" onclick="toggleFolder('2_')">&#160;</span><a class="el" href="dir_98cf38e02aeb630cf904d45ec3aba9fc.html" target="_self">cl_visualizer</a></td><td class="desc"></td></tr>
+<tr id="row_2_0_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_2_0_" class="arrow" onclick="toggleFolder('2_0_')">&#9660;</span><span id="img_2_0_" class="iconfopen" onclick="toggleFolder('2_0_')">&#160;</span><a class="el" href="dir_bdc11644c2beffd676c8312fecfd714c.html" target="_self">include</a></td><td class="desc"></td></tr>
+<tr id="row_2_0_0_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="cube_8hpp_source.html"><span class="icondoc"></span></a><b>cube.hpp</b></td><td class="desc"></td></tr>
+<tr id="row_2_0_1_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a href="visualizer_8hpp_source.html"><span class="icondoc"></span></a><b>visualizer.hpp</b></td><td class="desc"></td></tr>
 </table>
 </div><!-- directory -->
 </div><!-- contents -->
@@ -126,7 +131,7 @@ $(function(){initNavTree('files.html',''); initResizable(true); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">制作者 <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">制作者 <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
