@@ -8,3 +8,4 @@ stk_inventory.xlsx
 stk_pllist.xlsx
 .idea
 web_api/target
+bin/
