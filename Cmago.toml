@@ -7,23 +7,23 @@ external_library_path = "./external/"
 
 [[bin]]
 name = "main"
-path = "./main.cpp"
+path = "./executables/main.cpp"
 dependencies = ["cl_solver","cl_visualizer","argparse"]
 
 [[bin]]
 name = "main_json"
-path = "./main_json.cpp"
+path = "./executables/main_json.cpp"
 dependencies = ["cl_solver","cl_visualizer","argparse"]
 
 [[bin]]
 name = "main_multi_solution"
-path = "./main_multi_solution.cpp"
+path = "./executables/main_multi_solution.cpp"
 dependencies = ["cl_solver","cl_visualizer","argparse"]
 # dependencies = ["cl_solver","argparse"]
 
 [[bin]]
 name = "visualize"
-path = "./visualize.cpp"
+path = "./executables/visualize.cpp"
 dependencies = ["cl_solver","cl_visualizer"]
 
 [[lib]]

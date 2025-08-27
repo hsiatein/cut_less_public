@@ -12,7 +12,7 @@ add_subdirectory(./cl_base/)
 add_subdirectory(./cl_solver/)
 add_subdirectory(./cl_visualizer/)
 
-add_executable(main ./main.cpp)
+add_executable(main ./executables/main.cpp)
 target_compile_features(main PUBLIC cxx_std_17)
 target_link_libraries(main cl_solver cl_visualizer argparse)
 target_compile_definitions(main
@@ -21,7 +21,7 @@ target_compile_definitions(main
         $<$<CONFIG:Release>:RELEASE>
 )
 
-add_executable(main_json ./main_json.cpp)
+add_executable(main_json ./executables/main_json.cpp)
 target_compile_features(main_json PUBLIC cxx_std_17)
 target_link_libraries(main_json cl_solver cl_visualizer argparse)
 target_compile_definitions(main_json
@@ -30,7 +30,7 @@ target_compile_definitions(main_json
         $<$<CONFIG:Release>:RELEASE>
 )
 
-add_executable(main_multi_solution ./main_multi_solution.cpp)
+add_executable(main_multi_solution ./executables/main_multi_solution.cpp)
 target_compile_features(main_multi_solution PUBLIC cxx_std_17)
 target_link_libraries(main_multi_solution cl_solver cl_visualizer argparse)
 target_compile_definitions(main_multi_solution
@@ -39,7 +39,7 @@ target_compile_definitions(main_multi_solution
         $<$<CONFIG:Release>:RELEASE>
 )
 
-add_executable(visualize ./visualize.cpp)
+add_executable(visualize ./executables/visualize.cpp)
 target_compile_features(visualize PUBLIC cxx_std_17)
 target_link_libraries(visualize cl_solver cl_visualizer)
 target_compile_definitions(visualize
