@@ -2,7 +2,7 @@
 #include <polyscope/polyscope.h>
 #include <polyscope/curve_network.h>
 #include <polyscope/surface_mesh.h>
-#include "cube.hpp"
+#include <cube.hpp>
 #include <stage_patterns.hpp>
 #include <process.hpp>
 #include <solution.hpp>

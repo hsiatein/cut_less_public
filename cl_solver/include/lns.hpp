@@ -1,6 +1,6 @@
 #pragma once
 #include <pattern_solution.hpp>
-#include "process.hpp"
+#include <process.hpp>
 #include <stage_patterns.hpp>
 
 enum class LNSStatus{

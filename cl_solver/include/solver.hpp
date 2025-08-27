@@ -1,5 +1,4 @@
 #pragma once
-#include <problem.hpp>
 #include <pattern_selector.hpp>
 #include <lns.hpp>
 #include <pattern_merger.hpp>
