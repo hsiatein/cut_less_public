@@ -230,7 +230,7 @@ private:
     std::chrono::time_point<std::chrono::system_clock, std::chrono::system_clock::duration> start;
     #else
     #ifdef __APPLE__
-    std::chrono::time_point<std::chrono::steady_clock, std::chrono::steady_clock::duration> start;
+    std::chrono::steady_clock::time_point start;
     #else
     std::chrono::time_point<std::chrono::system_clock, std::chrono::system_clock::duration> start;
     #endif

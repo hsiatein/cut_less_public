@@ -11,7 +11,6 @@ int main(int argc, char *argv[]){
     program.parse_known_args(argc, argv);
     std::string problem_path=program.get<std::string>("problem");
     std::string config_path=program.get<std::string>("config");
-    std::string output_path=program.get<std::string>("output");
 
     // 从json读取一个问题
     if(config_path!="") read_config(config_path);
