@@ -226,7 +226,15 @@ public:
     }
 private:
     // std::chrono::_V2::system_clock::time_point start;
+    #ifdef __linux__
     std::chrono::time_point<std::chrono::system_clock, std::chrono::system_clock::duration> start;
+    #else
+    #ifdef __APPLE__
+    std::chrono::time_point<std::chrono::steady_clock, std::chrono::steady_clock::duration> start;
+    #else
+    std::chrono::time_point<std::chrono::system_clock, std::chrono::system_clock::duration> start;
+    #endif
+    #endif
 
     template <typename T>
     void print_str(const T& str) const{
