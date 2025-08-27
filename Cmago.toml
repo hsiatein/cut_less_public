@@ -13,7 +13,7 @@ dependencies = ["cl_solver","cl_visualizer","argparse"]
 [[bin]]
 name = "main_json"
 path = "./executables/main_json.cpp"
-dependencies = ["cl_solver","cl_visualizer","argparse"]
+dependencies = ["cl_solver","argparse"]
 
 [[bin]]
 name = "main_multi_solution"
@@ -42,7 +42,7 @@ dependencies = ["polyscope","cl_base"]
 name = "cl_base"
 path = "./cl_base/"
 # lib_type = "dynamic"
-dependencies = []
+dependencies = ["nlohmann_json"]
 
 # [[lib]]
 # name = "cl_input"
@@ -68,3 +68,6 @@ url = "https://github.com/nmwsharp/polyscope.git"
 
 [dependencies.highs]
 url = "https://github.com/ERGO-Code/HiGHS.git"
+
+[dependencies.nlohmann_json]
+url = "https://github.com/nlohmann/json.git"

@@ -6,6 +6,7 @@ if (MSVC)
 endif()
 
 add_subdirectory(./external/argparse)
+add_subdirectory(./external/json)
 add_subdirectory(./external/HiGHS)
 add_subdirectory(./external/polyscope)
 add_subdirectory(./cl_base/)
@@ -23,7 +24,7 @@ target_compile_definitions(main
 
 add_executable(main_json ./executables/main_json.cpp)
 target_compile_features(main_json PUBLIC cxx_std_17)
-target_link_libraries(main_json cl_solver cl_visualizer argparse)
+target_link_libraries(main_json cl_solver argparse)
 target_compile_definitions(main_json
     PRIVATE
         $<$<CONFIG:Debug>:DEBUG>

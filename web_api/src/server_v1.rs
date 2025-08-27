@@ -38,20 +38,22 @@ async fn handle_request(data: RequestData) -> Result<warp::reply::Json, warp::Re
     let root_path = exe_path.parent().unwrap().parent().unwrap().parent().unwrap().parent().unwrap();
     let cl_path = root_path.join("build").join("main_json");
     let output_path = root_path.join("web_api").join("output/");
-    let solution_path = output_path.join("main@solution.json");
     let config_path = root_path.join("config.json");
+    let name="solution";
     
     // 调用cut_less
     let output = Command::new(cl_path)
         .arg("-c").arg(config_path.to_str().unwrap())
         .arg("-o").arg(output_path.to_str().unwrap())
         .arg("-p").arg(serde_json::to_string(&data).unwrap())
+        .arg("-n").arg(name)
         .stdout(Stdio::piped())
         .output().await;
 
     match output {
         Ok(output) if output.status.success() => {
             println!("{}",str::from_utf8(&output.stdout).unwrap());
+            let solution_path = output_path.join(format!("main@{}.json",name));
             let solution  = fs::read_to_string(solution_path);
             if let Err(e) = solution{
                 return Err(warp::reject::custom(CliError(e.to_string())));

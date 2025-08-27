@@ -13,3 +13,6 @@
 [submodule "external/xlnt"]
 	path = external/xlnt
 	url = https://github.com/tfussell/xlnt.git
+[submodule "external/json"]
+	path = external/json
+	url = https://github.com/nlohmann/json.git
