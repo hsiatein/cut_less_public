@@ -7,8 +7,8 @@ int main(int argc, char *argv[]){
     // 初始化CLI
     argparse::ArgumentParser program("cut_less", "0.1.0");
     program.add_argument("-p", "--problem").help("转换成json格式的问题").default_value("");
-    program.add_argument("-c", "--config").help("配置文件").default_value("../config.json");
-    program.add_argument("-o", "--output").help("输出").default_value("");
+    program.add_argument("-c", "--config").help("配置文件").default_value("./config.json");
+    program.add_argument("-o", "--output").help("输出").default_value("./output");
     program.add_argument("-n", "--name").help("名字").default_value("solution");
     program.parse_known_args(argc, argv);
     std::string problem_string=program.get<std::string>("problem");

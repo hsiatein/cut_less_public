@@ -8,6 +8,10 @@ name = "server_v1"
 path = "src/server_v1.rs"
 
 [[bin]]
+name = "server_v2"
+path = "src/server_v2.rs"
+
+[[bin]]
 name = "client"
 path = "src/client.rs"
 
