@@ -11,7 +11,7 @@ public:
     PatternSolution(const PatternSolution& other);
     PatternSolution& operator=(const PatternSolution& other);
     ~PatternSolution();
-    bool operator<(const PatternSolution& other) const;
+    // bool operator<(const PatternSolution& other) const;
     int remain_groups() const;
     int placed_pattern();
     double get_volume() const;

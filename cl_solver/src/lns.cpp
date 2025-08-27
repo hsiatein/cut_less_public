@@ -1,3 +1,4 @@
+#include <iostream>
 #include <lns.hpp>
 
 const std::array<RotateOrient,6> LNS::rotates={RotateOrient::I,RotateOrient::X,RotateOrient::Y,RotateOrient::Z,RotateOrient::XY,RotateOrient::XZ};
@@ -18,7 +19,7 @@ LNS::~LNS(){
 bool LNS::greater(PatternSolution* a,PatternSolution* b){
     int a_remain=a->remain_groups();
     int b_remain=b->remain_groups();
-    if(a_remain!=b_remain) return a<b;
+    if(a_remain!=b_remain) return a_remain<b_remain;
     double a_volume=a->get_volume();
     double b_volume=b->get_volume();
     if(a_volume!=b_volume) return a_volume<b_volume;
@@ -74,7 +75,7 @@ void LNS::run(){
             timer.print_time(Color::GREEN);
             timer.print(Color::BLUE,"\ntotal volume: ",history.back()->get_volume()*1e-12,"\ntotal cuts: ",cal_cutnum(history.back()),"\n");
 
-            if(lastProcess!=nullptr) delete lastProcess;
+            delete lastProcess;
             lastProcess=new Process(process);
             if(INFO_OPERATION){
                 timer.print(Color::RED,"Process:\n");

@@ -20,12 +20,12 @@ PatternSolution::~PatternSolution(){
     }
 }
 
-bool PatternSolution::operator<(const PatternSolution& other) const{
-    int a=remain_groups();
-    int b=other.remain_groups();
-    if(a!=b) return a>b;
-    return get_volume()>other.get_volume();
-}
+// bool PatternSolution::operator<(const PatternSolution& other) const{
+//     int a=remain_groups();
+//     int b=other.remain_groups();
+//     if(a!=b) return a>b;
+//     return get_volume()>other.get_volume();
+// }
 
 int PatternSolution::remain_groups() const{
     int result=0;
