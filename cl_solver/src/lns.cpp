@@ -1,5 +1,5 @@
-#include <iostream>
 #include <lns.hpp>
+#include <deque>
 
 const std::array<RotateOrient,6> LNS::rotates={RotateOrient::I,RotateOrient::X,RotateOrient::Y,RotateOrient::Z,RotateOrient::XY,RotateOrient::XZ};
 

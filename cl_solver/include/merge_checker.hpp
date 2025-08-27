@@ -1,5 +1,5 @@
 #pragma once
-#include "node.hpp"
+#include <problem.hpp>
 
 
 class MergeChecker{

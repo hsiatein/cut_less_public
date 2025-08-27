@@ -1,4 +1,4 @@
-#include "../include/problem.hpp"
+#include <problem.hpp>
 
 
 Problem::Problem():STRUCT(0),CUTLOSS(1),SHEET_ID(0){

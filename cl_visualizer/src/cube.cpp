@@ -1,4 +1,5 @@
-#include "../include/cube.hpp"
+#include <cube.hpp>
+#include <deque>
 
 Cube::Cube(const Node* node,Vec3i location):location(location),size({node->size.size[0],node->size.size[2],node->size.size[1]}),type(node->getType()),orient(node->next_cut_orient){
     Vec3i childLocation=location;

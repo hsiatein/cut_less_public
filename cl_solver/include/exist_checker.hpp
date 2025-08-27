@@ -1,5 +1,6 @@
 #pragma once
-#include "pattern.hpp"
+#include <pattern.hpp>
+#include <unordered_set>
 
 struct ExistUnit
 {

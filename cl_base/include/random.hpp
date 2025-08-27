@@ -1,9 +1,10 @@
 #pragma once
 #include <random>
-#include "hyperparameters.hpp"
 #include <vector>
 #include <algorithm>
+#ifdef _WIN32
 #include <numeric>
+#endif
 
 class Random{
 public:

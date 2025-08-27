@@ -1,4 +1,5 @@
 #include <pattern_node.hpp>
+#include <deque>
 
 
 bool PatternNode::has_sibling() const{

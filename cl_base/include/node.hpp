@@ -1,9 +1,6 @@
 #pragma once
 #include <vector>
-#include "hyperparameters.hpp"
-#include "utils.hpp"
-#include "problem.hpp"
-
+#include <utils.hpp>
 
 
 struct Node{

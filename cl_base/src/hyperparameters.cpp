@@ -1,5 +1,4 @@
-#include "../include/hyperparameters.hpp"
-
+#include <hyperparameters.hpp>
 int CUT_LOSS=30;
 double TIME_LIMIT=1000;
 std::vector<int> REMAIN={50,80,100,150,200};

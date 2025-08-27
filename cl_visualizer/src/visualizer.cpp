@@ -1,4 +1,4 @@
-#include "../include/visualizer.hpp"
+#include <visualizer.hpp>
 
 size_t Visualizer::num=0;
 int Visualizer::current=0;

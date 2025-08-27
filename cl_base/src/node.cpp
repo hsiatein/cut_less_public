@@ -1,4 +1,4 @@
-#include "../include/node.hpp"
+#include <node.hpp>
 
 // Node::Node():problem(nullptr),partTypeID(0),next_cut_orient(Orient::NONE){
 // }

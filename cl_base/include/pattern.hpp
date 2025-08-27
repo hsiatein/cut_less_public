@@ -1,6 +1,6 @@
 #pragma once
-#include <utils.hpp>
-#include "node.hpp"
+#include <node.hpp>
+#include <problem.hpp>
 
 struct Pattern
 {

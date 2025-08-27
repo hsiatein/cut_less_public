@@ -1,4 +1,5 @@
 #include <pattern.hpp>
+#include <deque>
 
 // Pattern::Pattern():problem(nullptr),PROBLEM_STRUCT(0),top(nullptr),level(0){
 //

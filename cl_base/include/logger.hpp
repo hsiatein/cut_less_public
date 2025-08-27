@@ -1,8 +1,8 @@
 #pragma once
 #include <fstream>
-#include <iostream>
-#include "json.hpp"
-#include "hyperparameters.hpp"
+#include <json.hpp>
+#include <hyperparameters.hpp>
+
 
 using json = nlohmann::json;
 

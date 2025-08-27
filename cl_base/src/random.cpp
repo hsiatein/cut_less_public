@@ -1,4 +1,5 @@
-#include "../include/random.hpp"
+#include <random.hpp>
+#include <hyperparameters.hpp>
 
 Random::Random():gen(RANDOM_SEED){
 

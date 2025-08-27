@@ -1,5 +1,5 @@
 #pragma once
-#include "pattern.hpp"
+#include <utils.hpp>
 
 using CutOrients=std::array<Orient,3>;
 using OptionCost=std::pair<int,double>;

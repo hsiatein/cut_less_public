@@ -1,4 +1,4 @@
-#include "../include/logger.hpp"
+#include <logger.hpp>
 
 Logger::Logger(std::string name):enable(true),enableJSON(true),enableTXT(true),name(name),file(OUTPUT_DIR+name+".txt"){
 }

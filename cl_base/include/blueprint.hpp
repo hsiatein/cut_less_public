@@ -1,5 +1,5 @@
 #pragma once
-#include "pattern_node.hpp"
+#include <pattern_node.hpp>
 
 
 struct Blueprint

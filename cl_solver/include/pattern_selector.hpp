@@ -1,5 +1,4 @@
 #pragma once
-#include "pattern.hpp"
 #include <Highs.h>
 #include <stage_patterns.hpp>
 

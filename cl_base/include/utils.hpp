@@ -1,24 +1,12 @@
 #pragma once
-#include <optional>
-#include <string>
 #include <array>
-#include <vector>
-#include <unordered_map>
-#include <memory>
-#include <regex>
-#include <map>
-#include <set>
 #include <chrono>
-#include <unordered_set>
 #include <tuple>
 #include <iostream>
-#include "logger.hpp"
-#include "hyperparameters.hpp"
-#include "random.hpp"
-#include <iomanip>
-#include <deque>
-#include <algorithm>
-#include <numeric>
+#include <logger.hpp>
+#include <hyperparameters.hpp>
+#include <random.hpp>
+
 
 #define MAX_INT 2147483647
 

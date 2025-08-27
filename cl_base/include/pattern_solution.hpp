@@ -1,5 +1,6 @@
 #pragma once
-#include "blueprint.hpp"
+#include <blueprint.hpp>
+#include <pattern.hpp>
 
 
 struct PatternSolution{
