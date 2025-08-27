@@ -8,8 +8,14 @@
 
 class Random{
 public:
-    Random();
-    int rand_int(int a,int b);
+    Random(int seed);
+    inline int rand_int(int a,int b){
+        std::uniform_int_distribution<> dist(a, b);
+        return dist(gen);
+    }
+    inline double rand_double(){
+        return real_dist(gen);
+    }
     std::vector<int> rand_range(int a,int b);
     void set_seed(int seed);
     template<typename T>
@@ -31,4 +37,5 @@ public:
 
 private:
     std::mt19937 gen;
+    std::uniform_real_distribution<> real_dist;
 };

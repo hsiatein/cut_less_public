@@ -195,28 +195,28 @@ void Pattern::resize_force(Orient orient,int newSize){
     top->resize_force(orient,increment);
 }
 
-void Pattern::resize_or_merge(Orient orient,int newSize){
-    if(resize(orient,newSize)) return;
-    int newStructSize=newSize-top->size[orient].first-std::max(top->size[orient].second,0)-CUT_LOSS;
-    if(newStructSize<=0){
-        logger.log("resize_force");
-        resize_force(orient,newSize);
-        return;
-    }
-    logger.log("resize_merge");
-    // std::cout<<newStructSize<<std::endl;
-    resize(orient,top->size[orient].first+top->size[orient].second);
-    Size size=top->size;
-    size.set(orient,{CUT_LOSS,0});
-    Pattern cutLoss(PROBLEM_STRUCT,size.size[0],size.size[1],size.size[2],orient);
-    // logger.log_json("resize_or_merge",cutLoss.top->to_json());
-    // std::cout<<1<<std::endl;
-    merge(cutLoss,orient);
-    size.set(orient,{newStructSize,0});
-    Pattern newStruct(PROBLEM_STRUCT,size,orient,level);
-    newStruct.partsNum[PROBLEM_STRUCT]=1;
-    merge(newStruct,orient);
-}
+// void Pattern::resize_or_merge(Orient orient,int newSize){
+//     if(resize(orient,newSize)) return;
+//     int newStructSize=newSize-top->size[orient].first-std::max(top->size[orient].second,0)-CUT_LOSS;
+//     if(newStructSize<=0){
+//         logger.log("resize_force");
+//         resize_force(orient,newSize);
+//         return;
+//     }
+//     logger.log("resize_merge");
+//     // std::cout<<newStructSize<<std::endl;
+//     resize(orient,top->size[orient].first+top->size[orient].second);
+//     Size size=top->size;
+//     size.set(orient,{CUT_LOSS,0});
+//     Pattern cutLoss(PROBLEM_STRUCT,size.size[0],size.size[1],size.size[2],orient);
+//     // logger.log_json("resize_or_merge",cutLoss.top->to_json());
+//     // std::cout<<1<<std::endl;
+//     merge(cutLoss,orient);
+//     size.set(orient,{newStructSize,0});
+//     Pattern newStruct(PROBLEM_STRUCT,size,orient,level);
+//     newStruct.partsNum[PROBLEM_STRUCT]=1;
+//     merge(newStruct,orient);
+// }
 
 
 json Pattern::to_json() const{

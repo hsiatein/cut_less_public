@@ -15,7 +15,7 @@ struct PartsNumHasher {
 
 class PatternSelector{
 public:
-    PatternSelector(const Problem& problem,Timer timer);
+    PatternSelector(const Problem& problem,Timer timer,SolverConfig config);
     void partsnum_register(const StagePatterns& patterns,size_t max_stage);
     void partsnum_register(const StagePatterns& patterns);
     json to_json() const;
@@ -31,5 +31,6 @@ private:
     HighsModel model;
     Highs highs;
     Timer timer;
+    SolverConfig config;
 };
 

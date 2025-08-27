@@ -26,7 +26,7 @@ public:
     // std::vector<OrientMatchPair> collect_match_2D(const Pattern& other,const std::vector<OrientMatch>& match) const;
     bool resize(Orient orient,int newSize);
     void resize_force(Orient orient,int newSize);
-    void resize_or_merge(Orient orient,int newSize);
+    // void resize_or_merge(Orient orient,int newSize);
     void merge(Pattern& other,Orient orient);
     json to_json() const;
     Pattern& operator=(const Pattern& other);

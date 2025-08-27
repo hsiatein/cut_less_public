@@ -1,3 +1,4 @@
+#include "config.hpp"
 #include <pattern_node.hpp>
 #include <deque>
 
@@ -43,7 +44,7 @@ PatternNode::~PatternNode(){
     }
 }
 
-void PatternNode::split(int length,Orient orient){
+void PatternNode::split(int length,Orient orient,const SolverConfig& config){
     if(!is_struct()){
         std::cout<<1;
         throw cleanAndError("PatternNode::split : 不是结构不能分割");
@@ -54,8 +55,8 @@ void PatternNode::split(int length,Orient orient){
     Size s2=size;
     auto l=size[orient].first;
     s1.set(orient,{length,0});
-    cl.set(orient,{CUT_LOSS,0});
-    s2.set(orient,{l-CUT_LOSS-length,0});
+    cl.set(orient,{config.CUT_LOSS,0});
+    s2.set(orient,{l-config.CUT_LOSS-length,0});
     PatternNode* struct1=new PatternNode(s1);
     PatternNode* cutloss=new PatternNode(cl,next_cut_orient);
     PatternNode* struct2=new PatternNode(s2);
@@ -101,7 +102,7 @@ void PatternNode::set_pattern(size_t groupID,StageLocation stageLocation,const S
 
 }
 
-OptionCost PatternNode::evaluate(const Size& size,CutOrients cutOrients){
+OptionCost PatternNode::evaluate(const Size& size,CutOrients cutOrients,const SolverConfig& config){
     Size new_size=size;
     double result=0;
     double volume=std::pow(this->size.get_volume(),2);
@@ -118,7 +119,7 @@ OptionCost PatternNode::evaluate(const Size& size,CutOrients cutOrients){
             int l=new_size[orient].first;
             int l_s=structSize[orient].first;
             Size tempSize=structSize;
-            tempSize.set(orient,{l_s-CUT_LOSS-l,0});
+            tempSize.set(orient,{l_s-config.CUT_LOSS-l,0});
             structSize.set(orient,{l,0});
             result+=std::pow(tempSize.get_volume(),2)/volume;
         }
@@ -127,7 +128,7 @@ OptionCost PatternNode::evaluate(const Size& size,CutOrients cutOrients){
     return {3,result};
 }
 
-void PatternNode::insert(size_t groupID,StageLocation stageLocation,Size size,RotateOrient rotate,CutOrients cutOrients){
+void PatternNode::insert(size_t groupID,StageLocation stageLocation,Size size,RotateOrient rotate,CutOrients cutOrients,const SolverConfig& config){
     PatternNode* current=this;
     // std::cout<<to_string(cutOrients[0])<<to_string(cutOrients[1])<<to_string(cutOrients[2])<<"\n";
     // std::cout<<size.to_string()<<"\n";
@@ -137,7 +138,7 @@ void PatternNode::insert(size_t groupID,StageLocation stageLocation,Size size,Ro
         if(orient==Orient::NONE){
             break;
         }
-        current->split(size[orient].first,orient);
+        current->split(size[orient].first,orient,config);
         auto need_lift=current;
         current=current->childs[0];
         // if(current!=nullptr){

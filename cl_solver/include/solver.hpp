@@ -5,15 +5,14 @@
 #include <solution.hpp>
 
 
-struct Solver{
+class Solver{
 public:
-    Solver(Problem* problem);
+    Solver(Problem* problem,SolverConfig config);
     ~Solver();
     Solution solve();
     Solutions solve_multi_solution_multi_thread();
     Solutions solve_multi_solution_single_thread();
-    Problem* problem;    
-
 private:
-    
+    Problem* problem;
+    SolverConfig config;
 };

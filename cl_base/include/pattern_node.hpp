@@ -38,13 +38,13 @@ struct PatternNode{
     double cal_utilization_rate();
     bool can_contain(const Size& size) const;
     std::vector<CutOrients> match(const Size& size);
-    OptionCost evaluate(const Size& size,CutOrients cutOrients);
-    void insert(size_t groupID,StageLocation stageLocation,Size size,RotateOrient rotate,CutOrients cutOrients);
+    OptionCost evaluate(const Size& size,CutOrients cutOrients,const SolverConfig& config);
+    void insert(size_t groupID,StageLocation stageLocation,Size size,RotateOrient rotate,CutOrients cutOrients,const SolverConfig& config);
     PatternNode(Size size,Orient orient);
     PatternNode(Size size);
     PatternNode(size_t groupID,StageLocation stageLocation,Size size);
     PatternNode(const PatternNode& other);
-    void split(int length,Orient orient);
+    void split(int length,Orient orient,const SolverConfig& config);
     void reform();
     std::vector<PatternNode*> traverse();
     ~PatternNode();

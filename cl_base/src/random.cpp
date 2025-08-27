@@ -1,13 +1,9 @@
 #include <random.hpp>
 #include <config.hpp>
+#include <random>
 
-Random::Random():gen(RANDOM_SEED){
+Random::Random(int seed):gen(seed),real_dist(0,1){
 
-}
-
-int Random::rand_int(int a,int b){
-    std::uniform_int_distribution<> dist(a, b);
-    return dist(gen);
 }
 
 std::vector<int> Random::rand_range(int a,int b){

@@ -13,11 +13,12 @@ int main(int argc, char *argv[]){
     std::string config_path=program.get<std::string>("config");
 
     // 从json读取一个问题
-    if(config_path!="") read_config(config_path);
+    SolverConfig config;
+    if(config_path!="") config=read_config(config_path);
     Problem problem=Problem::from_json(problem_path);
 
     // 求解
-    Solver solver(&problem);
+    Solver solver(&problem,config);
     Solution solution=solver.solve();
 
     // 保存解为json

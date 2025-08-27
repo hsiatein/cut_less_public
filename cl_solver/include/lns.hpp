@@ -12,7 +12,7 @@ using DeleteOption=std::tuple<Blueprint*,PatternNode*,double>;
 
 class LNS{
 public:
-    LNS(const Problem* problem,Scheme scheme,const StagePatterns& patterns,Timer timer);
+    LNS(const Problem* problem,Scheme scheme,const StagePatterns& patterns,Timer timer,SolverConfig config);
     ~LNS();
     void run();
     
@@ -71,4 +71,6 @@ private:
     const StagePatterns& patterns;
     const static std::array<RotateOrient,6> rotates;
     Timer timer;
+    SolverConfig config;
+    Random randomEngine;
 };

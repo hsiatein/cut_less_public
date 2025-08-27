@@ -1,10 +1,11 @@
 #include <pattern_selector.hpp>
 
-PatternSelector::PatternSelector(const Problem& problem,Timer timer):problem(problem),patterns_size(0),timer(timer){
+PatternSelector::PatternSelector(const Problem& problem,Timer timer,SolverConfig config):problem(problem),patterns_size(0),timer(timer),config(config){
     model.lp_.sense_ = ObjSense::kMinimize;
     model.lp_.a_matrix_.format_ = MatrixFormat::kColwise;
     highs.setOptionValue("time_limit",timer.get_remain_time()/2000);
     highs.setOptionValue("output_flag",INFO_HIGHS_INFO);
+    highs.setOptionValue("random_seed",config.HIGHS_RANDOM_SEED);
 }
 void PatternSelector::partsnum_register(const StagePatterns& patterns){
     partsnum_register(patterns,patterns.patterns.size()+1);
@@ -34,7 +35,7 @@ void PatternSelector::partsnum_register(const StagePatterns& patterns,size_t max
     std::vector<double> row_upper_(parts_size);
     model.lp_.integrality_.resize(partsnums_size);
     for(size_t col=0;col<partsnums_size;++col){
-        col_cost_[col]=(double)(partsnums[col].get(problem.CUTLOSS))+AVERAGE_CUT_PUNISH;
+        col_cost_[col]=(double)(partsnums[col].get(problem.CUTLOSS))+config.AVERAGE_CUT_PUNISH;
         model.lp_.integrality_[col] = HighsVarType::kInteger;
 
     }

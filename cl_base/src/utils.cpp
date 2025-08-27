@@ -1,7 +1,7 @@
+#include "config.hpp"
 #include <utils.hpp>
 
 Logger logger("runtime");
-Random randomEngine;
 
 PartType::PartType(size_t id,int width,int length,int thick,bool rotatable):
 id(id),size({width,length,thick}),rotatable(rotatable){
@@ -165,39 +165,21 @@ json Size::size_to_json() const{
     return j;
 }
 
-void read_config(std::string path){
+SolverConfig read_config(std::string path){
     std::ifstream f(path);
     json config = json::parse(f);
-    read_config_json(config);
+    return read_config_json(config);
 }
 
-void read_config_json(json config){
+SolverConfig read_config_json(json config){
     // std::cout<<1<<std::endl;
     // logger.log_json("testConfig",config);
-    CUT_LOSS=config["CUT_LOSS"].get<int>();
-    TIME_LIMIT=config["TIME_LIMIT"].get<double>();
     std::vector<int> TEMP_REMAIN;
     // std::cout<<1<<std::endl;
     for(auto& remain:config["REMAIN"]){
         TEMP_REMAIN.push_back(remain.get<int>());
     }
     REMAIN=TEMP_REMAIN;
-    randomEngine.set_seed(config["RANDOM_SEED"].get<int>());
-    
-    MAX_STAGE=config["MAX_STAGE"].get<int>();
-    UTILIZATION_RATE_LIMIT=config["UTILIZATION_RATE_LIMIT"].get<double>();
-    MERGE_SIZE_CHECK=config["MERGE_SIZE_CHECK"].get<bool>();
-
-    AVERAGE_CUT_PUNISH=config["AVERAGE_CUT_PUNISH"].get<double>();
-
-    SHEET_BATCH_SIZE=config["SHEET_BATCH_SIZE"].get<int>();
-    SHEET_DISCARD_PROB=config["SHEET_DISCARD_PROB"].get<int>();
-    BLINK_PROB=config["BLINK_PROB"].get<int>();
-
-    DESTROY_RATE=config["DESTROY_RATE"].get<int>();
-    CLOSE_SHEET_PROB=config["CLOSE_SHEET_PROB"].get<int>();
-
-    SOLUTION_GET_BEST_PROB=config["SOLUTION_GET_BEST_PROB"].get<int>();
     
     VISUALIZE=config["VISUALIZE"].get<bool>();
     logger.enable=config["RUNTIME_LOG"].get<bool>();
@@ -209,6 +191,8 @@ void read_config_json(json config){
     INFO_HIGHS_INFO=info["HIGHS_INFO"].get<bool>();
     INFO_SELECT_RESULT=info["SELECT_RESULT"].get<bool>();
     INFO_OPERATION=info["OPERATION"].get<bool>();
+    
+    return SolverConfig(config);
 }
 
 std::string to_string(Orient orient){
@@ -225,6 +209,6 @@ std::string to_string(Orient orient){
     }
 }
 
-Timer::Timer():start(std::chrono::high_resolution_clock::now()){
+Timer::Timer(double time_limit):start(std::chrono::high_resolution_clock::now()),time_limit(time_limit){
 }
 

@@ -4,7 +4,8 @@
 const std::array<RotateOrient,6> LNS::rotates={RotateOrient::I,RotateOrient::X,RotateOrient::Y,RotateOrient::Z,RotateOrient::XY,RotateOrient::XZ};
 
 
-LNS::LNS(const Problem* problem,Scheme scheme,const StagePatterns& patterns,Timer timer):lastProcess(nullptr),scheme(scheme),problem(problem),sheetsNum(problem->sheetsNum),solution(new PatternSolution(scheme)),patterns(patterns),timer(timer){
+LNS::LNS(const Problem* problem,Scheme scheme,const StagePatterns& patterns,Timer timer,SolverConfig config)
+:lastProcess(nullptr),scheme(scheme),problem(problem),sheetsNum(problem->sheetsNum),solution(new PatternSolution(scheme)),patterns(patterns),timer(timer),config(config),randomEngine(config.LNS_RANDOM_SEED){
 
 }
 
@@ -61,12 +62,8 @@ void LNS::replace_solution(){
 
 void LNS::run(){
     int n=0;
-    std::chrono::time_point start = std::chrono::high_resolution_clock::now();
-    while(!timer.is_overtime()){
+    while(!timer.is_overtime(config.TIME_LIMIT)){
         Process process;
-        auto end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double, std::milli> duration = end - start;
-        if(duration.count()>TIME_LIMIT) break;
 
         recreate(process);
 
@@ -108,14 +105,14 @@ void LNS::ruin(){
     while(true){
         std::vector<DeleteOption> options=get_deletables();
         if(init_option_num==0) init_option_num=options.size();
-        if(init_option_num*(1-(double)DESTROY_RATE/100)>=options.size()) break;
+        if(init_option_num*(1-config.DESTROY_RATE)>=options.size()) break;
         DeleteOption option=select_delete_option(options);
         delete_node(option);
         n++;
         // if(n==4) break;
     }
 
-    if(randomEngine.rand_int(0,99)<CLOSE_SHEET_PROB) close_sheets();
+    if(randomEngine.rand_double()<config.CLOSE_SHEET_PROB) close_sheets();
 }
 
 void LNS::ruin_all(){
@@ -125,7 +122,7 @@ void LNS::ruin_all(){
 
 void LNS::recreate(Process& process){
     // std::cout<<"sheet num: "<<solution->blueprints.size()<<std::endl;
-    while(!timer.is_overtime()){
+    while(!timer.is_overtime(config.TIME_LIMIT)){
         // 选择一批模式
         auto [groupID,group]=get_next_group();
         if(group.empty()) break;
@@ -182,7 +179,7 @@ void LNS::recreate(Process& process){
 }
 
 std::vector<std::pair<StageLocation,Size>> LNS::get_batch_patterns(const std::vector<StageLocation>& group){
-    std::vector<StageLocation> stageLocations=randomEngine.rand_batch_elements<StageLocation>(group,PATTERN_BATCH_SIZE);
+    std::vector<StageLocation> stageLocations=randomEngine.rand_batch_elements<StageLocation>(group,config.PATTERN_BATCH_SIZE);
     std::vector<std::pair<StageLocation,Size>> result;
     for(auto stageLocation:stageLocations){
         result.emplace_back(stageLocation,get_pattern(stageLocation).top->size);
@@ -216,7 +213,7 @@ std::vector<Option> LNS::generate_options(size_t groupID,StageLocation stageLoca
                 Size new_size=size.rotate(rotate);
                 std::vector<CutOrients> cutOrients=patternNode->match(new_size);
                 for(auto cutOrient:cutOrients){
-                    OptionCost cost=patternNode->evaluate(new_size,cutOrient);
+                    OptionCost cost=patternNode->evaluate(new_size,cutOrient,config);
                     // Option option(blueprint,patternNode,stageLocation,new_size,rotate,cutOrient,cost);
                     result.emplace_back(blueprint,patternNode,groupID,stageLocation,new_size,rotate,cutOrient,cost);
                 }
@@ -234,7 +231,7 @@ std::vector<Option> LNS::generate_options(size_t groupID,StageLocation stageLoca
             Size new_size=size.rotate(rotate);
             std::vector<CutOrients> cutOrients=patternNode->match(new_size);
             for(auto cutOrient:cutOrients){
-                OptionCost cost=patternNode->evaluate(new_size,cutOrient);
+                OptionCost cost=patternNode->evaluate(new_size,cutOrient,config);
                 result.emplace_back(blueprint,patternNode,groupID,stageLocation,new_size,rotate,cutOrient,cost);
             }
         }
@@ -243,7 +240,7 @@ std::vector<Option> LNS::generate_options(size_t groupID,StageLocation stageLoca
 }
 
 Option LNS::select_option(const std::vector<Option>& options){
-    if(randomEngine.rand_int(0,99)<BLINK_PROB){
+    if(randomEngine.rand_double()<config.BLINK_PROB){
         return randomEngine.rand_element<Option>(options);
     }
     Option best=options[0];
@@ -275,9 +272,9 @@ std::vector<Blueprint*> LNS::open_sheets(const std::vector<std::pair<StageLocati
                 break;
             }
         }
-        if(new_sheets.size()>=(SHEET_BATCH_SIZE*100)/SHEET_DISCARD_PROB) break;
+        if(new_sheets.size()>=((double)config.SHEET_BATCH_SIZE)/(1-config.SHEET_DISCARD_PROB)) break;
     }
-    auto sheets=randomEngine.rand_batch_elements<SheetType>(new_sheets,SHEET_BATCH_SIZE);
+    auto sheets=randomEngine.rand_batch_elements<SheetType>(new_sheets,config.SHEET_BATCH_SIZE);
     for(auto sheet:sheets){
         new_blueprints.push_back(new Blueprint(sheet));
     }
@@ -315,7 +312,7 @@ void LNS::close_sheets(){
 void LNS::insert(Option option){
     auto [blueprint,patternNode,groupID,stageLocation,size,rotate,cutOrients,optionCost]=option;
     blueprint->emptyStructs.clear();
-    patternNode->insert(groupID,stageLocation,size,rotate,cutOrients);
+    patternNode->insert(groupID,stageLocation,size,rotate,cutOrients,config);
 }
 
 

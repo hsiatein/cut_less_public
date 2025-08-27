@@ -1,3 +1,4 @@
+#include "config.hpp"
 #include <solver.hpp>
 #include <argparse/argparse.hpp>
 
@@ -16,13 +17,14 @@ int main(int argc, char *argv[]){
     std::string name=program.get<std::string>("name");
 
     // 从json读取一个问题
+    SolverConfig config;
     if(output_path!="") OUTPUT_DIR=output_path;
-    if(config_path!="") read_config(config_path);
+    if(config_path!="") config=read_config(config_path);
     json problem_json=json::parse(problem_string);
     Problem problem(problem_json);
 
     // 求解
-    Solver solver(&problem);
+    Solver solver(&problem,config);
     Solution solution=solver.solve();
 
     // 保存解为json

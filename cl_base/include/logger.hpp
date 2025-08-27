@@ -1,10 +1,6 @@
 #pragma once
 #include <fstream>
-#include <nlohmann/json.hpp>
 #include <config.hpp>
-
-
-using json = nlohmann::json;
 
 class Logger{
 public:

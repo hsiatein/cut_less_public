@@ -1,6 +1,9 @@
+#include "utils.hpp"
 #include <pattern_merger.hpp>
 
-PatternMerger::PatternMerger(Problem* problem,Timer timer):problem(problem),mergeChecker(this->problem),timer(timer){
+PatternMerger::PatternMerger(Problem* problem,Timer timer,SolverConfig config)
+:problem(problem),mergeChecker(this->problem),timer(timer),config(config){
+    timer.print(Color::PURPLE,"刀缝宽度",config.CUT_LOSS,", 时间限制",config.TIME_LIMIT,"\n");
 }
 
 // PatternMerger::PatternMerger(Problem* problem,MergeChecker mergeChecker):problem(problem),mergeChecker(mergeChecker){
@@ -21,7 +24,7 @@ StagePatterns PatternMerger::generate_patterns(const int level) const{
         patterns.new_stage(pattern_stage);
         ExistChecker existChecker;
         // 判断是否离开模式生成循环
-        if(pattern_stage>MAX_STAGE) break;;
+        if(pattern_stage>config.MAX_STAGE) break;;
         int check_start=(pattern_stage+1)/2;
         bool exit=true;
         for(int i=check_start;i<pattern_stage;++i){
@@ -48,7 +51,7 @@ StagePatterns PatternMerger::generate_patterns(const int level) const{
                     if(!mergeChecker.parts_num_fit(left.partsNum,right.partsNum)) continue;
                     logger.log(left.partsNum.to_json().dump()+"   "+right.partsNum.to_json().dump()+" can merge");
                     std::vector<Pattern> generatedPatterns;
-                    if(MERGE_SIZE_CHECK){
+                    if(config.MERGE_SIZE_CHECK){
                         generatedPatterns=generate_merged_pattern_with_check(left,right);
                     }
                     else{
@@ -91,7 +94,30 @@ std::vector<std::pair<size_t,size_t>> PatternMerger::get_subpattern_pair(size_t 
     return result;
 }
 
-std::vector<Pattern> PatternMerger::generate_merged_pattern(const Pattern& p1,const Pattern& p2){
+void PatternMerger::resize_or_merge(Pattern& pattern,Orient orient,int newSize) const{
+    if(pattern.resize(orient,newSize)) return;
+    int newStructSize=newSize-pattern.top->size[orient].first-std::max(pattern.top->size[orient].second,0)-config.CUT_LOSS;
+    if(newStructSize<=0){
+        logger.log("resize_force");
+        pattern.resize_force(orient,newSize);
+        return;
+    }
+    logger.log("resize_merge");
+    // std::cout<<newStructSize<<std::endl;
+    pattern.resize(orient,pattern.top->size[orient].first+pattern.top->size[orient].second);
+    Size size=pattern.top->size;
+    size.set(orient,{config.CUT_LOSS,0});
+    Pattern cutLoss(pattern.PROBLEM_STRUCT,size.size[0],size.size[1],size.size[2],orient);
+    // logger.log_json("resize_or_merge",cutLoss.top->to_json());
+    // std::cout<<1<<std::endl;
+    pattern.merge(cutLoss,orient);
+    size.set(orient,{newStructSize,0});
+    Pattern newStruct(pattern.PROBLEM_STRUCT,size,orient,pattern.level);
+    newStruct.partsNum[pattern.PROBLEM_STRUCT]=1;
+    pattern.merge(newStruct,orient);
+}
+
+std::vector<Pattern> PatternMerger::generate_merged_pattern(const Pattern& p1,const Pattern& p2) const{
     std::vector<Pattern> patterns;
     std::vector<OrientMatch> matches=p1.collect_match_1D(p2);
     std::vector<RotateOrientMatch> rotateOrientmatches=matches_to_rotateOrientMatches(matches);
@@ -102,8 +128,8 @@ std::vector<Pattern> PatternMerger::generate_merged_pattern(const Pattern& p1,co
         pattern_left.resize(Orient::X,std::get<2>(match));
         pattern_right.resize(Orient::X,std::get<2>(match));
         int newSizeZ=std::max(pattern_left.top->size[Orient::Z].first,pattern_right.top->size[Orient::Z].first);
-        pattern_left.resize_or_merge(Orient::Z,newSizeZ);
-        pattern_right.resize_or_merge(Orient::Z,newSizeZ);
+        resize_or_merge(pattern_left,Orient::Z,newSizeZ);
+        resize_or_merge(pattern_right,Orient::Z,newSizeZ);
         logger.log(pattern_left.to_string());
         logger.log(pattern_right.to_string());
 
@@ -115,11 +141,11 @@ std::vector<Pattern> PatternMerger::generate_merged_pattern(const Pattern& p1,co
         logger.log(std::to_string(partsVolume));
         logger.log(std::to_string(newVolume));
         logger.log(std::to_string(partsVolume/newVolume));
-        if(partsVolume/newVolume<UTILIZATION_RATE_LIMIT) continue;
+        if(partsVolume/newVolume<config.UTILIZATION_RATE_LIMIT) continue;
 
         // 达到利用率界限的模式继续生成
 
-        Pattern cutLoss(pattern_left.PROBLEM_STRUCT,pattern_left.top->size[Orient::X].first,CUT_LOSS,pattern_left.top->size[Orient::Z].first,Orient::Y);
+        Pattern cutLoss(pattern_left.PROBLEM_STRUCT,pattern_left.top->size[Orient::X].first,config.CUT_LOSS,pattern_left.top->size[Orient::Z].first,Orient::Y);
         logger.log(pattern_left.to_string());
         logger.log(pattern_right.to_string());
         pattern_left.merge(cutLoss,Orient::Y);
@@ -142,8 +168,8 @@ std::vector<Pattern> PatternMerger::generate_merged_pattern_with_check(const Pat
         pattern_left.resize(Orient::X,std::get<2>(match));
         pattern_right.resize(Orient::X,std::get<2>(match));
         const int newSizeZ=std::max(pattern_left.top->size[Orient::Z].first,pattern_right.top->size[Orient::Z].first);
-        pattern_left.resize_or_merge(Orient::Z,newSizeZ);
-        pattern_right.resize_or_merge(Orient::Z,newSizeZ);
+        resize_or_merge(pattern_left,Orient::Z,newSizeZ);
+        resize_or_merge(pattern_right,Orient::Z,newSizeZ);
         logger.log(pattern_left.to_string());
         logger.log(pattern_right.to_string());
 
@@ -154,12 +180,12 @@ std::vector<Pattern> PatternMerger::generate_merged_pattern_with_check(const Pat
         logger.log(std::to_string(partsVolume));
         logger.log(std::to_string(newVolume));
         logger.log(std::to_string(partsVolume/newVolume));
-        if(partsVolume/newVolume<UTILIZATION_RATE_LIMIT) continue;
+        if(partsVolume/newVolume<config.UTILIZATION_RATE_LIMIT) continue;
         if(!mergeChecker.size_fit({std::get<2>(match),newSizeZ,pattern_left.top->size[Orient::Y].first+pattern_right.top->size[Orient::Y].first})) continue;
         
         // 达到利用率界限的模式继续生成
 
-        Pattern cutLoss(pattern_left.PROBLEM_STRUCT,pattern_left.top->size[Orient::X].first,CUT_LOSS,pattern_left.top->size[Orient::Z].first,Orient::Y);
+        Pattern cutLoss(pattern_left.PROBLEM_STRUCT,pattern_left.top->size[Orient::X].first,config.CUT_LOSS,pattern_left.top->size[Orient::Z].first,Orient::Y);
         logger.log(pattern_left.to_string());
         logger.log(pattern_right.to_string());
         pattern_left.merge(cutLoss,Orient::Y);

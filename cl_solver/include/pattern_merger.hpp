@@ -9,14 +9,16 @@ struct PatternMerger
     Problem* problem;
     MergeChecker mergeChecker;
     Timer timer;
-    explicit PatternMerger(Problem* problem,Timer timer);
+    SolverConfig config;
+    explicit PatternMerger(Problem* problem,Timer timer,SolverConfig config);
     // PatternMerger(Problem* problem,MergeChecker mergeChecker);
 
     /// @brief 根据配置文件，生成所有满足要求的模式
     /// @param level 生成的级别，越高级别余量越多
     /// @return 生成的所有模式，按照stage(每个模式包含的零件数量)来存储
     [[nodiscard]] StagePatterns generate_patterns(int level=0) const;
-    static std::vector<Pattern> generate_merged_pattern(const Pattern& p1,const Pattern& p2);
+    void resize_or_merge(Pattern& pattern,Orient orient,int newSize) const;
+    [[nodiscard]] std::vector<Pattern> generate_merged_pattern(const Pattern& p1,const Pattern& p2) const;
     [[nodiscard]] std::vector<Pattern> generate_merged_pattern_with_check(const Pattern& p1,const Pattern& p2) const;
     static std::vector<RotateOrientMatch> matches_to_rotateOrientMatches(const std::vector<OrientMatch>& matches);
     static RotateOrientPair regularizeRotate(Orient orient);

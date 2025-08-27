@@ -136,10 +136,9 @@ struct PartsNum{
 std::runtime_error cleanAndError(std::string exception);
 
 extern Logger logger;
-extern Random randomEngine;
 
-void read_config(std::string path);
-void read_config_json(json config);
+SolverConfig read_config(std::string path);
+SolverConfig read_config_json(json config);
 
 using StageLocation=std::pair<size_t,size_t>;
 using PatternGroup=std::tuple<PartsNum,std::vector<StageLocation>,int>;
@@ -151,11 +150,11 @@ std::string to_string(Orient orient);
 
 struct Timer{
 public:
-    Timer();
+    Timer(double time_limit);
     /// @brief 检查是否超时
     /// @param limit 时间限制
     /// @return 是否超时
-    inline bool is_overtime(double limit=TIME_LIMIT) const{
+    inline bool is_overtime(double limit) const{
         return get_runtime()>=limit;
     }
 
@@ -169,7 +168,7 @@ public:
     /// @brief 获取剩余时间
     /// @return 剩余时间（ms）
     inline double get_remain_time() const{
-        return TIME_LIMIT-get_runtime();
+        return time_limit-get_runtime();
     }
 
     /// @brief 根据颜色打印字符串
@@ -222,6 +221,8 @@ private:
     std::chrono::time_point<std::chrono::system_clock, std::chrono::system_clock::duration> start;
     #endif
     #endif
+
+    double time_limit;
 
     template <typename T>
     void print_str(const T& str) const{

@@ -13,13 +13,14 @@ int main(int argc, char *argv[]){
     std::string config_path=program.get<std::string>("config");
 
     // 从json读取一个问题
-    if(config_path!="") read_config(config_path);
+    SolverConfig config;
+    if(config_path!="") config=read_config(config_path);
     Problem problem=Problem::from_json(problem_path);
 
     // 求解 & 计时
     auto start = std::chrono::high_resolution_clock::now();
 
-    Solver solver(&problem);
+    Solver solver(&problem,config);
     auto solutions=solver.solve_multi_solution_multi_thread();
 
     auto end = std::chrono::high_resolution_clock::now();
