@@ -225,7 +225,8 @@ public:
         print(color,std::fixed,std::setprecision(3),"[",get_runtime()," ms]");
     }
 private:
-    std::chrono::_V2::system_clock::time_point start;
+    // std::chrono::_V2::system_clock::time_point start;
+    std::chrono::time_point<std::chrono::system_clock, std::chrono::system_clock::duration> start;
 
     template <typename T>
     void print_str(const T& str) const{

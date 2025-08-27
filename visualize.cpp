@@ -1,4 +1,4 @@
-#include "solver.hpp"
+#include <solver.hpp>
 #include <visualizer.hpp>
 #include <chrono>
 

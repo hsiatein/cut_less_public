@@ -1,5 +1,5 @@
 [package]
-project = "cut_less_copy"
+project = "cut_less"
 version = "0.1.0"
 cmake_minimum_required = "3.12"
 cpp_standard = "17"

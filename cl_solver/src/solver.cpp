@@ -1,5 +1,5 @@
 #include <solver.hpp>
-
+#include <thread>
 
 Solver::Solver(Problem* problem):problem(problem){
 

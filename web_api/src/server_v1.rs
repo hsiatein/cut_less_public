@@ -1,6 +1,7 @@
 use warp::Filter;
 use serde::{Deserialize, Serialize};
-use std::process::{Command, Stdio};
+use std::process::{Stdio};
+use tokio::process::{Command};
 use std::env;
 use std::fs;
 use cl_web_api::CliError;
@@ -46,10 +47,11 @@ async fn handle_request(data: RequestData) -> Result<warp::reply::Json, warp::Re
         .arg("-o").arg(output_path.to_str().unwrap())
         .arg("-p").arg(serde_json::to_string(&data).unwrap())
         .stdout(Stdio::piped())
-        .output();
+        .output().await;
 
     match output {
         Ok(output) if output.status.success() => {
+            println!("{}",str::from_utf8(&output.stdout).unwrap());
             let solution  = fs::read_to_string(solution_path);
             if let Err(e) = solution{
                 return Err(warp::reject::custom(CliError(e.to_string())));

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(cut_less_copy CXX)
+project(cut_less CXX)
 set(PROJECT_VERSION 0.1.0)
 if (MSVC)
     add_compile_options(/utf-8)
