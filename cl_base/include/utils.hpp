@@ -4,7 +4,6 @@
 #include <tuple>
 #include <iostream>
 #include <logger.hpp>
-#include <hyperparameters.hpp>
 #include <random.hpp>
 
 

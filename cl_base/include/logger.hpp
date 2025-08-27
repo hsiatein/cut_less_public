@@ -1,7 +1,7 @@
 #pragma once
 #include <fstream>
 #include <nlohmann/json.hpp>
-#include <hyperparameters.hpp>
+#include <config.hpp>
 
 
 using json = nlohmann::json;

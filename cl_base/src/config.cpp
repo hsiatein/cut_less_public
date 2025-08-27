@@ -1,4 +1,4 @@
-#include <hyperparameters.hpp>
+#include <config.hpp>
 
 int CUT_LOSS=30;
 double TIME_LIMIT=1000;
