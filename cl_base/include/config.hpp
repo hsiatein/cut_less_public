@@ -55,8 +55,24 @@ struct SolverConfig{
 
     SolverConfig();
     SolverConfig(json config);
+    inline std::string general_to_string(){
+        std::string result="<General>\nTIME_LIMIT: "+std::to_string(TIME_LIMIT)+", CUT_LOSS: "+std::to_string(CUT_LOSS);
+        return result;
+    }
+    inline std::string merger_to_string(){
+        std::string result="<Merger>\nMAX_STAGE: "+std::to_string(MAX_STAGE)+", UTILIZATION_RATE_LIMIT: "+std::to_string(UTILIZATION_RATE_LIMIT)+", MERGE_SIZE_CHECK: "+(MERGE_SIZE_CHECK?"true":"false");
+        return result;
+    }
+    inline std::string selector_to_string(){
+        std::string result="<Selector>\nAVERAGE_CUT_PUNISH: "+std::to_string(AVERAGE_CUT_PUNISH)+", HIGHS_RANDOM_SEED: "+std::to_string(HIGHS_RANDOM_SEED);
+        return result;
+    }
+    inline std::string lns_to_string(){
+        std::string result="<LNS>\nLNS_RANDOM_SEED: "+std::to_string(LNS_RANDOM_SEED)+", PATTERN_BATCH_SIZE: "+std::to_string(PATTERN_BATCH_SIZE)+", SHEET_BATCH_SIZE: "+std::to_string(SHEET_BATCH_SIZE)+", SHEET_DISCARD_PROB: "+std::to_string(SHEET_DISCARD_PROB)+"\nBLINK_PROB: "+std::to_string(BLINK_PROB)+", DESTROY_RATE: "+std::to_string(DESTROY_RATE)+", CLOSE_SHEET_PROB: "+std::to_string(CLOSE_SHEET_PROB)+", SOLUTION_GET_BEST_PROB: "+std::to_string(SOLUTION_GET_BEST_PROB);
+        return result;
+    }
     inline std::string to_string(){
-        std::string result="<General>\nTIME_LIMIT: "+std::to_string(TIME_LIMIT)+", CUT_LOSS: "+std::to_string(CUT_LOSS)+"\n<Merger>\nMAX_STAGE: "+std::to_string(MAX_STAGE)+", UTILIZATION_RATE_LIMIT: "+std::to_string(UTILIZATION_RATE_LIMIT)+", MERGE_SIZE_CHECK: "+(MERGE_SIZE_CHECK?"true":"false")+"\n<Selector>\nAVERAGE_CUT_PUNISH: "+std::to_string(AVERAGE_CUT_PUNISH)+"\n<LNS>\nPATTERN_BATCH_SIZE: "+std::to_string(PATTERN_BATCH_SIZE)+", SHEET_BATCH_SIZE: "+std::to_string(SHEET_BATCH_SIZE)+", SHEET_DISCARD_PROB: "+std::to_string(SHEET_DISCARD_PROB)+", BLINK_PROB: "+std::to_string(BLINK_PROB)+"\nDESTROY_RATE: "+std::to_string(DESTROY_RATE)+", CLOSE_SHEET_PROB: "+std::to_string(CLOSE_SHEET_PROB)+", SOLUTION_GET_BEST_PROB: "+std::to_string(SOLUTION_GET_BEST_PROB);
+        std::string result=general_to_string()+"\n"+merger_to_string()+"\n"+selector_to_string()+"\n"+lns_to_string()+"\n";
         return result;
     }
     static SolverConfig read_config(std::string path);

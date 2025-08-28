@@ -1,6 +1,9 @@
 #include <pattern_selector.hpp>
 
 PatternSelector::PatternSelector(const Problem& problem,Timer timer,SolverConfig config):problem(problem),patterns_size(0),timer(timer),config(config){
+    timer.print_time(Color::GREEN);
+    timer.print(Color::BLUE,"\n模式选择开始\n");
+    timer.print(Color::PURPLE,config.selector_to_string(),"\n");
     model.lp_.sense_ = ObjSense::kMinimize;
     model.lp_.a_matrix_.format_ = MatrixFormat::kColwise;
     highs.setOptionValue("time_limit",timer.get_remain_time()/2000);

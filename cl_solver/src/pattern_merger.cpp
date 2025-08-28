@@ -3,7 +3,9 @@
 
 PatternMerger::PatternMerger(Problem* problem,Timer timer,SolverConfig config)
 :problem(problem),mergeChecker(this->problem),timer(timer),config(config){
-    timer.print(Color::PURPLE,"刀缝宽度",config.CUT_LOSS,", 时间限制",config.TIME_LIMIT,"\n");
+    timer.print_time(Color::GREEN);
+    timer.print(Color::BLUE,"\n模式生成开始\n");
+    timer.print(Color::PURPLE,config.merger_to_string(),"\n");
 }
 
 // PatternMerger::PatternMerger(Problem* problem,MergeChecker mergeChecker):problem(problem),mergeChecker(mergeChecker){

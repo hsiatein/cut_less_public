@@ -3,7 +3,6 @@
 #include <thread>
 
 Solver::Solver(Problem* problem,SolverConfig config):problem(problem),config(config){
-
 }
 
 Solver::~Solver(){
@@ -14,6 +13,7 @@ Solver::~Solver(){
 Solution Solver::solve(){
     Timer timer(config.TIME_LIMIT);
     timer.print(Color::YELLOW,"[start solving]\n");
+    timer.print(Color::PURPLE,config.general_to_string(),"\n");
     Solution result;
 
     PatternMerger patternMerger(problem,timer,config);

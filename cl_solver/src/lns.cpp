@@ -6,7 +6,9 @@ const std::array<RotateOrient,6> LNS::rotates={RotateOrient::I,RotateOrient::X,R
 
 LNS::LNS(const Problem* problem,Scheme scheme,const StagePatterns& patterns,Timer timer,SolverConfig config)
 :lastProcess(nullptr),scheme(scheme),problem(problem),sheetsNum(problem->sheetsNum),solution(new PatternSolution(scheme)),patterns(patterns),timer(timer),config(config),randomEngine(config.LNS_RANDOM_SEED){
-
+    timer.print_time(Color::GREEN);
+    timer.print(Color::BLUE,"\nLNS开始\n");
+    timer.print(Color::PURPLE,config.lns_to_string(),"\n");
 }
 
 LNS::~LNS(){
