@@ -135,8 +135,6 @@ struct PartsNum{
 
 std::runtime_error cleanAndError(std::string exception);
 
-extern Logger logger;
-
 SolverConfig read_config(std::string path);
 SolverConfig read_config_json(json config);
 

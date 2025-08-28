@@ -137,11 +137,9 @@ double Pattern::get_parts_volume() const{
         switch (u->getType())
         {
         case NodeType::PART:
-            if(u->size.get_volume()<0) logger.log("PART");
             result=result+u->size.get_volume();
             break;
         case NodeType::CUTLOSS:
-            if(u->size.get_volume()<0) logger.log("CUTLOSS");
             result=result+u->size.get_volume();
             break;
         default:

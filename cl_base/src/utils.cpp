@@ -1,8 +1,6 @@
 #include "config.hpp"
 #include <utils.hpp>
 
-Logger logger("runtime");
-
 PartType::PartType(size_t id,int width,int length,int thick,bool rotatable):
 id(id),size({width,length,thick}),rotatable(rotatable){
 }
@@ -182,15 +180,16 @@ SolverConfig read_config_json(json config){
     REMAIN=TEMP_REMAIN;
     
     VISUALIZE=config["VISUALIZE"].get<bool>();
-    logger.enable=config["RUNTIME_LOG"].get<bool>();
     std::filesystem::path dir = OUTPUT_DIR;
     if (!std::filesystem::exists(dir)) std::filesystem::create_directory(dir);
     // OUTPUT_DIR=config["output_dir"];
-    auto info=config["INFO"];
-    INFO_GENERATE_RESULT=info["GENERATE_RESULT"].get<bool>();
-    INFO_HIGHS_INFO=info["HIGHS_INFO"].get<bool>();
-    INFO_SELECT_RESULT=info["SELECT_RESULT"].get<bool>();
-    INFO_OPERATION=info["OPERATION"].get<bool>();
+    if(config["RUNTIME_LOG"].get<bool>()){
+        auto info=config["INFO"];
+        INFO_GENERATE_RESULT=info["GENERATE_RESULT"].get<bool>();
+        INFO_HIGHS_INFO=info["HIGHS_INFO"].get<bool>();
+        INFO_SELECT_RESULT=info["SELECT_RESULT"].get<bool>();
+        INFO_OPERATION=info["OPERATION"].get<bool>();
+    }
     
     return SolverConfig(config);
 }

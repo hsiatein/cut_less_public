@@ -49,7 +49,6 @@ StagePatterns PatternMerger::generate_patterns(const int level) const{
                 for(const auto& right:patterns[rightStage]){
                     if(timer.is_overtime(time_limit)) break;
                     if(!mergeChecker.parts_num_fit(left.partsNum,right.partsNum)) continue;
-                    logger.log(left.partsNum.to_json().dump()+"   "+right.partsNum.to_json().dump()+" can merge");
                     std::vector<Pattern> generatedPatterns;
                     if(config.MERGE_SIZE_CHECK){
                         generatedPatterns=generate_merged_pattern_with_check(left,right);
@@ -57,7 +56,6 @@ StagePatterns PatternMerger::generate_patterns(const int level) const{
                     else{
                         generatedPatterns=generate_merged_pattern(left,right);
                     }
-                    logger.log(std::to_string(generatedPatterns.size()));
                     for(auto& pattern:generatedPatterns){
                         if(existChecker.exist(pattern)) continue;
                         patterns[pattern_stage].push_back(std::move(pattern));
@@ -98,11 +96,9 @@ void PatternMerger::resize_or_merge(Pattern& pattern,Orient orient,int newSize) 
     if(pattern.resize(orient,newSize)) return;
     int newStructSize=newSize-pattern.top->size[orient].first-std::max(pattern.top->size[orient].second,0)-config.CUT_LOSS;
     if(newStructSize<=0){
-        logger.log("resize_force");
         pattern.resize_force(orient,newSize);
         return;
     }
-    logger.log("resize_merge");
     // std::cout<<newStructSize<<std::endl;
     pattern.resize(orient,pattern.top->size[orient].first+pattern.top->size[orient].second);
     Size size=pattern.top->size;
@@ -130,27 +126,18 @@ std::vector<Pattern> PatternMerger::generate_merged_pattern(const Pattern& p1,co
         int newSizeZ=std::max(pattern_left.top->size[Orient::Z].first,pattern_right.top->size[Orient::Z].first);
         resize_or_merge(pattern_left,Orient::Z,newSizeZ);
         resize_or_merge(pattern_right,Orient::Z,newSizeZ);
-        logger.log(pattern_left.to_string());
-        logger.log(pattern_right.to_string());
 
         // 判断是否达到利用率界限
 
         double newVolume=pattern_left.top->size.get_volume()+pattern_right.top->size.get_volume();
         // double newVolume=std::get<2>(match)*newSizeZ*(pattern_left.top->size[Orient::Y].first+pattern_right.top->size[Orient::Y].first);
         double partsVolume=pattern_left.get_parts_volume()+pattern_right.get_parts_volume();
-        logger.log(std::to_string(partsVolume));
-        logger.log(std::to_string(newVolume));
-        logger.log(std::to_string(partsVolume/newVolume));
         if(partsVolume/newVolume<config.UTILIZATION_RATE_LIMIT) continue;
 
         // 达到利用率界限的模式继续生成
 
         Pattern cutLoss(pattern_left.PROBLEM_STRUCT,pattern_left.top->size[Orient::X].first,config.CUT_LOSS,pattern_left.top->size[Orient::Z].first,Orient::Y);
-        logger.log(pattern_left.to_string());
-        logger.log(pattern_right.to_string());
         pattern_left.merge(cutLoss,Orient::Y);
-        logger.log(pattern_left.to_string());
-        logger.log(pattern_right.to_string());
         pattern_left.merge(pattern_right,Orient::Y);
         patterns.push_back(std::move(pattern_left));
     }
@@ -170,27 +157,18 @@ std::vector<Pattern> PatternMerger::generate_merged_pattern_with_check(const Pat
         const int newSizeZ=std::max(pattern_left.top->size[Orient::Z].first,pattern_right.top->size[Orient::Z].first);
         resize_or_merge(pattern_left,Orient::Z,newSizeZ);
         resize_or_merge(pattern_right,Orient::Z,newSizeZ);
-        logger.log(pattern_left.to_string());
-        logger.log(pattern_right.to_string());
 
         // 判断是否达到利用率界限
 
         const double newVolume=pattern_left.top->size.get_volume()+pattern_right.top->size.get_volume();
         const double partsVolume=pattern_left.get_parts_volume()+pattern_right.get_parts_volume();
-        logger.log(std::to_string(partsVolume));
-        logger.log(std::to_string(newVolume));
-        logger.log(std::to_string(partsVolume/newVolume));
         if(partsVolume/newVolume<config.UTILIZATION_RATE_LIMIT) continue;
         if(!mergeChecker.size_fit({std::get<2>(match),newSizeZ,pattern_left.top->size[Orient::Y].first+pattern_right.top->size[Orient::Y].first})) continue;
         
         // 达到利用率界限的模式继续生成
 
         Pattern cutLoss(pattern_left.PROBLEM_STRUCT,pattern_left.top->size[Orient::X].first,config.CUT_LOSS,pattern_left.top->size[Orient::Z].first,Orient::Y);
-        logger.log(pattern_left.to_string());
-        logger.log(pattern_right.to_string());
         pattern_left.merge(cutLoss,Orient::Y);
-        logger.log(pattern_left.to_string());
-        logger.log(pattern_right.to_string());
         pattern_left.merge(pattern_right,Orient::Y);
         patterns.push_back(std::move(pattern_left));
     }

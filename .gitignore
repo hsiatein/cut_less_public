@@ -9,3 +9,4 @@ stk_pllist.xlsx
 .idea
 web_api/target
 binaries/
+release/
