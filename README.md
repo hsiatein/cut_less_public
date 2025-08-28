@@ -12,7 +12,7 @@
 * 正在尝试支持Windows系统，Ubuntu22.04和MacOS均可使用，其余系统暂未测试。
 * 以下构建方法需要CMake，Git。
 
-### Installing
+### Build
 
 克隆此仓库
 ```
@@ -41,6 +41,21 @@ ninja -j4
 * cut_less_copy/assets/test_probelms.json是可以接受的数据格式
 * json格式的解默认输出到当前工作目录./output/文件夹，解文件名为main : solution.json
 * 无论配置文件还是问题或解的json，其中尺寸数值均为1对应0.1mm，qty为数量
+
+## Docker
+
+### Build and Pack
+打包成docker镜像，同时.tar格式的镜像会保存在docker目录
+```
+bash docker/pack.sh
+```
+运行容器，可以访问6002接口发送请求
+```
+docker run -p 6002:6002 cut_less:latest
+```
+
+### WEB API Docs
+[接口文档](https://bggvbrqt9f.apifox.cn)
 
 ## Authors
 

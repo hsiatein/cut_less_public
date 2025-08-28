@@ -1,1 +1,0 @@
-docker run -p 6002:6002 cut_less:latest
