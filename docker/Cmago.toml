@@ -1,0 +1,39 @@
+[package]
+project = "cut_less"
+version = "0.1.0"
+cmake_minimum_required = "3.12"
+cpp_standard = "17"
+external_library_path = "./external/"
+
+[[bin]]
+name = "main_json"
+path = "./executables/main_json.cpp"
+dependencies = ["cl_solver","argparse"]
+
+[[lib]]
+name = "cl_solver"
+path = "./cl_solver/"
+# lib_type = "dynamic"
+dependencies = ["highs","cl_base"]
+
+
+[[lib]]
+name = "cl_base"
+path = "./cl_base/"
+# lib_type = "dynamic"
+dependencies = ["nlohmann_json"]
+
+[tests]
+path = ""
+
+[dependencies.gtest]
+url = "https://github.com/google/googletest.git"
+
+[dependencies.argparse]
+url = "https://github.com/p-ranav/argparse.git"
+
+[dependencies.highs]
+url = "https://github.com/ERGO-Code/HiGHS.git"
+
+[dependencies.nlohmann_json]
+url = "https://github.com/nlohmann/json.git"
