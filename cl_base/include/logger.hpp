@@ -1,20 +1,20 @@
 #pragma once
-#include <fstream>
 #include <config.hpp>
+#include <fstream>
 
 class Logger{
 public:
     bool enable;
     bool enableJSON;
     bool enableTXT;
-    Logger(std::string name);
+    Logger(std::string name,std::string dir="./output/");
     ~Logger();
     void log(std::string text);
     void log_json(std::string jsonName,json json);
 
     template<typename... Args>
     void log_json(std::string jsonName,Args... args) {
-        std::string output_path = OUTPUT_DIR+name+" : "+jsonName+".json";
+        std::string output_path = dir+name+"@"+jsonName+".json";
         std::ofstream jsonFile(output_path);
         ((jsonFile << args.dump(4) << '\n'), ...);
         jsonFile.close();
@@ -26,5 +26,6 @@ public:
 
 private:
     std::string name;
+    std::string dir;
     std::ofstream file;
 };

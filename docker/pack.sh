@@ -4,17 +4,20 @@ SCRIPT_DIR=$(dirname "$(realpath "$0")")
 cd "$SCRIPT_DIR"
 echo $(pwd)
 
+CUT_LESS_NAME="main_json"
+
 cd ..
+mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..
-ninja -j4
+ninja $CUT_LESS_NAME -j4
 cd ..
 
 TARGET_DIR="docker/binaries"
 mkdir -p $TARGET_DIR
-cut_less_exe="build/main_json"
-cp "$cut_less_exe" "$TARGET_DIR"
-ldd "$cut_less_exe" | grep "=>" | awk '{print $3}' | while read lib; do
+CUT_LESS_PATH="build/$CUT_LESS_NAME"
+cp "$CUT_LESS_PATH" "$TARGET_DIR"
+ldd "$CUT_LESS_PATH" | grep "=>" | awk '{print $3}' | while read lib; do
     if [ -f "$lib" ]; then
         cp "$lib" "$TARGET_DIR"
     fi

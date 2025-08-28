@@ -163,37 +163,6 @@ json Size::size_to_json() const{
     return j;
 }
 
-SolverConfig read_config(std::string path){
-    std::ifstream f(path);
-    json config = json::parse(f);
-    return read_config_json(config);
-}
-
-SolverConfig read_config_json(json config){
-    // std::cout<<1<<std::endl;
-    // logger.log_json("testConfig",config);
-    std::vector<int> TEMP_REMAIN;
-    // std::cout<<1<<std::endl;
-    for(auto& remain:config["REMAIN"]){
-        TEMP_REMAIN.push_back(remain.get<int>());
-    }
-    REMAIN=TEMP_REMAIN;
-    
-    VISUALIZE=config["VISUALIZE"].get<bool>();
-    std::filesystem::path dir = OUTPUT_DIR;
-    if (!std::filesystem::exists(dir)) std::filesystem::create_directory(dir);
-    // OUTPUT_DIR=config["output_dir"];
-    if(config["RUNTIME_LOG"].get<bool>()){
-        auto info=config["INFO"];
-        INFO_GENERATE_RESULT=info["GENERATE_RESULT"].get<bool>();
-        INFO_HIGHS_INFO=info["HIGHS_INFO"].get<bool>();
-        INFO_SELECT_RESULT=info["SELECT_RESULT"].get<bool>();
-        INFO_OPERATION=info["OPERATION"].get<bool>();
-    }
-    
-    return SolverConfig(config);
-}
-
 std::string to_string(Orient orient){
     switch (orient)
     {

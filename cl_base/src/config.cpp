@@ -1,13 +1,5 @@
 #include <config.hpp>
-
-std::vector<int> REMAIN={50,80,100,150,200};
-std::string OUTPUT_DIR="./output/";
-
-bool VISUALIZE=true;
-bool INFO_GENERATE_RESULT=false;
-bool INFO_HIGHS_INFO=false;
-bool INFO_SELECT_RESULT=false;
-bool INFO_OPERATION=false;
+#include <fstream>
 
 SolverConfig::SolverConfig(){
 }
@@ -15,6 +7,11 @@ SolverConfig::SolverConfig(){
 SolverConfig::SolverConfig(json config){
     this->CUT_LOSS=config["CUT_LOSS"].get<size_t>();
     this->TIME_LIMIT=config["TIME_LIMIT"].get<double>();
+    std::vector<int> TEMP_REMAIN;
+    for(auto& remain:config["REMAIN"]){
+        TEMP_REMAIN.push_back(remain.get<int>());
+    }
+    this->REMAIN=TEMP_REMAIN;
     
     this->MAX_STAGE=config["MAX_STAGE"].get<size_t>();
     this->UTILIZATION_RATE_LIMIT=config["UTILIZATION_RATE_LIMIT"].get<double>();
@@ -33,4 +30,19 @@ SolverConfig::SolverConfig(json config){
     this->CLOSE_SHEET_PROB=config["CLOSE_SHEET_PROB"].get<double>();
 
     this->SOLUTION_GET_BEST_PROB=config["SOLUTION_GET_BEST_PROB"].get<double>();
+
+    this->VISUALIZE=config["VISUALIZE"].get<bool>();
+    if(config["RUNTIME_LOG"].get<bool>()){
+        auto info=config["INFO"];
+        this->INFO_GENERATE_RESULT=info["GENERATE_RESULT"].get<bool>();
+        this->INFO_HIGHS_INFO=info["HIGHS_INFO"].get<bool>();
+        this->INFO_SELECT_RESULT=info["SELECT_RESULT"].get<bool>();
+        this->INFO_OPERATION=info["OPERATION"].get<bool>();
+    }
+}
+
+SolverConfig SolverConfig::read_config(std::string path){
+    std::ifstream f(path);
+    json config = json::parse(f);
+    return SolverConfig(config);
 }

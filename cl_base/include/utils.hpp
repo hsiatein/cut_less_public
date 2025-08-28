@@ -135,9 +135,6 @@ struct PartsNum{
 
 std::runtime_error cleanAndError(std::string exception);
 
-SolverConfig read_config(std::string path);
-SolverConfig read_config_json(json config);
-
 using StageLocation=std::pair<size_t,size_t>;
 using PatternGroup=std::tuple<PartsNum,std::vector<StageLocation>,int>;
 using GroupNum=std::pair<std::vector<StageLocation>,int>;

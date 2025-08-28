@@ -4,20 +4,20 @@
 
 此问题下零件不仅有基础的尺寸，其实际尺寸还可以在一定范围内变化，允许变化的尺寸主要目的是尽可能减少切割次数，因此此问题实际上要同时优化两个目标，利用率和切割次数。
 
-## Getting Started
+## Build From Source
 
 ### Dependencies
 
 * 求解器本身应该不需要依赖，但是可视化使用polyscope，可能需要根据build时的报错信息用apt等包管理器安装相关库。
 * 正在尝试支持Windows系统，Ubuntu22.04和MacOS均可使用，其余系统暂未测试。
-* 以下构建方法需要CMake，Git。
+* 以下构建方法需要CMake，Git，Ninja。
 
 ### Build
 
 克隆此仓库
 ```
-git clone https://github.com/hsiatein/cut_less_windows.git
-cd cut_less_windows/
+git clone https://github.com/hsiatein/cut_less_public.git
+cd cut_less_public/
 git submodule update --init --recursive
 mkdir build
 cd build/
@@ -45,8 +45,11 @@ ninja -j4
 ## Docker
 
 ### Build and Pack
-打包成docker镜像，同时.tar格式的镜像会保存在docker目录
+构建并打包成docker镜像，同时.tar格式的镜像会保存在docker目录
 ```
+git clone https://github.com/hsiatein/cut_less_public.git
+cd cut_less_public/
+git submodule update --init --recursive
 bash docker/pack.sh
 ```
 运行容器，可以访问6002接口发送请求

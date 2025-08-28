@@ -6,7 +6,7 @@
 int main(int argc, char** argv) {
     // 从json读取一个问题
     SolverConfig config;
-    config=read_config("../config.json");
+    config=SolverConfig::read_config("../config.json");
     Problem problem=Problem::from_json("../assets/test_problem.json");
 
     // 求解
@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
     Solution solution=solver.solve();
 
     // 可视化
-    if(VISUALIZE){
+    if(config.VISUALIZE){
         Visualizer::init();
         Visualizer::from_solution(solution);
         Visualizer::show();

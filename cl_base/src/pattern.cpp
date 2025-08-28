@@ -22,7 +22,7 @@ Pattern::Pattern(size_t PROBLEM_STRUCT,int width,int height,int thick,Orient nex
 //     partsNum[partType.id]=1;
 // }
 
-Pattern::Pattern(const Problem* problem,const PartType& partType, const int level)
+Pattern::Pattern(const Problem* problem,const PartType& partType, const int level, const std::vector<int>& REMAIN)
 :PROBLEM_STRUCT(problem->STRUCT),top(new Node(partType,{REMAIN[level],REMAIN[level],REMAIN[level]})),level(level){
     partsNum[partType.id]=1;
 }

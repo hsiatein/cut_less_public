@@ -3,23 +3,16 @@
 #include <string>
 #include <nlohmann/json.hpp>
 
+
 using json = nlohmann::json;
 
 // 1 -> 0.1mm
-extern std::vector<int> REMAIN;
-extern std::string OUTPUT_DIR;
-
-extern bool VISUALIZE;
-extern bool INFO_GENERATE_RESULT;
-extern bool INFO_HIGHS_INFO;
-extern bool INFO_SELECT_RESULT;
-extern bool INFO_OPERATION;
-
 struct SolverConfig{
     // 通用
 
     double TIME_LIMIT=1000;
     size_t CUT_LOSS=30;
+    std::vector<int> REMAIN={50,80,100,150,200};
 
     // 组合器相关
 
@@ -53,6 +46,12 @@ struct SolverConfig{
     double SOLUTION_GET_BEST_PROB=0.5;
 
     // 信息输出相关
+    std::string OUTPUT_DIR="./output/";
+    bool VISUALIZE=false;
+    bool INFO_GENERATE_RESULT=false;
+    bool INFO_HIGHS_INFO=false;
+    bool INFO_SELECT_RESULT=false;
+    bool INFO_OPERATION=false;
 
     SolverConfig();
     SolverConfig(json config);
@@ -60,4 +59,5 @@ struct SolverConfig{
         std::string result="<General>\nTIME_LIMIT: "+std::to_string(TIME_LIMIT)+", CUT_LOSS: "+std::to_string(CUT_LOSS)+"\n<Merger>\nMAX_STAGE: "+std::to_string(MAX_STAGE)+", UTILIZATION_RATE_LIMIT: "+std::to_string(UTILIZATION_RATE_LIMIT)+", MERGE_SIZE_CHECK: "+(MERGE_SIZE_CHECK?"true":"false")+"\n<Selector>\nAVERAGE_CUT_PUNISH: "+std::to_string(AVERAGE_CUT_PUNISH)+"\n<LNS>\nPATTERN_BATCH_SIZE: "+std::to_string(PATTERN_BATCH_SIZE)+", SHEET_BATCH_SIZE: "+std::to_string(SHEET_BATCH_SIZE)+", SHEET_DISCARD_PROB: "+std::to_string(SHEET_DISCARD_PROB)+", BLINK_PROB: "+std::to_string(BLINK_PROB)+"\nDESTROY_RATE: "+std::to_string(DESTROY_RATE)+", CLOSE_SHEET_PROB: "+std::to_string(CLOSE_SHEET_PROB)+", SOLUTION_GET_BEST_PROB: "+std::to_string(SOLUTION_GET_BEST_PROB);
         return result;
     }
+    static SolverConfig read_config(std::string path);
 };

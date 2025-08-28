@@ -15,7 +15,7 @@ public:
     Pattern(size_t PROBLEM_STRUCT,int width,int height,int thick,Orient next_cut_orient);
     // Pattern(Problem* problem,const PartType& partType);
     Pattern(size_t PROBLEM_STRUCT,const Size& size,Orient next_cut_orientconst,int level);
-    Pattern(const Problem* problem,const PartType& partType,int level);
+    Pattern(const Problem* problem,const PartType& partType,int level,const std::vector<int>&  REMAIN);
     Pattern(const Pattern& pattern,RotateOrient rotateOrient);
     Pattern(const Pattern& pattern);
     // Pattern(Pattern&& pattern);

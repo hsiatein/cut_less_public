@@ -15,7 +15,7 @@ StagePatterns PatternMerger::generate_patterns(const int level) const{
     size_t pattern_stage=1;
     patterns.new_stage(pattern_stage);
     for(const auto& part:problem->parts){
-        Pattern pattern(problem,part,level);
+        Pattern pattern(problem,part,level,config.REMAIN);
         patterns[1].push_back(std::move(pattern));
     }
     double time_limit=timer.get_remain_time()/3;
@@ -68,7 +68,7 @@ StagePatterns PatternMerger::generate_patterns(const int level) const{
     }
     timer.print_time(Color::GREEN);
     timer.print(Color::BLUE,"\n模式生成完成\n");
-    if(INFO_GENERATE_RESULT){
+    if(config.INFO_GENERATE_RESULT){
         for(const auto [stage,stage_patterns]:patterns.patterns){
             if(stage_patterns.size()==0) continue;
             timer.print(Color::BLUE,"Stage ",stage," 模式数量 ",stage_patterns.size()," \n");

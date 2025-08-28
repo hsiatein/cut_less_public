@@ -74,7 +74,7 @@ void LNS::run(){
 
             delete lastProcess;
             lastProcess=new Process(process);
-            if(INFO_OPERATION){
+            if(config.INFO_OPERATION){
                 timer.print(Color::RED,"Process:\n");
                 for(size_t i=0;i<lastProcess->operations.size();i++){
                     lastProcess->print_operation(i,timer);
@@ -161,7 +161,7 @@ void LNS::recreate(Process& process){
         }
 
         // 记录过程
-        if(INFO_OPERATION){
+        if(config.INFO_OPERATION){
             process.log_operation(bestOption);
             std::vector<Option> record;
             for(auto op:options){

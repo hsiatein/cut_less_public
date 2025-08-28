@@ -1,5 +1,6 @@
 pub mod part;
 pub mod sheet;
+pub mod config;
 
 use serde::{Deserialize, Serialize};
 

@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
 
     // 从json读取一个问题
     SolverConfig config;
-    if(config_path!="") config=read_config(config_path);
+    if(config_path!="") config=SolverConfig::read_config(config_path);
     Problem problem=Problem::from_json(problem_path);
 
     // 求解 & 计时

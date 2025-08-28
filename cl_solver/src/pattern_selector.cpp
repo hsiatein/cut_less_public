@@ -4,7 +4,7 @@ PatternSelector::PatternSelector(const Problem& problem,Timer timer,SolverConfig
     model.lp_.sense_ = ObjSense::kMinimize;
     model.lp_.a_matrix_.format_ = MatrixFormat::kColwise;
     highs.setOptionValue("time_limit",timer.get_remain_time()/2000);
-    highs.setOptionValue("output_flag",INFO_HIGHS_INFO);
+    highs.setOptionValue("output_flag",config.INFO_HIGHS_INFO);
     highs.setOptionValue("random_seed",config.HIGHS_RANDOM_SEED);
 }
 void PatternSelector::partsnum_register(const StagePatterns& patterns){
@@ -105,7 +105,7 @@ Scheme PatternSelector::select(){
     for (int col = 0; col < lp.num_col_; col++) {
         result.push_back((int)(solution.col_value[col]+0.01));
         if(result[col]==0) continue;
-        if(INFO_SELECT_RESULT){
+        if(config.INFO_SELECT_RESULT){
             timer.print(Color::BLUE,"Pattern Group ",col,": ",partsnums[col].to_json()["PartsNum"].dump(),"; num = ",result[col],"\n");
             // std::cout << "Pattern Group" <<col<<": "<< partsnums[col].to_json()["PartsNum"].dump();
             // std::cout << "; value = " << result[col];

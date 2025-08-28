@@ -18,8 +18,7 @@ int main(int argc, char *argv[]){
 
     // 从json读取一个问题
     SolverConfig config;
-    if(output_path!="") OUTPUT_DIR=output_path;
-    if(config_path!="") config=read_config(config_path);
+    if(config_path!="") config=SolverConfig::read_config(config_path);
     json problem_json=json::parse(problem_string);
     Problem problem(problem_json);
 
@@ -28,7 +27,7 @@ int main(int argc, char *argv[]){
     Solution solution=solver.solve();
 
     // 保存解为json
-    Logger logger("main");
+    Logger logger("main",output_path);
     logger.log_json(name,solution.to_json());
 
     return 0;
