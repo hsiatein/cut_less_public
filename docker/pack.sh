@@ -1,4 +1,9 @@
 #!/bin/bash
+
+SCRIPT_DIR=$(dirname "$(realpath "$0")")
+cd "$SCRIPT_DIR"
+echo $(pwd)
+
 cd ..
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..
