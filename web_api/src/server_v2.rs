@@ -1,3 +1,4 @@
+use cl_web_api::config::SolverConfig;
 use warp::Filter;
 use serde::{Deserialize, Serialize};
 use std::process::{Stdio};
@@ -10,6 +11,8 @@ use cl_web_api::sheet::Sheet;
 
 #[derive(Serialize,Deserialize)]
 struct RequestData {
+    #[serde(rename = "Config")]
+    config: SolverConfig,
     #[serde(rename = "Parts")]
     parts: Vec<Part>,
     #[serde(rename = "Sheets")]
@@ -38,12 +41,12 @@ async fn handle_request(data: RequestData) -> Result<warp::reply::Json, warp::Re
     let root_path=exe_path.parent().unwrap();
     let cl_path = root_path.join("main_json");
     let output_path = root_path.join("output/");
-    let config_path = root_path.join("config.json");
+    // let config = SolverConfig::default();
     let name="solution";
     
     // 调用cut_less
     let output = Command::new(cl_path)
-        .arg("-c").arg(config_path.to_str().unwrap())
+        .arg("-c").arg(serde_json::to_string(&data.config).unwrap())
         .arg("-o").arg(output_path.to_str().unwrap())
         .arg("-p").arg(serde_json::to_string(&data).unwrap())
         .arg("-n").arg(name)
@@ -71,9 +74,11 @@ async fn handle_request(data: RequestData) -> Result<warp::reply::Json, warp::Re
         }
         Ok(output) => {
             let error_msg = String::from_utf8_lossy(&output.stderr).to_string();
+            println!("stderr");
             Err(warp::reject::custom(CliError(error_msg)))
         }
         Err(e) => {
+            println!("执行失败");
             Err(warp::reject::custom(CliError(e.to_string())))
         }
     }

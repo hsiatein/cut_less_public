@@ -46,7 +46,6 @@ struct SolverConfig{
     double SOLUTION_GET_BEST_PROB=0.5;
 
     // 信息输出相关
-    std::string OUTPUT_DIR="./output/";
     bool VISUALIZE=false;
     bool INFO_GENERATE_RESULT=false;
     bool INFO_HIGHS_INFO=false;
