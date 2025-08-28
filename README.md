@@ -56,7 +56,14 @@ bash docker/pack.sh
 ```
 docker run -p 6002:6002 cut_less:latest
 ```
-
+如果当前平台不能构建，也可以在docker中构建
+```
+bash docker/build.sh
+```
+运行容器，可以访问6002接口发送请求
+```
+docker run -p 6002:6002 cut_less_build:latest
+```
 ### WEB API Docs
 [接口文档](https://bggvbrqt9f.apifox.cn)
 

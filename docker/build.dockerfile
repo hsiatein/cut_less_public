@@ -44,10 +44,10 @@ RUN ldd "$SERVER_PATH" | grep "=>" | awk '{print $3}' | while read lib; do if [ 
 
 COPY sources/config.json "$TARGET_DIR"
 
-FROM ubuntu:22.04
+FROM debian:trixie-slim
 EXPOSE 6002
-
+RUN mkdir binaries
 COPY --from=builder /cut_less/binaries /binaries
-ENV LD_LIBRARY_PATH="/binaries"
+ENV LD_LIBRARY_PATH=/binaries
 WORKDIR /binaries
 CMD ["./server_v2"]
