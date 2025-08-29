@@ -15,6 +15,7 @@ cp -r ../web_api sources/
 cp -r ../external/HiGHS sources/external
 cp -r ../external/argparse sources/external
 cp -r ../external/json sources/external
+cp -r ../external/googletest sources/external
 
 docker build -f build.dockerfile -t cut_less_build .
 rm -rf ./sources

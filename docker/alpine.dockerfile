@@ -1,28 +1,4 @@
-FROM rust:1.89.0-alpine3.22 AS builder
-
-RUN apk add --no-cache git \
-    musl-dev \
-    libc-dev \
-    gcc \
-    cmake \
-    clang \
-    clang-dev \
-    llvm \
-    llvm-dev \
-    ninja-build \
-    openssl \
-    openssl-dev \
-    openssl-libs-static \
-    pkgconfig \
-    build-base
-
-ENV http_proxy=http://192.168.2.63:7897 \
-    https_proxy=http://192.168.2.63:7897 \
-    PATH=/usr/lib/ninja-build/bin:$PATH
-
-WORKDIR /
-RUN git clone https://github.com/hsiatein/cmago.git && cd cmago && cargo build --release
-ENV PATH=/cmago/target/release:$PATH
+FROM alpine_base:latest AS builder
 
 WORKDIR /cut_less
 RUN cmago init
@@ -46,6 +22,7 @@ ENV SERVER_PATH=web_api/target/release/server_v2
 RUN cp "$SERVER_PATH" "$TARGET_DIR"
 RUN ldd "$SERVER_PATH" | grep "=>" | awk '{print $3}' | while read lib; do if [ -f "$lib" ]; then cp "$lib" "$TARGET_DIR"; fi; done
 COPY sources/config.json "$TARGET_DIR"
+RUN rm $TARGET_DIR/ld-musl-x86_64.so.1
 
 FROM alpine:3.22
 EXPOSE 6002

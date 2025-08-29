@@ -52,19 +52,21 @@ cd cut_less_public/
 git submodule update --init --recursive
 bash docker/pack.sh
 ```
+### Build in Debian Container
+如果当前平台不能构建，也可以在debian的容器中构建
+```
+bash docker/build.sh
+```
+### Build in Alpine Container
+需要小体积镜像时可以使用alpine版本的Dockerfile进行构建
+```
+bash docker/alpine.sh
+```
+### WEB API Docs
 运行容器，可以访问6002接口发送请求
 ```
 docker run -p 6002:6002 cut_less:latest
 ```
-如果当前平台不能构建，也可以在docker中构建
-```
-bash docker/build.sh
-```
-运行容器，可以访问6002接口发送请求
-```
-docker run -p 6002:6002 cut_less_build:latest
-```
-### WEB API Docs
 [接口文档](https://bggvbrqt9f.apifox.cn)
 
 ## Authors
