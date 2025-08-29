@@ -11,7 +11,7 @@ use cl_web_api::sheet::Sheet;
 
 #[derive(Serialize,Deserialize)]
 struct RequestData {
-    #[serde(rename = "Config")]
+    #[serde(default, rename = "Config")]
     config: SolverConfig,
     #[serde(rename = "Parts")]
     parts: Vec<Part>,
@@ -75,6 +75,7 @@ async fn handle_request(data: RequestData) -> Result<warp::reply::Json, warp::Re
         Ok(output) => {
             let error_msg = String::from_utf8_lossy(&output.stderr).to_string();
             println!("stderr");
+            println!("{}",error_msg);
             Err(warp::reject::custom(CliError(error_msg)))
         }
         Err(e) => {
