@@ -10,7 +10,7 @@ jobs:
       https_proxy: http://192.168.2.63:7897
     steps:
       - name: Checkout
-        uses: http://http://49.235.37.217:6003/mugi/checkout@v4
+        uses: http://49.235.37.217:6003/mugi/checkout@v4
       - name: Install dependencies
         run: sudo apt-get update
       - run: sudo apt-get install -y clang cmake git ninja-build cargo
