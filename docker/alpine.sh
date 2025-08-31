@@ -11,7 +11,7 @@ fi
 mkdir sources
 mkdir sources/external
 cp ./Cmago.toml sources/
-cp ../config.json sources/
+cp ../assets/config.json sources/
 cp -r ../cl_base sources/
 cp -r ../cl_solver sources/
 cp -r ../executables sources/

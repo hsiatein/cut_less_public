@@ -11,7 +11,7 @@ TEST(LNS,testLNS){
     // Logger logger("test_lns");
     auto start = std::chrono::high_resolution_clock::now();
     Problem problem=Problem::from_json("../assets/test_problem2.json");
-    read_config("../config.json");
+    read_config("../assets/config.json");
     PatternMerger patternMerger(&problem);
     StagePatterns patterns=patternMerger.generate_patterns();
 

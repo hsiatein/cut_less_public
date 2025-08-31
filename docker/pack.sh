@@ -33,7 +33,7 @@ ldd web_api/target/release/server_v2 | grep "=>" | awk '{print $3}' | while read
     fi
 done
 
-cp config.json "$TARGET_DIR"
+cp /assets/config.json "$TARGET_DIR"
 
 cd docker
 

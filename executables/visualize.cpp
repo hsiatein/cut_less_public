@@ -6,7 +6,7 @@
 int main(int argc, char** argv) {
     // 从json读取一个问题
     SolverConfig config;
-    config=SolverConfig::read_config("../config.json");
+    config=SolverConfig::read_config("../assets/config.json");
     Problem problem=Problem::from_json("../assets/test_problem.json");
 
     // 求解

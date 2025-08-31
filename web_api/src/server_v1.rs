@@ -38,7 +38,7 @@ async fn handle_request(data: RequestData) -> Result<warp::reply::Json, warp::Re
     let root_path = exe_path.parent().unwrap().parent().unwrap().parent().unwrap().parent().unwrap();
     let cl_path = root_path.join("build").join("main_json");
     let output_path = root_path.join("web_api").join("output/");
-    let config_path = root_path.join("config.json");
+    let config_path = root_path.join("/assets/config.json");
     let name="solution";
     
     // 调用cut_less
