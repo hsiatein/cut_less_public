@@ -4,4 +4,4 @@ EXPOSE 6002
 COPY binaries /binaries
 ENV LD_LIBRARY_PATH=/binaries
 WORKDIR /binaries
-CMD ["./server_v2"]
+CMD ["./server_v3"]

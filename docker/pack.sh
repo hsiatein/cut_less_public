@@ -26,14 +26,14 @@ done
 cd web_api
 cargo build --release
 cd ..
-cp web_api/target/release/server_v2 "$TARGET_DIR"
-ldd web_api/target/release/server_v2 | grep "=>" | awk '{print $3}' | while read lib; do
+cp web_api/target/release/server_v3 "$TARGET_DIR"
+ldd web_api/target/release/server_v3 | grep "=>" | awk '{print $3}' | while read lib; do
     if [ -f "$lib" ]; then
         cp "$lib" "$TARGET_DIR"
     fi
 done
 
-cp /assets/config.json "$TARGET_DIR"
+cp ./assets/config.json "$TARGET_DIR"
 
 cd docker
 

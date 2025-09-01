@@ -1,3 +1,4 @@
+use cl_web_api::request_data::ToProblem;
 use warp::Filter;
 use serde::{Deserialize, Serialize};
 use std::process::{Stdio};
@@ -5,7 +6,7 @@ use tokio::process::{Command};
 use std::env;
 use std::fs;
 use cl_web_api::CliError;
-use cl_web_api::request_data::RequestData;
+use cl_web_api::request_data::request_data_v3::RequestDataV3;
 
 #[derive(Serialize,Deserialize)]
 struct ApiResponse {
@@ -24,19 +25,20 @@ async fn main() {
         .await;
 }
 
-async fn handle_request(data: RequestData) -> Result<warp::reply::Json, warp::Rejection> {
+async fn handle_request(data: RequestDataV3) -> Result<warp::reply::Json, warp::Rejection> {
     let exe_path = env::current_exe().unwrap();
     let root_path=exe_path.parent().unwrap();
     let cl_path = root_path.join("main_json");
     let output_path = root_path.join("output/");
     // let config = SolverConfig::default();
     let name="solution";
-    
+    println!("{}",serde_json::to_string_pretty(&data.config).unwrap());
+    println!("{}",serde_json::to_string_pretty(&data.to_problem()).unwrap());
     // 调用cut_less
     let output = Command::new(cl_path)
         .arg("-c").arg(serde_json::to_string(&data.config).unwrap())
         .arg("-o").arg(output_path.to_str().unwrap())
-        .arg("-p").arg(serde_json::to_string(&data).unwrap())
+        .arg("-p").arg(serde_json::to_string(&data.to_problem()).unwrap())
         .arg("-n").arg(name)
         .stdout(Stdio::piped())
         .output().await;

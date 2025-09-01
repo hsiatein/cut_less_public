@@ -1,6 +1,7 @@
 use serde::{Serialize, Deserialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct SolverConfig {
     // 通用
     #[serde(default = "default_time_limit", rename = "TIME_LIMIT")]
@@ -112,7 +113,7 @@ impl Default for SolverConfig {
 }
 
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct InfoConfig {
     #[serde(default = "default_generate_result",rename = "GENERATE_RESULT")]
     pub generate_result: bool,

@@ -12,8 +12,16 @@ name = "server_v2"
 path = "src/server_v2.rs"
 
 [[bin]]
+name = "server_v3"
+path = "src/server_v3.rs"
+
+[[bin]]
 name = "client"
 path = "src/client.rs"
+
+[[bin]]
+name = "transformer"
+path = "src/transformer.rs"
 
 [dependencies]
 warp = "0.3"
