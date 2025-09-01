@@ -9,7 +9,7 @@
       150,
       200
     ],
-    "MAX_STAGE": 8,
+    "MAX_STAGE": 6,
     "UTILIZATION_RATE_LIMIT": 0.95,
     "MERGE_SIZE_CHECK": false,
     "AVERAGE_CUT_PUNISH": 3.0,
@@ -27,7 +27,7 @@
     "INFO": {
       "GENERATE_RESULT": false,
       "HIGHS_INFO": false,
-      "SELECT_RESULT": false,
+      "SELECT_RESULT": true,
       "OPERATION": false
     }
   },

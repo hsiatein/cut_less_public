@@ -7,6 +7,7 @@ use std::fs;
 use cl_web_api::CliError;
 use cl_web_api::part::Part;
 use cl_web_api::sheet::Sheet;
+use cl_web_api::response::Node;
 
 #[derive(Serialize,Deserialize)]
 struct RequestData {
@@ -18,7 +19,7 @@ struct RequestData {
 
 #[derive(Serialize,Deserialize)]
 struct ApiResponse {
-    solution: Vec<cl_web_api::Node>,
+    solution: Vec<Node>,
 }
 
 #[tokio::main]

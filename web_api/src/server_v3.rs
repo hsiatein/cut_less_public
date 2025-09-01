@@ -1,17 +1,13 @@
 use cl_web_api::request_data::ToProblem;
+use cl_web_api::response::response_v3::ResponseV3;
 use warp::Filter;
-use serde::{Deserialize, Serialize};
 use std::process::{Stdio};
 use tokio::process::{Command};
 use std::env;
 use std::fs;
 use cl_web_api::CliError;
 use cl_web_api::request_data::request_data_v3::RequestDataV3;
-
-#[derive(Serialize,Deserialize)]
-struct ApiResponse {
-    solution: Vec<cl_web_api::Node>,
-}
+use cl_web_api::response::Response;
 
 #[tokio::main]
 async fn main() {
@@ -32,8 +28,6 @@ async fn handle_request(data: RequestDataV3) -> Result<warp::reply::Json, warp::
     let output_path = root_path.join("output/");
     // let config = SolverConfig::default();
     let name="solution";
-    println!("{}",serde_json::to_string_pretty(&data.config).unwrap());
-    println!("{}",serde_json::to_string_pretty(&data.to_problem()).unwrap());
     // 调用cut_less
     let output = Command::new(cl_path)
         .arg("-c").arg(serde_json::to_string(&data.config).unwrap())
@@ -45,6 +39,7 @@ async fn handle_request(data: RequestDataV3) -> Result<warp::reply::Json, warp::
 
     match output {
         Ok(output) if output.status.success() => {
+            // 获得response
             println!("{}",str::from_utf8(&output.stdout).unwrap());
             let solution_path = output_path.join(format!("main@{}.json",name));
             let solution  = fs::read_to_string(solution_path);
@@ -57,12 +52,16 @@ async fn handle_request(data: RequestDataV3) -> Result<warp::reply::Json, warp::
                 return Err(warp::reject::custom(CliError(e.to_string())));
             }
             let solution_json=solution_json.unwrap();
-            let response = ApiResponse {
+            let response = Response {
                 solution:solution_json,
             };
-            Ok(warp::reply::json(&response))
+            // 处理response
+            let response_v3=ResponseV3::from_response(&data, response);
+            Ok(warp::reply::json(&response_v3))
         }
         Ok(output) => {
+            println!("{}",serde_json::to_string_pretty(&data.config).unwrap());
+            println!("{}",serde_json::to_string_pretty(&data.to_problem()).unwrap());
             let error_msg = String::from_utf8_lossy(&output.stderr).to_string();
             println!("stderr");
             println!("{}",error_msg);
