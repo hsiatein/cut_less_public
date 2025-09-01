@@ -34,6 +34,7 @@ public:
     void ruin();
     void ruin_all();
     std::vector<DeleteOption> get_deletables();
+    std::vector<DeleteOption> get_deletable_blueprints();
     DeleteOption select_delete_option(const std::vector<DeleteOption>& options);
     void delete_node(DeleteOption delete_option);
     void close_sheets();

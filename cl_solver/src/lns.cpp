@@ -364,6 +364,14 @@ std::vector<DeleteOption> LNS::get_deletables(){
     return result;
 }
 
+std::vector<DeleteOption> LNS::get_deletable_blueprints(){
+    std::vector<DeleteOption> result;
+    for(auto blueprint:solution->blueprints){
+        result.push_back({blueprint,blueprint->top,blueprint->top->cal_utilization_rate()});
+    }
+    return result;
+}
+
 DeleteOption LNS::select_delete_option(const std::vector<DeleteOption>& options){
     DeleteOption best=options[0];
     for(auto option:options){
