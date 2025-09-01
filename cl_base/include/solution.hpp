@@ -1,11 +1,23 @@
 #pragma once
+#include "utils.hpp"
 #include <pattern_solution.hpp>
 #include <stage_patterns.hpp>
 
+struct SolutionUnit
+{
+    SheetType sheet;
+    Node* root;
+    
+    SolutionUnit(SheetType sheet,Node* root);
+    SolutionUnit(const SolutionUnit& other);
+    SolutionUnit(SolutionUnit&& other);
+    ~SolutionUnit();
+    json to_json() const;
+};
+
 struct Solution
 {
-    std::vector<Node*> solution;
-    std::map<Node*,SheetType> sheets;
+    std::vector<SolutionUnit> solution;
     Solution();
     Solution(const Problem& problem,const StagePatterns& patterns,const PatternSolution& p_solution);
     Solution(const Solution& other);

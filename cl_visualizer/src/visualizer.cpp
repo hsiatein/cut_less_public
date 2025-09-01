@@ -259,7 +259,7 @@ void Visualizer::from_solution(Solution& solution){
     Visualizer::layouts.clear();
     for(const auto& node:solution.solution){
         // std::cout<<blueprint->sheetID<<std::endl;
-        Cube cube(node,{0,0,0});
+        Cube cube(node.root,{0,0,0});
         Visualizer::layouts.push_back(cube);
     }
     from_cube(layouts[0]);
