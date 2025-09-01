@@ -1,3 +1,5 @@
+#include "utils.hpp"
+#include <algorithm>
 #include <pattern.hpp>
 #include <deque>
 
@@ -35,6 +37,14 @@ Pattern::Pattern(size_t PROBLEM_STRUCT,const Size& size,Orient next_cut_orient,c
 Pattern::Pattern(const Pattern& pattern,RotateOrient rotateOrient)
 :PROBLEM_STRUCT(pattern.PROBLEM_STRUCT),top(new Node(*(pattern.top))),partsNum(pattern.partsNum),level(pattern.level){
     top->rotate(rotateOrient);
+    auto old_size=pattern.top->size.size;
+    auto new_size=top->size.size;
+    std::sort(old_size.begin(),old_size.end());
+    std::sort(new_size.begin(),new_size.end());
+    if(old_size!=new_size){
+        std::cout<<pattern.top->size.size_to_json().dump()<<", "<<top->size.size_to_json().dump()<<std::endl;
+        throw cleanAndError("尺寸不匹配");
+    }
 }
 
 Pattern::Pattern(const Pattern& pattern)
@@ -188,9 +198,14 @@ bool Pattern::resize(Orient orient,int newSize){
 
 void Pattern::resize_force(Orient orient,int newSize){
     int increment=newSize-top->size[orient].first;
-    increment=increment-top->size[orient].second;
-    top->resize(orient,top->size[orient].second);
-    top->resize_force(orient,increment);
+    if(increment<=top->size[orient].second){
+        top->resize(orient,increment);
+    }
+    else{
+        increment=increment-top->size[orient].second;
+        top->resize(orient,top->size[orient].second);
+        top->resize_force(orient,increment);
+    }
 }
 
 // void Pattern::resize_or_merge(Orient orient,int newSize){

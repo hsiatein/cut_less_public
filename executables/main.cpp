@@ -13,8 +13,9 @@ int main(int argc, char *argv[]){
     std::string config_path=program.get<std::string>("config");
 
     // 从json读取一个问题
-    SolverConfig config;
-    if(config_path!="") config=SolverConfig::read_config(config_path);
+    std::ifstream f(config_path);
+    json config_json = json::parse(f);
+    SolverConfig config(config_json);
     Problem problem=Problem::from_json(problem_path);
 
     // 求解

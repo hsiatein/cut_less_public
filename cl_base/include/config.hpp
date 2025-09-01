@@ -55,7 +55,8 @@ struct SolverConfig{
     SolverConfig();
     SolverConfig(json config);
     inline std::string general_to_string(){
-        std::string result="<General>\nTIME_LIMIT: "+std::to_string(TIME_LIMIT)+", CUT_LOSS: "+std::to_string(CUT_LOSS);
+        json j=REMAIN;
+        std::string result="<General>\nTIME_LIMIT: "+std::to_string(TIME_LIMIT)+", CUT_LOSS: "+std::to_string(CUT_LOSS)+", REDUNDANCIES="+j.dump();
         return result;
     }
     inline std::string merger_to_string(){

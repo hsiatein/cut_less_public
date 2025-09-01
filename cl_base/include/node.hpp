@@ -6,7 +6,6 @@
 struct Node{
     // Problem* problem;
     Size size;
-    size_t partTypeID;
     NodeStatus status;
     std::vector<Node*> childs;
     // Node* parent;

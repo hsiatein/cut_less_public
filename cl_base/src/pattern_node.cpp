@@ -28,7 +28,9 @@ PatternNode::PatternNode(Size size):groupID(MAX_INT),stageLocation(0,0),size(siz
 }
 
 PatternNode::PatternNode(size_t groupID,StageLocation stageLocation,Size size):groupID(groupID),stageLocation(stageLocation),size(size),parent(nullptr),next_cut_orient(Orient::NONE),rotate(RotateOrient::I){
-
+    for(int i=0;i<3;i++){
+        if(size.remain[i]<0) size.remain[i]=0;
+    }
 }
 
 PatternNode::PatternNode(const PatternNode& other):groupID(other.groupID),stageLocation(other.stageLocation),size(other.size),parent(nullptr),next_cut_orient(other.next_cut_orient),rotate(other.rotate){

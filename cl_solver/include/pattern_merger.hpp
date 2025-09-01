@@ -26,5 +26,5 @@ struct PatternMerger
     /// @param i stage
     /// @return 和为i的数对的列表
     static std::vector<std::pair<size_t,size_t>> get_subpattern_pair(size_t i);
-
+    void check(const Pattern& pattern) const;
 };

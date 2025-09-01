@@ -1,4 +1,6 @@
 #include "utils.hpp"
+#include <algorithm>
+#include <deque>
 #include <pattern_merger.hpp>
 
 PatternMerger::PatternMerger(Problem* problem,Timer timer,SolverConfig config)
@@ -60,6 +62,7 @@ StagePatterns PatternMerger::generate_patterns(const int level) const{
                     }
                     for(auto& pattern:generatedPatterns){
                         if(existChecker.exist(pattern)) continue;
+                        check(pattern);
                         patterns[pattern_stage].push_back(std::move(pattern));
                     }
                 }
@@ -204,4 +207,25 @@ RotateOrientPair PatternMerger::regularizeRotate(const Orient orient){
             break;
     }
     throw cleanAndError("utils::regularizeRotate : 输入方向对不正确");
+}
+
+void PatternMerger::check(const Pattern& pattern) const{
+    std::deque<const Node*> nodes;
+    nodes.push_back(pattern.top);
+    while(!nodes.empty()){
+        const Node* u=nodes[0];
+        nodes.pop_front();
+        for(const Node* v:u->childs){
+            nodes.push_back(v);
+        }
+        if(u->getType()!=NodeType::PART) continue;
+        auto part=problem->parts[u->status.second].size.size;
+        auto size_new=u->size.size;
+        std::sort(part.begin(),part.end());
+        std::sort(size_new.begin(),size_new.end());
+        if(part[0]>size_new[0] || part[1]>size_new[1] || part[2]>size_new[2]){
+            throw cleanAndError("未通过检查");
+        }
+    }
+
 }

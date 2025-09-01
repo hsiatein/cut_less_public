@@ -1,3 +1,4 @@
+#include "utils.hpp"
 #include <node.hpp>
 
 // Node::Node():problem(nullptr),partTypeID(0),next_cut_orient(Orient::NONE){
@@ -27,7 +28,7 @@
 // }
 
 Node::Node(const Size& size,NodeStatus status,Orient next_cut_orient)
-:size(size),partTypeID(status.second),status(status),next_cut_orient(next_cut_orient){
+:size(size),status(status),next_cut_orient(next_cut_orient){
 
 }
 
@@ -38,12 +39,12 @@ Node::Node(const Size& size,NodeStatus status,Orient next_cut_orient)
 // }
 
 Node::Node(const PartType& partType,const Vec3i& remain)
-:size(partType.size.size,remain),partTypeID(partType.id),status(NodeType::PART,partTypeID),next_cut_orient(Orient::NONE)
+:size(partType.size.size,remain),status(NodeType::PART,partType.id),next_cut_orient(Orient::NONE)
 {
 }
 
 Node::Node(const Node& node)
-:size(node.size),partTypeID(node.partTypeID),status(node.status),next_cut_orient(node.next_cut_orient)
+:size(node.size),status(node.status),next_cut_orient(node.next_cut_orient)
 {
     for(Node* child:node.childs){
         Node* newChild=new Node(*child);
@@ -187,7 +188,7 @@ json Node::to_json() const{
         result[field3]="Cutloss";
         break;
     case NodeType::PART:
-        result[field3]="Part:"+std::to_string(partTypeID);
+        result[field3]="Part:"+std::to_string(status.second);
         break;
     default:
         break;
@@ -221,6 +222,7 @@ json Node::to_json() const{
 
 void Node::resize(Orient orient,int increment){
     if(increment==0) return;
+    if(increment<0) throw cleanAndError("Node::resize 增量不能为负");
     NodeType type=getType();
     std::pair<int,int> newSize=size[orient];
     newSize.first=newSize.first+increment;
@@ -260,22 +262,23 @@ void Node::resize(Orient orient,int increment){
 
 void Node::resize_force(Orient orient,int increment){
     if(increment==0) return;
+    if(increment<0) throw cleanAndError("Node::resize_force 增量不能为负");
     NodeType type=getType();
     std::pair<int,int> newSize=size[orient];
     newSize.first=newSize.first+increment;
     if(type==NodeType::PART){
-        newSize.second=newSize.second-increment;
+        newSize.second=std::max(newSize.second-increment,0);
         size.set(orient,newSize);
     }else if(type==NodeType::CUTLOSS || type==NodeType::LEFTOVER){
         size.set(orient,newSize);
     }else if(type==NodeType::STRUCT && orient!=next_cut_orient){
-        newSize.second=newSize.second-increment;
+        newSize.second=std::max(newSize.second-increment,0);
         size.set(orient,newSize);
         for(auto& child:childs){
             child->resize_force(orient,increment);
         }
     }else if(type==NodeType::STRUCT && orient==next_cut_orient){
-        newSize.second=newSize.second-increment;
+        newSize.second=std::max(newSize.second-increment,0);
         size.set(orient,newSize);
         auto dis=distribute(increment);
         int i=0;
