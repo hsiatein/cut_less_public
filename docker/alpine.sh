@@ -5,7 +5,7 @@ echo $(pwd)
 
 if ! docker image inspect alpine_base:latest > /dev/null 2>&1; then
     echo "构建 alpine_base"
-    docker build -f alpine_base.dockerfile -t alpine_base .
+    docker build --progress=plain -f alpine_base.dockerfile -t alpine_base .
 fi
 
 mkdir sources
@@ -22,4 +22,5 @@ cp -r ../external/json sources/external
 cp -r ../external/googletest sources/external
 
 docker build --progress=plain -f alpine.dockerfile -t cut_less_alpine .
+docker save -o cut_less_image.tar cut_less_alpine:latest
 rm -rf ./sources

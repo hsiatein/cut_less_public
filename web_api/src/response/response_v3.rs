@@ -9,7 +9,7 @@ use crate::sheet::raw_sheet_v3::RawSheetV3;
 pub struct NodeV3{
     #[serde(rename = "Size")]
     size: Vec<i32>,
-    #[serde(rename = "Redundancy")]
+    #[serde(skip_serializing_if = "should_skip_redundancy",rename = "Redundancy")]
     redundancy: Vec<i32>,
     #[serde(rename = "NodeType")]
     node_type: String,
@@ -21,7 +21,13 @@ pub struct NodeV3{
     children: Vec<NodeV3>,
 }
 
+fn should_skip_redundancy(node: &Vec<i32>) -> bool {
+    let sum:i32=node.iter().sum();
+    sum==0
+}
+
 impl NodeV3 {
+    
     fn from_node(request_data:&RequestDataV3,node:&super::Node)->Self {
         let type_and_id:Vec<&str>=node.node_type.split(":").collect();
         let node_type=type_and_id[0];

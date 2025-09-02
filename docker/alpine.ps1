@@ -4,7 +4,7 @@ Write-Output (Get-Location)
 
 if (-not (docker image inspect alpine_base:latest -ErrorAction SilentlyContinue)) {
     Write-Output "构建 alpine_base"
-    docker build --network host --progress=plain -f alpine_base.dockerfile -t alpine_base .
+    docker build --network host --progress=plain -f alpine_base_windows.dockerfile -t alpine_base .
 }
 
 New-Item -ItemType Directory -Force -Path "sources" | Out-Null
