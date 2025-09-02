@@ -62,7 +62,9 @@ StagePatterns PatternMerger::generate_patterns(const int level) const{
                     }
                     for(auto& pattern:generatedPatterns){
                         if(existChecker.exist(pattern)) continue;
+                        #ifdef DEBUG
                         check(pattern);
+                        #endif
                         patterns[pattern_stage].push_back(std::move(pattern));
                     }
                 }
@@ -209,6 +211,7 @@ RotateOrientPair PatternMerger::regularizeRotate(const Orient orient){
     throw cleanAndError("utils::regularizeRotate : 输入方向对不正确");
 }
 
+#ifdef DEBUG
 void PatternMerger::check(const Pattern& pattern) const{
     std::deque<const Node*> nodes;
     nodes.push_back(pattern.top);
@@ -229,3 +232,4 @@ void PatternMerger::check(const Pattern& pattern) const{
     }
 
 }
+#endif

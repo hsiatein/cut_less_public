@@ -19,6 +19,7 @@ Node* StagePatterns::to_node(const PatternNode* patternNode) const{
         return self;
     }
     Pattern pattern(patterns.at(patternNode->stageLocation.first)[patternNode->stageLocation.second],patternNode->rotate);
+    #ifdef DEBUG
     auto old_size=patterns.at(patternNode->stageLocation.first)[patternNode->stageLocation.second].top->size.size;
     auto new_size=pattern.top->size.size;
     std::sort(old_size.begin(),old_size.end());
@@ -27,6 +28,7 @@ Node* StagePatterns::to_node(const PatternNode* patternNode) const{
         std::cout<<json(old_size).dump()<<", "<<json(new_size).dump()<<std::endl;
         throw cleanAndError("尺寸不匹配");
     }
+    #endif
     pattern.resize_force(Orient::X,patternNode->size.size[0]);
     pattern.resize_force(Orient::Y,patternNode->size.size[1]);
     pattern.resize_force(Orient::Z,patternNode->size.size[2]);

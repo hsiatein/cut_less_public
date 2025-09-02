@@ -37,6 +37,7 @@ Pattern::Pattern(size_t PROBLEM_STRUCT,const Size& size,Orient next_cut_orient,c
 Pattern::Pattern(const Pattern& pattern,RotateOrient rotateOrient)
 :PROBLEM_STRUCT(pattern.PROBLEM_STRUCT),top(new Node(*(pattern.top))),partsNum(pattern.partsNum),level(pattern.level){
     top->rotate(rotateOrient);
+    #ifdef DEBUG
     auto old_size=pattern.top->size.size;
     auto new_size=top->size.size;
     std::sort(old_size.begin(),old_size.end());
@@ -45,6 +46,7 @@ Pattern::Pattern(const Pattern& pattern,RotateOrient rotateOrient)
         std::cout<<pattern.top->size.size_to_json().dump()<<", "<<top->size.size_to_json().dump()<<std::endl;
         throw cleanAndError("尺寸不匹配");
     }
+    #endif
 }
 
 Pattern::Pattern(const Pattern& pattern)

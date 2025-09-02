@@ -222,7 +222,9 @@ json Node::to_json() const{
 
 void Node::resize(Orient orient,int increment){
     if(increment==0) return;
+    #ifdef DEBUG
     if(increment<0) throw cleanAndError("Node::resize 增量不能为负");
+    #endif
     NodeType type=getType();
     std::pair<int,int> newSize=size[orient];
     newSize.first=newSize.first+increment;
@@ -262,7 +264,9 @@ void Node::resize(Orient orient,int increment){
 
 void Node::resize_force(Orient orient,int increment){
     if(increment==0) return;
+    #ifdef DEBUG
     if(increment<0) throw cleanAndError("Node::resize_force 增量不能为负");
+    #endif
     NodeType type=getType();
     std::pair<int,int> newSize=size[orient];
     newSize.first=newSize.first+increment;
