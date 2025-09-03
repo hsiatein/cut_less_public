@@ -5,7 +5,8 @@
 
 enum class LNSStatus{
     SUCCESS,
-    FAIL
+    FAIL,
+    OUT_OF_TARGET
 };
 
 using DeleteOption=std::tuple<Blueprint*,PatternNode*,double>;
@@ -16,7 +17,7 @@ public:
     ~LNS();
     void run();
     
-    void recreate(Process& process);
+    LNSStatus recreate(Process& process);
     std::vector<std::pair<StageLocation,Size>> get_batch_patterns(const std::vector<StageLocation>& group);
     std::pair<size_t,std::vector<StageLocation>> get_next_group();
     std::vector<Option> generate_options(size_t groupID,StageLocation stageLocation,Size size);
@@ -74,4 +75,6 @@ private:
     Timer timer;
     SolverConfig config;
     Random randomEngine;
+    double min_volume=1e100;
+
 };

@@ -71,8 +71,9 @@ void LNS::run(){
 
         if(history.empty() || greater(solution,history.back())){
             replace_best();
+            if(history.back()->is_complete() && history.back()->get_volume()<min_volume) min_volume=history.back()->get_volume();
             timer.print_time(Color::GREEN);
-            timer.print(Color::BLUE,"\ntotal volume: ",history.back()->get_volume()*1e-12,"\ntotal cuts: ",cal_cutnum(history.back()),"\n");
+            timer.print(Color::BLUE,"\ntotal volume: ",history.back()->get_volume()*1e-12,"\ntotal cuts: ",cal_cutnum(history.back()),"\ntotal parts: ",history.back()->placed_pattern(),"\n");
 
             delete lastProcess;
             lastProcess=new Process(process);
@@ -122,7 +123,7 @@ void LNS::ruin_all(){
     solution=new PatternSolution(scheme);
 }
 
-void LNS::recreate(Process& process){
+LNSStatus LNS::recreate(Process& process){
     // std::cout<<"sheet num: "<<solution->blueprints.size()<<std::endl;
     while(!timer.is_overtime(config.TIME_LIMIT)){
         // 选择一批模式
@@ -152,9 +153,25 @@ void LNS::recreate(Process& process){
         // std::cout<<"placed num: "<<process.history.back()->placed_pattern()<<std::endl;
 
         // 获得一个选项，插入
-        if(options.empty()) break;
-        Option bestOption=select_option(options);
-        insert(bestOption);
+        if(!options.empty()) {
+            Option bestOption=select_option(options);
+            insert(bestOption);
+            // 记录过程
+            if(config.INFO_OPERATION){
+                process.log_operation(bestOption);
+                std::vector<Option> record;
+                for(auto op:options){
+                    if(std::get<0>(op)!=std::get<0>(bestOption) || std::get<1>(op)!=std::get<1>(bestOption)) continue;
+                    record.push_back(op);
+                }
+                process.log_options(record);
+            }
+            process.log_solution(solution);
+        }
+        else{
+            solution->groupNums[groupID].second++;
+            break;
+        }
 
         // 关闭没有使用的原料，把使用了的原料加入solution
         if(blueprints.size()>0){
@@ -162,22 +179,13 @@ void LNS::recreate(Process& process){
             solution->blueprints.insert(solution->blueprints.end(),keeped.begin(),keeped.end());
         }
 
-        // 记录过程
-        if(config.INFO_OPERATION){
-            process.log_operation(bestOption);
-            std::vector<Option> record;
-            for(auto op:options){
-                if(std::get<0>(op)!=std::get<0>(bestOption) || std::get<1>(op)!=std::get<1>(bestOption)) continue;
-                record.push_back(op);
-            }
-            process.log_options(record);
-        }
-        process.log_solution(solution);
+
     }
     // for(auto solution:process.history){
     //     std::cout<<"placed num: "<<solution->placed_pattern()<<std::endl;
     // }
-
+    if(solution->is_complete()) return LNSStatus::SUCCESS;
+    else return LNSStatus::FAIL;
 }
 
 std::vector<std::pair<StageLocation,Size>> LNS::get_batch_patterns(const std::vector<StageLocation>& group){
@@ -257,6 +265,7 @@ Option LNS::select_option(const std::vector<Option>& options){
 }
 
 std::vector<Blueprint*> LNS::open_sheets(const std::vector<std::pair<StageLocation,Size>>& batchPatterns){
+    double current_volume=solution->get_volume();
     std::vector<Vec3i> batchSizes;
     for(auto pair:batchPatterns){
         Vec3i p_size=pair.second.size;
@@ -269,7 +278,7 @@ std::vector<Blueprint*> LNS::open_sheets(const std::vector<std::pair<StageLocati
         if(sheetsNum[sheet.id]<=0) continue;
         for(auto p_size:batchSizes){
             Vec3i s_size=sheet.size.size;
-            if(s_size[0]>p_size[0] && s_size[1]>p_size[1] && s_size[2]>p_size[2]){
+            if(s_size[0]>p_size[0] && s_size[1]>p_size[1] && s_size[2]>p_size[2] && current_volume+sheet.get_volume()<min_volume){
                 new_sheets.push_back(sheet);
                 break;
             }

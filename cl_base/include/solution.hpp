@@ -36,7 +36,7 @@ struct Solutions
         solutions.push_back(solution);
     }
 
-    inline size_t size(){
+    inline size_t size() const{
         return solutions.size();
     }
 

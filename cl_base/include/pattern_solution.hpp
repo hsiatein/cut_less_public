@@ -16,6 +16,9 @@ public:
     int remain_groups() const;
     int placed_pattern();
     double get_volume() const;
+    inline bool is_complete() const{
+        return remain_groups()==0;
+    }
     
 private:
     

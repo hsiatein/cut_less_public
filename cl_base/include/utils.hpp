@@ -106,6 +106,9 @@ struct SheetType{
         return id==other.id;
     }
     json to_json() const;
+    inline double get_volume() const{
+        return size.get_volume();
+    }
 };
 
 // struct SheetTypeHasher{
