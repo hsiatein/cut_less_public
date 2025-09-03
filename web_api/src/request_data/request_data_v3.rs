@@ -10,9 +10,9 @@ use crate::part::raw_part_v3::RawPartsV3;
 pub struct RequestDataV3 {
     #[serde(default, rename = "Config")]
     pub config: SolverConfig,
-    #[serde(rename = "Parts")]
+    #[serde(flatten)]
     pub parts: RawPartsV3,
-    #[serde(rename = "Sheets")]
+    #[serde(flatten)]
     pub sheets: RawSheetsV3,
 }
 

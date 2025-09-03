@@ -4,7 +4,7 @@ use crate::sheet::AsSheets;
 
 #[derive(Serialize,Deserialize)]
 pub struct RawSheetsV3{
-    #[serde(rename = "Parts")]
+    #[serde(rename = "Sheets")]
     pub raw_sheets:Vec<RawSheetV3>,
 }
 
