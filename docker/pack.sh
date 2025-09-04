@@ -4,6 +4,8 @@ SCRIPT_DIR=$(dirname "$(realpath "$0")")
 cd "$SCRIPT_DIR"
 echo $(pwd)
 
+export CC=clang
+export CXX=clang++
 cd ..
 mkdir build
 cd build

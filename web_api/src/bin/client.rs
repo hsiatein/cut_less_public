@@ -2,7 +2,6 @@ use cl_web_api::request_data::request_data_v3::RequestDataV3;
 use reqwest::Client;
 use std::env;
 use std::fs;
-use cl_web_api::request_data::RequestData;
 
 #[tokio::main]
 async fn main() {

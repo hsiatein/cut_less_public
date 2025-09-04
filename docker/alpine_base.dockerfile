@@ -3,7 +3,6 @@ FROM rust:1.89.0-alpine3.22 AS builder
 RUN apk add --no-cache git \
     musl-dev \
     libc-dev \
-    gcc \
     cmake \
     clang \
     clang-dev \
@@ -14,9 +13,7 @@ RUN apk add --no-cache git \
     openssl-dev \
     openssl-libs-static \
     pkgconfig \
-    build-base \
-    g++ \
-    libstdc++
+    build-base 
 
 ENV http_proxy=http://192.168.2.63:7897 \
     https_proxy=http://192.168.2.63:7897 \

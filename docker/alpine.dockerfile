@@ -3,22 +3,27 @@ FROM alpine_base:latest AS builder
 ENV SERVER_NAME=server
 WORKDIR /cut_less
 RUN cmago init
-COPY sources/ .
-WORKDIR /cut_less
+COPY sources/cl_base ./cl_base
+COPY sources/cl_solver ./cl_solver
+COPY sources/external ./external
+COPY sources/Cmago.toml .
 RUN cmago update && rm -rf ./build
-ENV CC=gcc
-ENV CXX=g++
-RUN cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-w" -DCMAKE_C_FLAGS="-w"
+ENV CC=clang
+ENV CXX=clang++
+RUN cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-w -D__MUSL__ -static" -DBUILD_SHARED_LIBS=OFF -DCMAKE_CXX_FLAGS="-w -stdlib=libstdc++ -static"
 RUN cmake --build build -j4 --target cl_solver
+COPY sources/web_api ./web_api
 WORKDIR /cut_less/web_api
-RUN cargo build --bin ${SERVER_NAME}
+RUN apk add perl zlib-static
+RUN cargo build --bin server --release
 
 
 WORKDIR /cut_less
 ENV TARGET_DIR="binaries"
 RUN mkdir -p $TARGET_DIR
-ENV SERVER_PATH=web_api/target/debug/${SERVER_NAME}
+ENV SERVER_PATH=web_api/target/release/${SERVER_NAME}
 RUN cp "$SERVER_PATH" "$TARGET_DIR"
+
 RUN ldd "$SERVER_PATH" | grep "=>" | awk '{print $3}' | while read lib; do if [ -f "$lib" ]; then cp "$lib" "$TARGET_DIR"; fi; done
 # RUN rm $TARGET_DIR/ld-musl-x86_64.so.1
 

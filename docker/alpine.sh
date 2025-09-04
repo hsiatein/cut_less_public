@@ -3,10 +3,12 @@ SCRIPT_DIR=$(dirname "$(realpath "$0")")
 cd "$SCRIPT_DIR"
 echo $(pwd)
 
-if ! docker image inspect alpine_base:latest > /dev/null 2>&1; then
-    echo "构建 alpine_base"
-    docker build --progress=plain -f alpine_base.dockerfile -t alpine_base .
-fi
+# if ! docker image inspect alpine_base:latest > /dev/null 2>&1; then
+#     echo "构建 alpine_base"
+    
+# fi
+
+# docker build --progress=plain -f alpine_base.dockerfile -t alpine_base .
 
 mkdir sources
 mkdir sources/external
@@ -22,4 +24,4 @@ docker build --progress=plain -f alpine.dockerfile -t cut_less_alpine .
 docker save -o cut_less_image.tar cut_less_alpine:latest
 rm -rf ./sources
 
-docker run -p 6002:6002 -it cut_less_alpine sh
+# docker run -p 6002:6002 -it cut_less_alpine sh
