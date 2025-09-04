@@ -6,7 +6,6 @@
 
 using json = nlohmann::json;
 
-// 1 -> 0.1mm
 struct SolverConfig{
     // 通用
 

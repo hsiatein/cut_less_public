@@ -14,7 +14,9 @@ RUN apk add --no-cache git \
     openssl-dev \
     openssl-libs-static \
     pkgconfig \
-    build-base
+    build-base \
+    g++ \
+    libstdc++
 
 ENV http_proxy=http://192.168.2.63:7897 \
     https_proxy=http://192.168.2.63:7897 \

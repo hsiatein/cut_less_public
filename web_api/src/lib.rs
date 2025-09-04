@@ -3,6 +3,7 @@ pub mod sheet;
 pub mod config;
 pub mod request_data;
 pub mod response;
+pub mod handler;
 
 use serde::{Deserialize, Serialize};
 

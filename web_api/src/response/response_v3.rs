@@ -41,7 +41,7 @@ impl NodeV3 {
             let mut part_size=Vec::new();
             let mut redundancy=Vec::new();
             let mut max_redundancy=MAX;
-            println!("{:?} and {:?}",node.size,raw_part_size);
+            // println!("{:?} and {:?}",node.size,raw_part_size);
             for (i0,i1,i2) in vec!((0,1,2),(0,2,1),(1,0,2),(1,2,0),(2,0,1),(2,1,0)){
                 let new_size=vec![raw_part_size[i0],raw_part_size[i1],raw_part_size[i2]];
                 let new_redundancy: Vec<i32>=vec!(node.size[0]-new_size[0],node.size[1]-new_size[1],node.size[2]-new_size[2]);

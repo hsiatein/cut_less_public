@@ -54,7 +54,6 @@ using Vec3i=std::array<int,3>;
 
 
 struct Size{
-    // 0->width, 1->length, 2->thick
     Vec3i size;
     Vec3i remain;
 

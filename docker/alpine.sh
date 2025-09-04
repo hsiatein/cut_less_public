@@ -11,16 +11,15 @@ fi
 mkdir sources
 mkdir sources/external
 cp ./Cmago.toml sources/
-cp ../assets/config.json sources/
 cp -r ../cl_base sources/
 cp -r ../cl_solver sources/
-cp -r ../executables sources/
 cp -r ../web_api sources/
 cp -r ../external/HiGHS sources/external
-cp -r ../external/argparse sources/external
 cp -r ../external/json sources/external
 cp -r ../external/googletest sources/external
 
 docker build --progress=plain -f alpine.dockerfile -t cut_less_alpine .
 docker save -o cut_less_image.tar cut_less_alpine:latest
 rm -rf ./sources
+
+docker run -p 6002:6002 -it cut_less_alpine sh
