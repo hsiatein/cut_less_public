@@ -140,3 +140,7 @@ impl Default for InfoConfig {
         }
     }
 }
+
+pub trait AsConfig {
+    fn to_config(&self)->SolverConfig;    
+}

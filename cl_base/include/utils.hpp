@@ -209,14 +209,10 @@ public:
     }
 private:
     // std::chrono::_V2::system_clock::time_point start;
-    #ifdef __linux__
+    #ifdef __GLIBCXX__
     std::chrono::time_point<std::chrono::system_clock, std::chrono::system_clock::duration> start;
     #else
-    #ifdef __APPLE__
     std::chrono::steady_clock::time_point start;
-    #else
-    std::chrono::time_point<std::chrono::system_clock, std::chrono::system_clock::duration> start;
-    #endif
     #endif
 
     double time_limit;

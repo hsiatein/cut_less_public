@@ -1,4 +1,5 @@
 pub mod raw_sheet_v3;
+pub mod raw_sheet_v4;
 
 use serde::{Deserialize, Serialize};
 

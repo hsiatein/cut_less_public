@@ -7,6 +7,8 @@ pub mod handler;
 
 use serde::{Deserialize, Serialize};
 
+static factor:f64=10000.;
+
 
 #[derive(Serialize, Deserialize)]
 pub struct MetaData {

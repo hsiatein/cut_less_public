@@ -1,4 +1,5 @@
 pub mod raw_part_v3;
+pub mod raw_part_v4;
 
 use serde::{Deserialize, Serialize};
 
