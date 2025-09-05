@@ -4,10 +4,10 @@ use std::process::{Stdio};
 use tokio::process::{Command};
 use std::env;
 use std::fs;
-use cl_web_api::CliError;
-use cl_web_api::part::Part;
-use cl_web_api::sheet::Sheet;
-use cl_web_api::response::Node;
+use api_kernel::CliError;
+use api_kernel::part::Part;
+use api_kernel::sheet::Sheet;
+use api_kernel::response::Node;
 
 #[derive(Serialize,Deserialize)]
 struct RequestData {

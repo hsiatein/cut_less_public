@@ -1,11 +1,11 @@
-use cl_web_api::part::raw_part_v3::RawPartV3;
-use cl_web_api::part::raw_part_v3::RawPartsV3;
-use cl_web_api::sheet::raw_sheet_v3::RawSheetsV3;
-use cl_web_api::sheet::raw_sheet_v3::RawSheetV3;
+use api_kernel::part::raw_part_v3::RawPartV3;
+use api_kernel::part::raw_part_v3::RawPartsV3;
+use api_kernel::sheet::raw_sheet_v3::RawSheetsV3;
+use api_kernel::sheet::raw_sheet_v3::RawSheetV3;
 use std::env;
 use std::fs;
-use cl_web_api::request_data::RequestData;
-use cl_web_api::request_data::request_data_v3::RequestDataV3;
+use api_kernel::request_data::RequestData;
+use api_kernel::request_data::request_data_v3::RequestDataV3;
 
 #[tokio::main]
 async fn main() {

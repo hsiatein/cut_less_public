@@ -1,8 +1,7 @@
 use std::env;
 
 fn main() {
-    let build_dir=env::current_dir().unwrap().parent().unwrap().join("build");
-
+    let build_dir=env::current_dir().unwrap().parent().unwrap().parent().unwrap().join("build");
     if cfg!(target_os = "linux") && cfg!(target_env = "musl") {
         println!("cargo:warning=build on MUSL");
         let library_path = build_dir.join("cl_solver").to_string_lossy().into_owned();

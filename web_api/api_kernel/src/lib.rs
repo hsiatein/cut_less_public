@@ -3,11 +3,10 @@ pub mod sheet;
 pub mod config;
 pub mod request_data;
 pub mod response;
-pub mod handler;
 
 use serde::{Deserialize, Serialize};
 
-static factor:f64=10000.;
+static FACTOR:f64=10000.;
 
 
 #[derive(Serialize, Deserialize)]

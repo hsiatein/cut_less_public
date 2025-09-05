@@ -1,8 +1,8 @@
-use crate::request_data::ToProblem;
-use crate::response::response_v3::ResponseV3;
-use crate::CliError;
-use crate::request_data::request_data_v3::RequestDataV3;
-use crate::response::Response;
+use api_kernel::request_data::ToProblem;
+use api_kernel::response::response_v3::ResponseV3;
+use api_kernel::CliError;
+use api_kernel::request_data::request_data_v3::RequestDataV3;
+use api_kernel::response::Response;
 use libc::{c_char, c_void};
 use std::ffi::{CStr, CString};
 

@@ -1,6 +1,4 @@
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
-use serde::de::{self, Deserializer};
 
 use crate::sheet::Sheet;
 use crate::sheet::AsSheets;
@@ -28,7 +26,7 @@ pub struct RawSheetV4{
 impl AsSheets for RawSheetsV4{
     fn to_sheets(self:&Self)->Vec<super::Sheet> {
         self.raw_sheets.iter().enumerate().map(|pair|{
-            let new_size=pair.1.size.iter().map(|num| (*num*crate::factor).round() as usize).collect();
+            let new_size=pair.1.size.iter().map(|num| (*num*crate::FACTOR).round() as usize).collect();
             Sheet{id:pair.0,size:new_size,small:pair.1.small,qty:pair.1.qty}
         }).collect()
     }

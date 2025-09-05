@@ -4,9 +4,9 @@ use std::process::{Stdio};
 use tokio::process::{Command};
 use std::env;
 use std::fs;
-use cl_web_api::CliError;
-use cl_web_api::request_data::RequestData;
-use cl_web_api::response::Node;
+use api_kernel::CliError;
+use api_kernel::request_data::RequestData;
+use api_kernel::response::Node;
 
 #[derive(Serialize,Deserialize)]
 struct ApiResponse {

@@ -22,7 +22,7 @@ pub struct RawPartV3{
 impl AsParts for RawPartsV3 {
     fn to_parts(&self)->Vec<super::Part> {
         self.raw_parts.iter().enumerate().map(|pair|{
-            let new_size=pair.1.size.iter().map(|num| (*num*crate::factor).round() as usize).collect();
+            let new_size=pair.1.size.iter().map(|num| (*num*crate::FACTOR).round() as usize).collect();
             Part{id:pair.0,size:new_size,rotatable:pair.1.rotatable,qty:pair.1.qty}
         }).collect()
     }
