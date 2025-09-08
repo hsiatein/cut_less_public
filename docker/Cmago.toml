@@ -8,14 +8,14 @@ external_library_path = "./external/"
 [[lib]]
 name = "cl_solver"
 path = "./cl_solver/"
-#lib_type = "dynamic"
+lib_type = "dynamic"
 dependencies = ["highs","cl_base"]
 
 
 [[lib]]
 name = "cl_base"
 path = "./cl_base/"
-#lib_type = "dynamic"
+lib_type = "dynamic"
 dependencies = ["nlohmann_json"]
 
 [tests]

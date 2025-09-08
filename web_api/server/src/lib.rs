@@ -18,13 +18,13 @@ pub async fn handle_request(data: RequestDataV3) -> Result<warp::reply::Json, wa
     let config_string=serde_json::to_string(&data.config).unwrap();
     let problem_cstr = CString::new(problem_string).unwrap();
     let config_cstr = CString::new(config_string).unwrap();
-    println!("{:?}",problem_cstr);
-    println!("{:?}",config_cstr);
+    // println!("{:?}",problem_cstr);
+    // println!("{:?}",config_cstr);
     let solution;
-    println!("calc begin");
+    println!("calculate begin");
     unsafe {
         let result=solve(problem_cstr.as_ptr() as *const c_char, config_cstr.as_ptr() as *const c_char);
-        println!("calc end");
+        println!("calculate end");
         solution = CStr::from_ptr(get_c_str(result)).to_string_lossy().into_owned();
         println!("get string");
         free_result(result);
