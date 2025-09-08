@@ -1,6 +1,7 @@
 use std::i32::MAX;
 
 use serde::{Deserialize, Serialize};
+use crate::part::raw_part_v3::RawPartsV3;
 use crate::request_data::request_data_v3::RequestDataV3;
 use crate::sheet::raw_sheet_v3::RawSheetV3;
 
@@ -8,17 +9,17 @@ use crate::sheet::raw_sheet_v3::RawSheetV3;
 #[derive(Serialize, Deserialize)]
 pub struct NodeV3{
     #[serde(rename = "Size")]
-    size: Vec<i32>,
+    pub size: Vec<i32>,
     #[serde(skip_serializing_if = "should_skip_redundancy",rename = "Redundancy")]
-    redundancy: Vec<i32>,
+    pub redundancy: Vec<i32>,
     #[serde(rename = "NodeType")]
-    node_type: String,
+    pub node_type: String,
     #[serde(rename = "Orient")]
-    orient: String,
+    pub orient: String,
     #[serde(rename = "CutNum")]
-    cut_num: usize,
+    pub cut_num: usize,
     #[serde(rename = "Childs")]
-    children: Vec<NodeV3>,
+    pub children: Vec<NodeV3>,
 }
 
 fn should_skip_redundancy(node: &Vec<i32>) -> bool {
@@ -28,7 +29,7 @@ fn should_skip_redundancy(node: &Vec<i32>) -> bool {
 
 impl NodeV3 {
     
-    fn from_node(request_data:&RequestDataV3,node:&super::Node)->Self {
+    pub fn from_node(raw_parts:&RawPartsV3,node:&super::Node)->Self {
         let type_and_id:Vec<&str>=node.node_type.split(":").collect();
         let node_type=type_and_id[0];
         let mut result=NodeV3{size:node.size.clone(),redundancy:vec!(0,0,0),node_type:node_type.to_string(),orient:node.orient.to_string(),cut_num:0,children:vec!()};
@@ -37,7 +38,7 @@ impl NodeV3 {
         }
         if node_type=="Part"{
             let id:usize=type_and_id[1].parse().unwrap();
-            let raw_part_size:Vec<i32>=request_data.parts.raw_parts[id].size.iter().map(|l|(*l).try_into().unwrap()).collect();
+            let raw_part_size:Vec<i32>=raw_parts.raw_parts[id].size.iter().map(|l|(*l).try_into().unwrap()).collect();
             let mut part_size=Vec::new();
             let mut redundancy=Vec::new();
             let mut max_redundancy=MAX;
@@ -51,12 +52,12 @@ impl NodeV3 {
                     redundancy=new_redundancy;
                 }
             }
-            result.node_type=request_data.sheets.raw_sheets[id].id.clone();
+            result.node_type=raw_parts.raw_parts[id].id.clone();
             result.size=part_size;
             result.redundancy=redundancy;
         }
         for child in &node.children{
-            result.children.push(Self::from_node(request_data, child));
+            result.children.push(Self::from_node(raw_parts, child));
         }
         result
     }    
@@ -72,7 +73,8 @@ pub struct BlueprintV3{
 
 impl BlueprintV3{
     fn from_blueprint(request_data:&RequestDataV3,blueprint:&super::Blueprint)->Self {
-        BlueprintV3 { sheet: RawSheetV3 { id: request_data.sheets.raw_sheets[blueprint.sheet.id].id.to_string(), size: blueprint.sheet.size.clone(), small: blueprint.sheet.small, qty: blueprint.sheet.qty }, root: NodeV3::from_node(request_data, &blueprint.root) }
+        BlueprintV3 { sheet: request_data.sheets.raw_sheets[blueprint.sheet.id].clone(), 
+        root: NodeV3::from_node(&request_data.parts, &blueprint.root) }
     }
 }
 

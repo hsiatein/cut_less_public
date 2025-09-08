@@ -8,7 +8,7 @@ pub struct RawSheetsV3{
     pub raw_sheets:Vec<RawSheetV3>,
 }
 
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize,Deserialize,Clone)]
 pub struct RawSheetV3{
     #[serde(rename = "ID")]
     pub id:String,

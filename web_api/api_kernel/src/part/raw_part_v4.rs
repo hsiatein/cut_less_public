@@ -1,29 +1,41 @@
 use serde::{Deserialize, Serialize};
 use crate::part::{AsParts, Part};
+use super::raw_part_v3::{RawPartV3,RawPartsV3};
 
 #[derive(Serialize,Deserialize)]
-pub struct RawPartsV3{
+pub struct RawPartsV4{
     #[serde(rename = "Parts")]
-    pub raw_parts:Vec<RawPartV3>,
+    pub raw_parts:Vec<RawPartV4>,
 }
 
 #[derive(Serialize,Deserialize)]
-pub struct RawPartV3{
+pub struct RawPartV4{
     #[serde(rename = "ID")]
     pub id:String,
     #[serde(rename = "Size")]
     pub size:Vec<f64>,
+    #[serde(rename = "Redundancy")]
+    pub redundancy:Vec<f64>,
     #[serde(rename = "Rotatable")]
     pub rotatable:bool,
     #[serde(rename = "qty")]
     pub qty:usize
 }
 
-impl AsParts for RawPartsV3 {
+impl RawPartsV4 {
+    pub fn to_parts_v3(&self)->RawPartsV3 {
+        RawPartsV3{
+            raw_parts:self.raw_parts.iter().map(|part|{
+                let new_size=part.size.iter().zip(part.redundancy.clone()).map(|num| ((*num.0+num.1)*crate::FACTOR).round() as usize).collect();
+                RawPartV3{id:part.id.clone(),size:new_size,rotatable:part.rotatable,qty:part.qty}
+            }).collect()
+        }
+        
+    }
+}
+
+impl AsParts for RawPartsV4 {
     fn to_parts(&self)->Vec<super::Part> {
-        self.raw_parts.iter().enumerate().map(|pair|{
-            let new_size=pair.1.size.iter().map(|num| (*num*crate::FACTOR).round() as usize).collect();
-            Part{id:pair.0,size:new_size,rotatable:pair.1.rotatable,qty:pair.1.qty}
-        }).collect()
+        self.to_parts_v3().to_parts()
     }
 }

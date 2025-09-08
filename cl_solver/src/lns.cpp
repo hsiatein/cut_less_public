@@ -73,7 +73,8 @@ void LNS::run(){
             replace_best();
             if(history.back()->is_complete() && history.back()->get_volume()<min_volume) min_volume=history.back()->get_volume();
             timer.print_time(Color::GREEN);
-            timer.print(Color::BLUE,"\ntotal volume: ",history.back()->get_volume()*1e-12,"\ntotal cuts: ",cal_cutnum(history.back()),"\ntotal parts: ",history.back()->placed_pattern(),"\n");
+            double volume_coeff=1e-9/(config.COEFF*config.COEFF*config.COEFF);
+            timer.print(Color::BLUE,"\ntotal volume: ",history.back()->get_volume()*volume_coeff,"\ntotal cuts: ",cal_cutnum(history.back()),"\ntotal parts: ",history.back()->placed_pattern(),"\n");
 
             delete lastProcess;
             lastProcess=new Process(process);

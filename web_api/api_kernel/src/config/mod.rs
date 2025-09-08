@@ -1,7 +1,9 @@
+pub mod config_v4;
+
 use serde::{Serialize, Deserialize};
 
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize, Default)]
 pub struct SolverConfig {
     // 通用
     #[serde(default = "default_time_limit", rename = "TIME_LIMIT")]
@@ -10,6 +12,8 @@ pub struct SolverConfig {
     pub cut_loss: usize,
     #[serde(default = "default_remain", rename = "REMAIN")]
     pub remain: Vec<i32>,
+    #[serde(default = "default_coeff", rename = "COEFF")]
+    pub coeff: f64,
 
     // 组合器相关
     #[serde(default = "default_max_stage", rename = "MAX_STAGE")]
@@ -59,6 +63,7 @@ pub struct SolverConfig {
 fn default_time_limit() -> f64 { 1000.0 }
 fn default_cut_loss() -> usize { 30 }
 fn default_remain() -> Vec<i32> { vec![50, 80, 100, 150, 200] }
+fn default_coeff() -> f64 { crate::FACTOR }
 
 fn default_max_stage() -> usize { 8 }
 fn default_utilization_rate_limit() -> f64 { 0.95 }
@@ -80,40 +85,8 @@ fn default_solution_get_best_prob() -> f64 { 0.5 }
 fn default_visualize() -> bool { false }
 fn default_runtime_log() -> bool { true }
 
-impl Default for SolverConfig {
-    fn default() -> Self {
-        Self {
-            time_limit: 1000.0,
-            cut_loss: 30,
-            remain: vec![50, 80, 100, 150, 200],
 
-            max_stage: 8,
-            utilization_rate_limit: 0.95,
-            merge_size_check: false,
-
-            average_cut_punish: 3.0,
-            highs_random_seed: 0,
-
-            lns_random_seed: 0,
-            pattern_batch_size: 5,
-            sheet_batch_size: 5,
-            sheet_discard_prob: 0.5,
-            blink_prob: 0.1,
-
-            destroy_rate: 0.8,
-            close_sheet_prob: 0.8,
-
-            solution_get_best_prob: 0.5,
-
-            visualize: false,
-            runtime_log: true,
-            info: InfoConfig::default(),
-        }
-    }
-}
-
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize, Default)]
 pub struct InfoConfig {
     #[serde(default = "default_generate_result",rename = "GENERATE_RESULT")]
     pub generate_result: bool,
@@ -129,17 +102,6 @@ fn default_generate_result() -> bool { false }
 fn default_highs_info() -> bool { false }
 fn default_select_result() -> bool { false }
 fn default_operation() -> bool { false }
-
-impl Default for InfoConfig {
-    fn default() -> Self {
-        Self {
-            generate_result: false,
-            highs_info: false,
-            select_result: false,
-            operation: false,
-        }
-    }
-}
 
 pub trait AsConfig {
     fn to_config(&self)->SolverConfig;    

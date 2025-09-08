@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::sheet::Sheet;
 use crate::sheet::AsSheets;
+use crate::sheet::raw_sheet_v3::{RawSheetV3,RawSheetsV3};
 
 #[derive(Serialize,Deserialize)]
 pub struct RawSheetsV4{
@@ -9,7 +10,7 @@ pub struct RawSheetsV4{
     pub raw_sheets:Vec<RawSheetV4>,
 }
 
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize,Deserialize,Clone)]
 pub struct RawSheetV4{
     #[serde(rename = "ID")]
     pub id:String,
@@ -21,13 +22,20 @@ pub struct RawSheetV4{
     pub qty:usize
 }
 
-
+impl RawSheetsV4{
+    pub fn to_sheets_v3(self:&Self)->RawSheetsV3 {
+        RawSheetsV3{
+            raw_sheets:self.raw_sheets.iter().map(|sheet|{
+                let new_size=sheet.size.iter().map(|num| (*num*crate::FACTOR).round() as usize).collect();
+                RawSheetV3{id:sheet.id.clone(),size:new_size,small:sheet.small,qty:sheet.qty}
+            }).collect()
+        }
+        
+    }
+}
 
 impl AsSheets for RawSheetsV4{
     fn to_sheets(self:&Self)->Vec<super::Sheet> {
-        self.raw_sheets.iter().enumerate().map(|pair|{
-            let new_size=pair.1.size.iter().map(|num| (*num*crate::FACTOR).round() as usize).collect();
-            Sheet{id:pair.0,size:new_size,small:pair.1.small,qty:pair.1.qty}
-        }).collect()
+        self.to_sheets_v3().to_sheets()
     }
 }
