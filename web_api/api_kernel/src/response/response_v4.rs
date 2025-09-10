@@ -30,10 +30,24 @@ fn should_skip_redundancy(node: &Vec<f64>) -> bool {
 
 impl NodeV4 {
     pub fn from_node_v3(raw_parts_v4:&RawPartsV4,node:&NodeV3)->Self {
-        let raw_part_v4=raw_parts_v4.raw_parts.iter().find(|part| part.id==node.node_type).unwrap();
-        let base_redundancy:Vec<f64>=node.redundancy.iter().map(|x|(*x as f64)/crate::FACTOR).collect();
-        let (new_size,new_red)=Self::modify_order(raw_part_v4, &node.size);
-        let redundancy=base_redundancy.iter().zip(new_red).map(|pair|*pair.0+pair.1).collect();
+        let new_size;
+        let redundancy;
+        if node.node_type!="Struct" && node.node_type!="Leftover" && node.node_type!="Cutloss" {
+            let new_red;
+            let raw_part_v4=raw_parts_v4.raw_parts.iter()
+            .find(|part| {
+                // println!("{},{}",part.id,node.node_type);
+                part.id==node.node_type
+            }).unwrap();
+            let base_redundancy:Vec<f64>=node.redundancy.iter().map(|x|(*x as f64)/crate::FACTOR).collect();
+            (new_size,new_red)=Self::modify_order(raw_part_v4, &node.size);
+            redundancy=base_redundancy.iter().zip(new_red).map(|pair|*pair.0+pair.1).collect();
+        }
+        else {
+            new_size=node.size.iter().map(|x| (*x as f64)/crate::FACTOR).collect();
+            redundancy=node.redundancy.iter().map(|x| (*x as f64)/crate::FACTOR).collect();
+        }
+        
         let mut node_v4=NodeV4 { size: new_size, redundancy: redundancy, node_type: node.node_type.clone(), orient: node.orient.clone(), cut_num: node.cut_num, children: vec!() };
         for child in &node.children{
             node_v4.children.push(Self::from_node_v3(raw_parts_v4, child));

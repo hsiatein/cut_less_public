@@ -3,7 +3,7 @@ use serde::{Serialize, Deserialize};
 use crate::config::{AsConfig, SolverConfig};
 
 
-#[derive(Clone, Debug, Serialize, Deserialize, Default)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct SolverConfigV4 {
     // 通用
     #[serde(default = "super::default_time_limit", rename = "TIME_LIMIT")]
@@ -61,6 +61,38 @@ pub struct SolverConfigV4 {
 fn default_cut_loss() -> f64 { 3.0 }
 fn default_remain() -> Vec<f64> { vec![5.0, 8.0, 10.0, 15.0, 20.0] }
 
+impl Default for SolverConfigV4 {
+    fn default() -> Self {
+        Self {
+            time_limit: 1000.0,
+            cut_loss: 3.,
+            remain: vec![5., 8., 10., 15., 20.],
+
+            max_stage: 8,
+            utilization_rate_limit: 0.95,
+            merge_size_check: false,
+
+            average_cut_punish: 3.0,
+            highs_random_seed: 0,
+
+            lns_random_seed: 0,
+            pattern_batch_size: 5,
+            sheet_batch_size: 5,
+            sheet_discard_prob: 0.5,
+            blink_prob: 0.1,
+
+            destroy_rate: 0.8,
+            close_sheet_prob: 0.8,
+
+            solution_get_best_prob: 0.5,
+
+            visualize: false,
+            runtime_log: true,
+            info: super::InfoConfig::default(),
+        }
+    }
+}
+
 impl AsConfig for SolverConfigV4 {
     fn to_config(&self)->SolverConfig{
         SolverConfig{
@@ -87,3 +119,4 @@ impl AsConfig for SolverConfigV4 {
         }
     }
 }
+

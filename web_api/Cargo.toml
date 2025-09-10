@@ -26,6 +26,10 @@ path = "src/bin/client.rs"
 name = "transformer"
 path = "src/bin/transformer.rs"
 
+[[bin]]
+name = "transformer_v4"
+path = "src/bin/transformer_v4.rs"
+
 [dependencies]
 api_kernel = {path = "./api_kernel"}
 warp = "0.3"

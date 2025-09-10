@@ -32,6 +32,16 @@ impl RawPartsV4 {
         }
         
     }
+
+    pub fn from_parts_v3(part:&RawPartsV3)->Self {
+        Self{
+            raw_parts:part.raw_parts.iter().map(|part|{
+                let new_size=part.size.iter().map(|num| ((*num as f64)/crate::FACTOR)).collect();
+                RawPartV4{id:part.id.clone(),size:new_size,redundancy:vec!(0.,0.,0.),rotatable:part.rotatable,qty:part.qty}
+            }).collect()
+        }
+        
+    }
 }
 
 impl AsParts for RawPartsV4 {
