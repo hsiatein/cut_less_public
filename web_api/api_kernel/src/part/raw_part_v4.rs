@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::part::{AsParts, Part};
+use crate::part::{AsParts};
 use super::raw_part_v3::{RawPartV3,RawPartsV3};
 
 #[derive(Serialize,Deserialize)]

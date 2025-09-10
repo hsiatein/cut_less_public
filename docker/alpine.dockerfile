@@ -26,10 +26,16 @@ RUN mkdir -p $TARGET_DIR
 ENV SERVER_PATH=web_api/target/release/${SERVER_NAME}
 RUN cp "$SERVER_PATH" "$TARGET_DIR"
 
-RUN ldd "$SERVER_PATH" | grep "=>" | awk '{print $3}' | while read lib; do if [ -f "$lib" ]; then cp "$lib" "$TARGET_DIR"; fi; done
-RUN rm $TARGET_DIR/ld-musl-x86_64.so.1
-RUN rm $TARGET_DIR/libz.so.1
+# RUN ldd "$SERVER_PATH" | grep "=>" | awk '{print $3}' | while read lib; do if [ -f "$lib" ]; then cp "$lib" "$TARGET_DIR"; fi; done
+RUN ldd "$SERVER_PATH" | grep "=>" | awk '{print $3}' | while read lib; do \
+      if [ -f "$lib" ]; then \
+          strip --strip-unneeded "$lib"; \
+          cp "$lib" "$TARGET_DIR"; \
+      fi; \
+  done
 
+RUN rm $TARGET_DIR/ld-musl-x86_64.so.1 && rm $TARGET_DIR/libz.so.1
+RUN strip binaries/server
 
 FROM alpine:3.22
 EXPOSE 6002
