@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+use crate::part::raw_part_v5::RawPartsV5;
 use crate::sheet::AsSheets;
 use crate::sheet::raw_sheet_v4::{RawSheetV4,RawSheetsV4};
 
@@ -43,6 +44,20 @@ impl RawSheetsV5{
             }).collect()
         }
         
+    }
+
+    pub fn to_groups(&self,part_groups:Vec<(RawPartsV5,f64,f64)>)->Vec<(RawPartsV5,RawSheetsV5)> {
+        let mut groups=vec!();
+        for (part_group,min_h,max_h) in part_groups {
+            let mut group=(part_group,RawSheetsV5{raw_sheets:vec!()});
+            for sheet in &self.raw_sheets {
+                if sheet.min_hardness>=min_h && sheet.max_hardness<=max_h {
+                    group.1.raw_sheets.push(sheet.clone());
+                }
+            }
+            groups.push(group);
+        }
+        groups
     }
 }
 

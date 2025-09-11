@@ -4,13 +4,13 @@ use serde::{Deserialize, Serialize};
 use crate::part::{AsParts};
 use super::raw_part_v4::{RawPartV4,RawPartsV4};
 
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize,Deserialize,Clone)]
 pub struct RawPartsV5{
     #[serde(rename = "Parts")]
     pub raw_parts:Vec<RawPartV5>,
 }
 
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize,Deserialize,Clone)]
 pub struct RawPartV5{
     #[serde(rename = "ID")]
     pub id:String,
@@ -41,31 +41,52 @@ impl RawPartsV5 {
     pub fn from_parts_v4(part:&RawPartsV4)->Self {
         Self{
             raw_parts:part.raw_parts.iter().map(|part|{
-                let new_size=part.size.iter().map(|num| ((*num as f64)/crate::FACTOR)).collect();
-                RawPartV5{id:part.id.clone(),size:new_size,redundancy:vec!(0.,0.,0.),rotatable:part.rotatable
+                RawPartV5{id:part.id.clone(),size:part.size.clone(),redundancy:vec!(0.,0.,0.),rotatable:part.rotatable
                     ,min_hardness:0.,max_hardness:100.,qty:part.qty}
             }).collect()
         }
         
     }
 
-    pub fn regularize(&mut self) {
+    pub fn regularize(&self)->Self {
         let mut new_parts=vec!();
         let mut id_table=HashMap::<String,usize>::new();
-        while let Some(next) = self.raw_parts.pop() {
+        for next in &self.raw_parts {
             match id_table.entry(next.id.clone()) {
                 std::collections::hash_map::Entry::Vacant(e) => {
                     e.insert(new_parts.len());
-                    new_parts.push(next);
+                    new_parts.push(next.clone());
                 }
                 std::collections::hash_map::Entry::Occupied(e) => {
                     new_parts[*e.get()].qty += 1;
                 }
             }
         }
-        new_parts.reverse();
-        self.raw_parts=new_parts;
+        Self { raw_parts: new_parts }
     }
+
+    pub fn to_groups(&self)->Vec<(RawPartsV5,f64,f64)> {
+        let mut groups=Vec::<(RawPartsV5,f64,f64)>::new();
+        for part in &self.raw_parts{
+            let mut success=false;
+            for (group,min_h,max_h) in &mut groups {
+                if *min_h<part.max_hardness && *max_h>part.min_hardness {
+                    *min_h=(*min_h).max(part.min_hardness);
+                    *max_h=(*max_h).min(part.max_hardness);
+                    group.raw_parts.push(part.clone());
+                    success=true;
+                    break;
+                }
+            }
+            if !success {
+                let group=RawPartsV5{raw_parts:vec!(part.clone())};
+                groups.push((group,part.min_hardness,part.max_hardness));
+            }
+
+        }
+        groups
+    }
+
 }
 
 impl AsParts for RawPartsV5 {

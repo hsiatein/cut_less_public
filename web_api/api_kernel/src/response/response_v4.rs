@@ -75,13 +75,13 @@ impl NodeV4 {
 #[derive(Serialize, Deserialize)]
 pub struct BlueprintV4{
     #[serde(rename = "Sheet")]
-    sheet: RawSheetV4,
+    pub sheet: RawSheetV4,
     #[serde(rename = "Root")]
-    root: NodeV4,
+    pub root: NodeV4,
 }
 
 impl BlueprintV4{
-    fn from_blueprint(request_data:&RequestDataV4,request_data_v3:&RequestDataV3,blueprint:&super::Blueprint)->Self {
+    pub fn from_blueprint(request_data:&RequestDataV4,request_data_v3:&RequestDataV3,blueprint:&super::Blueprint)->Self {
         let node_v3=NodeV3::from_node(&request_data_v3.parts, &blueprint.root);
         BlueprintV4 { sheet: request_data.sheets.raw_sheets[blueprint.sheet.id].clone(), 
         root: NodeV4::from_node_v3(&request_data.parts, &node_v3) }

@@ -1,4 +1,4 @@
-use api_kernel::request_data::request_data_v3::RequestDataV3;
+use api_kernel::request_data::request_data_v5::RequestDataV5;
 use reqwest::Client;
 use std::env;
 use std::fs;
@@ -8,9 +8,9 @@ async fn main() {
     let client = Client::new();
     let exe_path = env::current_exe().unwrap();
     let root_path = exe_path.parent().unwrap().parent().unwrap().parent().unwrap().parent().unwrap();
-    let problem_path = root_path.join("assets").join("v3").join("test_problem.json");
+    let problem_path = root_path.join("assets").join("v5").join("test_problem.json");
     let problem  = fs::read_to_string(problem_path).unwrap();
-    let request:RequestDataV3=serde_json::from_str(&problem).unwrap();
+    let request:RequestDataV5=serde_json::from_str(&problem).unwrap();
     let response = client
         .post("http://localhost:6002/cut_less")
         .json(&request)
