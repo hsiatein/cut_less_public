@@ -13,11 +13,12 @@ RUN apk add --no-cache git \
     openssl-dev \
     openssl-libs-static \
     pkgconfig \
-    build-base 
+    build-base \
+    perl
 
 ENV http_proxy=http://192.168.2.63:7897 \
     https_proxy=http://192.168.2.63:7897 \
     PATH=/usr/lib/ninja-build/bin:$PATH
 WORKDIR /
-RUN git clone https://github.com/hsiatein/cmago.git && cd cmago && cargo build --release
+RUN git clone https://github.com/hsiatein/cmago.git --depth 1 && cd cmago && cargo build --release
 ENV PATH=/cmago/target/release:$PATH
