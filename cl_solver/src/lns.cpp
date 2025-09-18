@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <lns.hpp>
 #include <deque>
 
@@ -107,7 +108,7 @@ void LNS::ruin(){
     int init_option_num=0;
     int n=0;
     while(true){
-        std::vector<DeleteOption> options=get_deletables();
+        std::vector<DeleteOption> options=get_deletable_blueprints();
         if(init_option_num==0) init_option_num=options.size();
         if(init_option_num*(1-config.DESTROY_RATE)>=options.size()) break;
         DeleteOption option=select_delete_option(options);
@@ -116,7 +117,7 @@ void LNS::ruin(){
         // if(n==4) break;
     }
 
-    if(randomEngine.rand_double()<config.CLOSE_SHEET_PROB) close_sheets();
+    close_sheets();
 }
 
 void LNS::ruin_all(){
@@ -310,7 +311,7 @@ std::vector<Blueprint*> LNS::keep_nonempty_sheets(std::vector<Blueprint*>& sheet
 void LNS::close_sheets(){
     std::vector<Blueprint*> result;
     for(Blueprint* blueprint:solution->blueprints){
-        if(blueprint->top->childs.empty()){
+        if(blueprint->top->childs.empty() && randomEngine.rand_double()<config.CLOSE_SHEET_PROB){
             sheetsNum[blueprint->sheetID]+=1;
             delete blueprint;
         }
@@ -377,19 +378,21 @@ std::vector<DeleteOption> LNS::get_deletables(){
 std::vector<DeleteOption> LNS::get_deletable_blueprints(){
     std::vector<DeleteOption> result;
     for(auto blueprint:solution->blueprints){
+        if(blueprint->top->childs.empty()) continue;
         result.push_back({blueprint,blueprint->top,blueprint->top->cal_utilization_rate()});
     }
     return result;
 }
 
+bool comp(const DeleteOption& a,const DeleteOption& b){
+    return std::get<2>(a)<std::get<2>(b);
+}
+
 DeleteOption LNS::select_delete_option(const std::vector<DeleteOption>& options){
-    DeleteOption best=options[0];
-    for(auto option:options){
-        if(std::get<2>(option)>std::get<2>(best)){
-            best=option;
-        }
+    if(randomEngine.rand_double()<config.BLINK_PROB){
+        return options[randomEngine.rand_int(0, options.size()-1)];
     }
-    return best;
+    else return *std::max_element(options.begin(),options.end(),comp);
 }
 
 
