@@ -23,8 +23,9 @@ void Problem::addSheet(int width,int length,int thick,int qty,bool small){
 }
 
 void Problem::infinity_sheets(){
-    for(auto& sheet_num:sheetsNum){
-        sheet_num=10000000;
+    for(int i=0;i<sheets.size();i++){
+        if(sheets[i].small) sheetsNum[i]=0;
+        else sheetsNum[i]=10000000;
     }
 }
 

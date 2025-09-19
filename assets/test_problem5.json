@@ -1,0 +1,36 @@
+{
+    "Parts": [
+        {
+            "ID": 0,
+            "Rotatable": true,
+            "Size": [
+                950,
+                1750,
+                850
+            ],
+            "qty": 455
+        },
+        {
+            "ID": 1,
+            "Rotatable": true,
+            "Size": [
+                500,
+                500,
+                500
+            ],
+            "qty": 530
+        }
+    ],
+    "Sheets": [
+        {
+            "ID": 0,
+            "Size": [
+                12800,
+                11800,
+                5500
+            ],
+            "Small": false,
+            "qty": 1
+        }
+    ]
+}

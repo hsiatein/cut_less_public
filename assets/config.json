@@ -1,6 +1,6 @@
 {
     "CUT_LOSS":30,
-    "TIME_LIMIT":1000,
+    "TIME_LIMIT":3000,
     "REMAIN":[50,80,100,150,200],
     "COEFF":10,
     "MAX_STAGE":6,

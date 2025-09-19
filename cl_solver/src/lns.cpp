@@ -207,7 +207,21 @@ std::pair<size_t,std::vector<StageLocation>> LNS::get_next_group(){
         cand.push_back({i,&group});
     }
     if(cand.empty()) return {};
-    std::pair<size_t,GroupNum*> group=randomEngine.rand_element<std::pair<size_t,GroupNum*>>(cand);
+    std::pair<size_t,GroupNum*> group=*std::max_element(cand.begin(),cand.end(),[this](const std::pair<size_t,GroupNum*>&a,const std::pair<size_t,GroupNum*>&b){
+        double volumeA=0;
+        for(const auto& stage:a.second->first){
+            volumeA+=get_pattern(stage).top->size.get_volume();
+        }
+        volumeA=volumeA/a.second->first.size();
+        double volumeB=0;
+        for(const auto& stage:b.second->first){
+            volumeB+=get_pattern(stage).top->size.get_volume();
+        }
+        volumeB=volumeB/b.second->first.size();
+        return volumeA<volumeB;
+    });
+
+    // std::pair<size_t,GroupNum*> group=randomEngine.rand_element<std::pair<size_t,GroupNum*>>(cand);
     group.second->second=group.second->second-1;
     return {group.first,group.second->first};
 }
