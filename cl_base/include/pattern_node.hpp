@@ -36,6 +36,7 @@ struct PatternNode{
     static void lift_childs(PatternNode* patternNode);
     void set_pattern(size_t groupID,StageLocation stageLocation,const Size& size,RotateOrient rotate);
     double cal_utilization_rate();
+    double cal_utilization_volume();
     bool can_contain(const Size& size) const;
     std::vector<CutOrients> match(const Size& size);
     OptionCost evaluate(const Size& size,CutOrients cutOrients,const SolverConfig& config);
@@ -46,7 +47,7 @@ struct PatternNode{
     PatternNode(const PatternNode& other);
     void split(int length,Orient orient,const SolverConfig& config);
     void reform();
-    std::vector<PatternNode*> traverse();
+    std::vector<PatternNode*> traverse_mut();
     ~PatternNode();
 
 

@@ -6,7 +6,7 @@ output/
 .vscode/
 stk_inventory.xlsx
 stk_pllist.xlsx
-.idea
+.idea/
 web_api/target
 binaries/
 cut_less_image.tar

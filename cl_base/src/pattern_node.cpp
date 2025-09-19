@@ -193,7 +193,7 @@ std::vector<CutOrients> PatternNode::match(const Size& size){
     
 }
 
-std::vector<PatternNode*> PatternNode::traverse(){
+std::vector<PatternNode*> PatternNode::traverse_mut(){
     if(childs.empty()) return {this};
     std::vector<PatternNode*> result;
     std::deque<PatternNode*> Q;
@@ -268,11 +268,22 @@ void PatternNode::reform(){
 double PatternNode::cal_utilization_rate(){
     double total=size.get_volume();
     double pattern=0;
-    std::vector<PatternNode *> childs=traverse();
+    std::vector<PatternNode *> childs=traverse_mut();
     for(PatternNode* child:childs){
         if(child->is_pattern()){
             pattern+=child->size.get_volume();
         }
     }
     return pattern/total;
+}
+
+double PatternNode::cal_utilization_volume(){
+    double pattern=0;
+    std::vector<PatternNode *> childs=traverse_mut();
+    for(PatternNode* child:childs){
+        if(child->is_pattern() || child->is_cutloss()){
+            pattern+=child->size.get_volume();
+        }
+    }
+    return pattern;
 }

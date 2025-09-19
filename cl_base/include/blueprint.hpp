@@ -12,7 +12,7 @@ struct Blueprint
     ~Blueprint();
     std::vector<PatternNode*> get_empty_structs();
     double get_volume() const;
-
+    double get_util_volume() const;
 
 };
 

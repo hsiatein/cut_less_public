@@ -34,7 +34,7 @@ bool LNS::greater(PatternSolution* a,PatternSolution* b){
 }
 
 int LNS::cal_cutnum(Blueprint* blueprint){
-    auto patternNodes=blueprint->top->traverse();
+    auto patternNodes=blueprint->top->traverse_mut();
     int result=0;
     for(auto patternNode:patternNodes){
         if(patternNode->is_cutloss()) result++;
@@ -75,7 +75,7 @@ void LNS::run(){
             if(history.back()->is_complete() && history.back()->get_volume()<min_volume) min_volume=history.back()->get_volume();
             timer.print_time(Color::GREEN);
             double volume_coeff=1e-9/(config.COEFF*config.COEFF*config.COEFF);
-            timer.print(Color::BLUE,"\ntotal volume: ",history.back()->get_volume()*volume_coeff,"\ntotal cuts: ",cal_cutnum(history.back()),"\ntotal parts: ",history.back()->placed_pattern(),"\n");
+            timer.print(Color::BLUE,"\ntotal volume: ",history.back()->get_volume()*volume_coeff,"\ntotal cuts: ",cal_cutnum(history.back()),"\ntotal parts: ",history.back()->placed_pattern(),"\nutilization rate: ",history.back()->cal_util_rate(),"\n");
 
             delete lastProcess;
             lastProcess=new Process(process);
@@ -335,7 +335,7 @@ void LNS::delete_node(DeleteOption delete_option){
     //     if(blueprint==solution->blueprints[i]) std::cout<<"Blueprint:"<<i<<"\n";
     // }
     blueprint->emptyStructs.clear();
-    auto childs=patternNode->traverse();
+    auto childs=patternNode->traverse_mut();
     for(const auto child:childs){
         if(child->is_pattern()) solution->groupNums[child->groupID].second++;
     }

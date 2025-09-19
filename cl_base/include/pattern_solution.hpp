@@ -19,6 +19,7 @@ public:
     inline bool is_complete() const{
         return remain_groups()==0;
     }
+    double cal_util_rate() const;
     
 private:
     

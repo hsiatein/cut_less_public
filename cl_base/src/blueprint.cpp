@@ -42,6 +42,10 @@ double Blueprint::get_volume() const{
     return top->size.get_volume();
 }
 
+double Blueprint::get_util_volume() const{
+    return top->cal_utilization_volume();
+}
+
 std::string to_string(const Option& op){
     std::string result="Sheet: "+std::to_string(std::get<0>(op)->sheetID)+", Space: "+std::get<1>(op)->size.to_string()+"\nGroupID: "+std::to_string(std::get<2>(op))+", Size: "+std::get<4>(op).to_string()+"\nCut Orient: ";
     for(auto o:std::get<6>(op)){

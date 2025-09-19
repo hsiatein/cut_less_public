@@ -17,6 +17,7 @@ int main(int argc, char *argv[]){
     json config_json = json::parse(f);
     SolverConfig config(config_json);
     Problem problem=Problem::from_json(problem_path);
+    problem.infinity_sheets();
 
     // 求解
     Solver solver(&problem,config);

@@ -22,6 +22,12 @@ void Problem::addSheet(int width,int length,int thick,int qty,bool small){
     SHEET_ID++;
 }
 
+void Problem::infinity_sheets(){
+    for(auto& sheet_num:sheetsNum){
+        sheet_num=10000000;
+    }
+}
+
 json Problem::to_json() const{
     json j;
     j["Parts"]=parts_to_json();

@@ -17,6 +17,7 @@ struct Problem{
     static Problem from_json(std::string path);
     void addPart(int width,int length,int thick,bool rotatable,int qty);
     void addSheet(int width,int length,int thick,int qty,bool small);
+    void infinity_sheets();
     [[nodiscard]] SheetType get_sheet(size_t id) const;
     [[nodiscard]] json to_json() const;
     [[nodiscard]] json parts_to_json() const;

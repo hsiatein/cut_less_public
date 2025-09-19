@@ -60,10 +60,18 @@ PatternSolution& PatternSolution::operator=(const PatternSolution& other){
 int PatternSolution::placed_pattern(){
     int result=0;
     for(auto blueprint:blueprints){
-        auto nodes=blueprint->top->traverse();
+        auto nodes=blueprint->top->traverse_mut();
         for(auto node:nodes){
             if(node->is_pattern()) result++;
         }
     }
     return result;
+}
+
+double PatternSolution::cal_util_rate() const{
+    double util=0;
+    for(const auto blueprint:blueprints){
+        util+=blueprint->get_util_volume();
+    }
+    return util/get_volume();
 }
