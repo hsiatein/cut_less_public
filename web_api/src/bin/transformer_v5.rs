@@ -8,7 +8,7 @@ use api_kernel::request_data::request_data_v4::RequestDataV4;
 
 #[tokio::main]
 async fn main() {
-    let problems=vec!("test_problem.json","test_problem2.json","test_problem3.json","test_problem4.json");
+    let problems=vec!("test_problem.json","test_problem2.json","test_problem3.json","test_problem4.json","input.json");
     let exe_path = env::current_exe().unwrap();
     let root_path = exe_path.parent().unwrap().parent().unwrap().parent().unwrap().parent().unwrap();
     for problem_name in &problems{

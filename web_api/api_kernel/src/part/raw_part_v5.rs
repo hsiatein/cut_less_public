@@ -41,7 +41,7 @@ impl RawPartsV5 {
     pub fn from_parts_v4(part:&RawPartsV4)->Self {
         Self{
             raw_parts:part.raw_parts.iter().map(|part|{
-                RawPartV5{id:part.id.clone(),size:part.size.clone(),redundancy:vec!(0.,0.,0.),rotatable:part.rotatable
+                RawPartV5{id:part.id.clone(),size:part.size.clone(),redundancy:part.redundancy.clone(),rotatable:part.rotatable
                     ,min_hardness:0.,max_hardness:100.,qty:part.qty}
             }).collect()
         }
