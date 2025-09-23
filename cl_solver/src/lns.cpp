@@ -160,6 +160,11 @@ LNSStatus LNS::recreate(Process& process){
             insert(bestOption);
             // 记录过程
             if(config.INFO_OPERATION){
+                auto p_node=std::get<0>(bestOption)->top;
+                Node* node=patterns.to_node(p_node);
+                process.log(node->to_json().dump());
+                timer.print(Color::CYAN, node->to_json().dump());
+                delete node;
                 process.log_operation(bestOption);
                 std::vector<Option> record;
                 for(auto op:options){
@@ -311,7 +316,7 @@ std::vector<Blueprint*> LNS::open_sheets(const std::vector<std::pair<StageLocati
 std::vector<Blueprint*> LNS::keep_nonempty_sheets(std::vector<Blueprint*>& sheets){
     std::vector<Blueprint*> result;
     for(Blueprint* blueprint:sheets){
-        if(blueprint->top->childs.empty()){
+        if(blueprint->top->is_struct() && blueprint->top->childs.empty()){
             sheetsNum[blueprint->sheetID]+=1;
             delete blueprint;
         }

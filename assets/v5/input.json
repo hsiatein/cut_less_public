@@ -1,6 +1,6 @@
 {
   "Config": {
-    "TIME_LIMIT": 1000.0,
+    "TIME_LIMIT": 100.0,
     "CUT_LOSS": 3.0,
     "REMAIN": [
       5.0,
@@ -25,10 +25,10 @@
     "VISUALIZE": false,
     "RUNTIME_LOG": true,
     "INFO": {
-      "GENERATE_RESULT": false,
-      "HIGHS_INFO": false,
-      "SELECT_RESULT": false,
-      "OPERATION": false
+      "GENERATE_RESULT": true,
+      "HIGHS_INFO": true,
+      "SELECT_RESULT": true,
+      "OPERATION": true
     }
   },
   "Parts": [

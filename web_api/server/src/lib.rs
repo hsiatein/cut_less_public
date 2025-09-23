@@ -119,6 +119,7 @@ pub async fn handle_request_v5(data: RequestDataV5) -> Result<warp::reply::Json,
     for group in groups {
         let handle = task::spawn_blocking(move || {
             let problem_string = serde_json::to_string(&group.to_problem()).unwrap();
+            println!("{}",problem_string);
             let config_string = serde_json::to_string(&group.config.to_config()).unwrap();
             let problem_cstr = CString::new(problem_string).unwrap();
             let config_cstr = CString::new(config_string).unwrap();

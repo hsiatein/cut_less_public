@@ -4,7 +4,7 @@ Process::Process(){
 
 }
 
-Process::Process(const Process& other):operations(other.operations),all_options(other.all_options){
+Process::Process(const Process& other):operations(other.operations),all_options(other.all_options),all_strings(other.all_strings){
     for(auto solution:other.history){
         history.push_back(new PatternSolution(*solution));
     }
@@ -32,11 +32,17 @@ void Process::log_options(std::vector<Option> options){
     }
 }
 
+void Process::log(std::string s){
+    all_strings.push_back(s);
+}
+
 
 void Process::print_operation(size_t i,const Timer& timer) const{
     timer.print(Color::PURPLE,"Operation: ",i,"\n");
     timer.print(Color::BLUE,"Selected:\n");
     timer.print(Color::CYAN,to_string(operations[i]),"\n");
+    timer.print(Color::BLUE,"Dump:\n");
+    timer.print(Color::CYAN,all_strings[i],"\n");
     timer.print(Color::BLUE,"Candidates:\n");
     for(const auto& cand:all_options[i]){
         timer.print(Color::CYAN,to_string(cand),"\n");
