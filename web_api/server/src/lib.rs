@@ -51,10 +51,11 @@ pub async fn handle_request_v4(data: RequestDataV4) -> Result<warp::reply::Json,
     println!("start handle");
     let problem_string=serde_json::to_string(&data.to_problem()).unwrap();
     let config_string=serde_json::to_string(&data.config.to_config()).unwrap();
+    println!("{}",problem_string);
+    println!("{}",config_string);
     let problem_cstr = CString::new(problem_string).unwrap();
     let config_cstr = CString::new(config_string).unwrap();
-    // println!("{:?}",problem_cstr);
-    // println!("{:?}",config_cstr);
+
     let solution;
     unsafe {
         println!("calculate begin");

@@ -8,7 +8,7 @@ echo $(pwd)
     
 # fi
 
-docker build --progress=plain -f alpine_base.dockerfile -t alpine_base .
+# docker build --progress=plain -f alpine_base.dockerfile -t alpine_base .
 
 mkdir sources
 mkdir sources/external
