@@ -1,3 +1,4 @@
+#include "blueprint.hpp"
 #include <algorithm>
 #include <lns.hpp>
 #include <deque>
@@ -72,7 +73,9 @@ void LNS::run(){
 
         if(history.empty() || greater(solution,history.back())){
             replace_best();
-            if(history.back()->is_complete() && history.back()->get_volume()<min_volume) min_volume=history.back()->get_volume();
+            if(history.back()->is_complete() && history.back()->get_volume()<min_volume){
+                min_volume=history.back()->get_volume();
+            }
             timer.print_time(Color::GREEN);
             double volume_coeff=1e-9/(config.COEFF*config.COEFF*config.COEFF);
             timer.print(Color::BLUE,"\ntotal volume: ",history.back()->get_volume()*volume_coeff,"\ntotal cuts: ",cal_cutnum(history.back()),"\ntotal parts: ",history.back()->placed_pattern(),"\nutilization rate: ",history.back()->cal_util_rate(),"\n");
@@ -130,7 +133,15 @@ LNSStatus LNS::recreate(Process& process){
     while(!timer.is_overtime(config.TIME_LIMIT)){
         // 选择一批模式
         auto [groupID,group]=get_next_group();
-        if(group.empty()) break;
+        if(config.INFO_RECREATE){
+            timer.print(Color::CYAN,"选择Group: ",groupID,"\n");
+        }
+        if(group.empty()){
+            if(config.INFO_RECREATE){
+                timer.print(Color::CYAN,"没有需要插入的Group\n");
+            }
+            break;
+        }
         std::vector<std::pair<StageLocation,Size>> batch_patterns=get_batch_patterns(group);
 
         // 为这批模式生成插入选项
@@ -139,6 +150,9 @@ LNSStatus LNS::recreate(Process& process){
             std::vector<Option> tempOptions=generate_options(groupID,stageLocation,size);
             // std::cout<<tempOptions.size()<<std::endl;
             options.insert(options.end(),tempOptions.begin(),tempOptions.end());
+        }
+        if(config.INFO_RECREATE){
+            timer.print(Color::CYAN,"首次生成Options数量 ",options.size(),"\n");
         }
 
         // 当前使用的母板找不到选项时使用新母板
@@ -150,13 +164,20 @@ LNSStatus LNS::recreate(Process& process){
                 // std::cout<<tempOptions.size()<<std::endl;
                 options.insert(options.end(),tempOptions.begin(),tempOptions.end());
             }
+            if(config.INFO_RECREATE){
+                timer.print(Color::CYAN,"再次生成Options数量 ",options.size(),"\n");
+            }
         }
+
         // std::cout<<"remain num: "<<process.history.back()->remain_groups()<<std::endl;
         // std::cout<<"placed num: "<<process.history.back()->placed_pattern()<<std::endl;
 
         // 获得一个选项，插入
         if(!options.empty()) {
             Option bestOption=select_option(options);
+            if(config.INFO_RECREATE){
+                timer.print(Color::CYAN,"选择的option: ",to_string(bestOption),"\n");
+            }
             insert(bestOption);
             // 记录过程
             if(config.INFO_OPERATION){
@@ -176,6 +197,9 @@ LNSStatus LNS::recreate(Process& process){
             process.log_solution(solution);
         }
         else{
+            if(config.INFO_RECREATE){
+                timer.print(Color::CYAN,"生成options失败退出, blueprints数量: ",blueprints.size(),"\n");
+            }
             solution->groupNums[groupID].second++;
             break;
         }
@@ -309,6 +333,9 @@ std::vector<Blueprint*> LNS::open_sheets(const std::vector<std::pair<StageLocati
     auto sheets=randomEngine.rand_batch_elements<SheetType>(new_sheets,config.SHEET_BATCH_SIZE);
     for(auto sheet:sheets){
         new_blueprints.push_back(new Blueprint(sheet));
+    }
+    if(config.INFO_RECREATE){
+        timer.print(Color::CYAN,"备选sheet数量 ",new_sheets.size(),", 打开新blueprint数量 ",new_blueprints.size(),"\n");
     }
     return new_blueprints;
 }

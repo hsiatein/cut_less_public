@@ -51,6 +51,7 @@ struct SolverConfig{
     bool INFO_HIGHS_INFO=false;
     bool INFO_SELECT_RESULT=false;
     bool INFO_OPERATION=false;
+    bool INFO_RECREATE=false;
 
     SolverConfig();
     SolverConfig(json config);

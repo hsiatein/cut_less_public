@@ -1,4 +1,5 @@
 #include "utils.hpp"
+#include <deque>
 #include <node.hpp>
 
 // Node::Node():problem(nullptr),partTypeID(0),next_cut_orient(Orient::NONE){
@@ -220,6 +221,25 @@ json Node::to_json() const{
     return result;
 }
 
+std::vector<Node*> Node::variable_childs(){
+    std::deque<Node*> nodes;
+    std::vector<Node*> result;
+    for(auto child:childs){
+        NodeType childType=child->getType();
+        if(childType==NodeType::PART){
+            nodes.push_back(child);
+        }
+        else if (childType==NodeType::LEFTOVER) {
+            result.push_back(child);
+        }
+        else if (childType==NodeType::STRUCT) {
+            nodes.push_front(child);
+        }
+    }
+    result.insert(result.end(),nodes.begin(),nodes.end());
+    return result;
+}
+
 void Node::resize(Orient orient,int increment){
     if(increment==0) return;
     #ifdef DEBUG
@@ -243,7 +263,8 @@ void Node::resize(Orient orient,int increment){
         newSize.second=newSize.second-increment;
         size.set(orient,newSize);
         int allRemain=increment;
-        for(auto& child:childs){
+        auto need_resize=variable_childs();
+        for(auto child:need_resize){
             NodeType childType=child->getType();
             if(childType==NodeType::CUTLOSS){
                 continue;
@@ -286,7 +307,7 @@ void Node::resize_force(Orient orient,int increment){
         size.set(orient,newSize);
         auto dis=distribute(increment);
         int i=0;
-        for(auto& child:childs){
+        for(auto child:childs){
             NodeType childType=child->getType();
             if(childType==NodeType::CUTLOSS){
                 i++;

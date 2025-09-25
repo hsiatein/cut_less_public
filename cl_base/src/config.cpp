@@ -39,6 +39,7 @@ SolverConfig::SolverConfig(json config){
         this->INFO_HIGHS_INFO=info["HIGHS_INFO"].get<bool>();
         this->INFO_SELECT_RESULT=info["SELECT_RESULT"].get<bool>();
         this->INFO_OPERATION=info["OPERATION"].get<bool>();
+        this->INFO_RECREATE=info["RECREATE"].get<bool>();
     }
 }
 

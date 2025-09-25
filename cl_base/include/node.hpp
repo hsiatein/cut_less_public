@@ -31,6 +31,7 @@ struct Node{
     bool containChild(const Node* child);
     void deleteChild(Node* child);
     void liftChild(Node* child);
+    std::vector<Node*> variable_childs();
     void resize(Orient orient,int increment);
     void resize_force(Orient orient,int increment);
     std::vector<int> distribute(int num);

@@ -128,12 +128,15 @@ pub struct InfoConfig {
     pub select_result: bool,
     #[serde(default = "default_operation",rename = "OPERATION")]
     pub operation: bool,
+    #[serde(default = "default_operation",rename = "RECREATE")]
+    pub recreate: bool,
 }
 
 fn default_generate_result() -> bool { false }
 fn default_highs_info() -> bool { false }
 fn default_select_result() -> bool { false }
 fn default_operation() -> bool { false }
+fn default_recreate() -> bool { false }
 
 impl Default for InfoConfig {
     fn default() -> Self {
@@ -142,6 +145,7 @@ impl Default for InfoConfig {
             highs_info: false,
             select_result: false,
             operation: false,
+            recreate: false,
         }
     }
 }
