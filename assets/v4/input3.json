@@ -1,7 +1,7 @@
 {
     "Config": {
         "CUT_LOSS": 0.0,
-        "TIME_LIMIT": 2000,
+        "TIME_LIMIT": 200,
         "REMAIN": [
             10.0,
             10.0,
@@ -9,7 +9,7 @@
             15.0,
             20.0
         ],
-        "RUNTIME_LOG": true,
+        "RUNTIME_LOG": false,
         "MERGE_SIZE_CHECK":true,
         "INFO": {
             "GENERATE_RESULT": true,

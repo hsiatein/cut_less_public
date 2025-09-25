@@ -13,6 +13,7 @@ struct StagePatterns{
 
     StagePatterns(Problem* problem);
     Node* to_node(const PatternNode* patternNode) const;
+    int cal_parts(const PatternSolution* solution) const;
     json to_json(const PatternNode* patternNode);
     json to_json(const Blueprint* blueprint);
     json to_json(const PatternSolution* solution);

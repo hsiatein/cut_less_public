@@ -1,3 +1,4 @@
+#include "stage_patterns.hpp"
 #include <pattern_solution.hpp>
 
 PatternSolution::PatternSolution(Scheme scheme){
@@ -7,7 +8,7 @@ PatternSolution::PatternSolution(Scheme scheme){
 
 }
 
-PatternSolution::PatternSolution(const PatternSolution& other):groupNums(other.groupNums){
+PatternSolution::PatternSolution(const PatternSolution& other):groupNums(other.groupNums),parts_num(other.parts_num){
     for(const Blueprint* blueprint:other.blueprints){
         blueprints.push_back(new Blueprint(*blueprint));
     }
@@ -53,6 +54,7 @@ PatternSolution& PatternSolution::operator=(const PatternSolution& other){
             blueprints.push_back(new Blueprint(*blueprint));
         }
         groupNums=other.groupNums;
+        parts_num=other.parts_num;
     }
     return *this;
 }

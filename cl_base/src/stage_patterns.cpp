@@ -38,6 +38,24 @@ Node* StagePatterns::to_node(const PatternNode* patternNode) const{
     
 }
 
+int StagePatterns::cal_parts(const PatternSolution* solution) const{
+    int result=0;
+    for(const Blueprint* blueprint:solution->blueprints){
+        auto patternNodes=blueprint->top->traverse_mut();
+        for(auto patternNode:patternNodes){
+            if(patternNode->is_pattern()){
+                const auto& partsNum=patterns.at(patternNode->stageLocation.first)[patternNode->stageLocation.second].partsNum;
+                for(const auto& [partID,num]:partsNum.partsNum){
+                    if(partID!=problem->STRUCT && partID!=problem->CUTLOSS){
+                        result+=num;
+                    }
+                }
+            }
+        }
+    }
+    return result;
+}
+
 json StagePatterns::to_json(const PatternNode* patternNode){
     Node* node=to_node(patternNode);
     json result=node->to_json();

@@ -7,6 +7,7 @@ struct PatternSolution{
 public:
     std::vector<Blueprint*> blueprints;
     GroupNums groupNums;
+    int parts_num=0;
 
     PatternSolution(Scheme scheme);
     PatternSolution(const PatternSolution& other);

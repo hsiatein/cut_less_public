@@ -76,5 +76,5 @@ private:
     SolverConfig config;
     Random randomEngine;
     double min_volume=1e100;
-
+    int max_patterns=0;
 };

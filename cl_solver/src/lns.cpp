@@ -22,9 +22,9 @@ LNS::~LNS(){
 }
 
 bool LNS::greater(PatternSolution* a,PatternSolution* b){
-    int a_remain=a->remain_groups();
-    int b_remain=b->remain_groups();
-    if(a_remain!=b_remain) return a_remain<b_remain;
+    int a_remain=a->parts_num;
+    int b_remain=b->parts_num;
+    if(a_remain!=b_remain) return a_remain>b_remain;
     double a_volume=a->get_volume();
     double b_volume=b->get_volume();
     if(a_volume!=b_volume) return a_volume<b_volume;
@@ -71,14 +71,16 @@ void LNS::run(){
 
         recreate(process);
 
+        solution->parts_num=patterns.cal_parts(solution);
         if(history.empty() || greater(solution,history.back())){
             replace_best();
-            if(history.back()->is_complete() && history.back()->get_volume()<min_volume){
+            if(history.back()->parts_num>=max_patterns && history.back()->get_volume()<min_volume){
                 min_volume=history.back()->get_volume();
+                max_patterns=history.back()->parts_num;
             }
             timer.print_time(Color::GREEN);
             double volume_coeff=1e-9/(config.COEFF*config.COEFF*config.COEFF);
-            timer.print(Color::BLUE,"\ntotal volume: ",history.back()->get_volume()*volume_coeff,"\ntotal cuts: ",cal_cutnum(history.back()),"\ntotal parts: ",history.back()->placed_pattern(),"\nutilization rate: ",history.back()->cal_util_rate(),"\n");
+            timer.print(Color::BLUE,"\ntotal volume: ",history.back()->get_volume()*volume_coeff,"\ntotal cuts: ",cal_cutnum(history.back()),"\ntotal parts: ",history.back()->parts_num,"\nutilization rate: ",history.back()->cal_util_rate(),"\n");
 
             delete lastProcess;
             lastProcess=new Process(process);
@@ -200,8 +202,8 @@ LNSStatus LNS::recreate(Process& process){
             if(config.INFO_RECREATE){
                 timer.print(Color::CYAN,"生成options失败退出, blueprints数量: ",blueprints.size(),"\n");
             }
-            solution->groupNums[groupID].second++;
-            break;
+            // solution->groupNums[groupID].second++;
+            // break;
         }
 
         // 关闭没有使用的原料，把使用了的原料加入solution
