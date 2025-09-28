@@ -10,6 +10,10 @@ use api_kernel::response::Response;
 use libc::{c_char, c_void};
 use std::ffi::{CStr, CString};
 use tokio::task;
+use std::process::{Stdio};
+use tokio::process::{Command};
+use std::env;
+use std::fs;
 
 unsafe extern "C" {
     fn solve(problem_string: *const c_char, config_string: *const c_char)->*mut c_void;
@@ -76,6 +80,61 @@ pub async fn handle_request_v4(data: RequestDataV4) -> Result<warp::reply::Json,
     };
     let response_v4=ResponseV4::from_response(&data, response);
     Ok(warp::reply::json(&response_v4))
+}
+
+pub async fn handle_request_v4_cli(data: RequestDataV4) -> Result<warp::reply::Json, warp::Rejection> {
+    let exe_path = env::current_exe().unwrap();
+    let root_path=exe_path.parent().unwrap();
+    let cl_path = root_path.join("main_json");
+    let output_path = root_path.join("output/");
+    // let config = SolverConfig::default();
+    let name="solution";
+    // 调用cut_less
+    let output = Command::new(cl_path)
+        .arg("-c").arg(serde_json::to_string(&data.config.to_config()).unwrap())
+        .arg("-o").arg(output_path.to_str().unwrap())
+        .arg("-p").arg(serde_json::to_string(&data.to_problem()).unwrap())
+        .arg("-n").arg(name)
+        .stdout(Stdio::piped())
+        .output().await;
+
+    match output {
+        Ok(output) if output.status.success() => {
+            // 获得response
+            println!("{}",str::from_utf8(&output.stdout).unwrap());
+            let solution_path = output_path.join(format!("main@{}.json",name));
+            let solution  = fs::read_to_string(solution_path);
+            if let Err(e) = solution{
+                return Err(warp::reject::custom(CliError(e.to_string())));
+            }
+            let solution=solution.unwrap();
+            let solution_json = serde_json::from_str(&solution);
+            if let Err(e) = solution_json{
+                return Err(warp::reject::custom(CliError(e.to_string())));
+            }
+            let solution_json=solution_json.unwrap();
+            let response = Response {
+                solution:solution_json,
+            };
+            // 处理response
+            let response_v4=ResponseV4::from_response(&data, response);
+            Ok(warp::reply::json(&response_v4))
+        }
+        Ok(output) => {
+            // println!("{}",serde_json::to_string_pretty(&data.config.to_config()).unwrap());
+            // println!("{}",serde_json::to_string_pretty(&data.to_problem()).unwrap());
+            let error_msg = String::from_utf8_lossy(&output.stderr).to_string();
+            println!("{}",str::from_utf8(&output.stdout).unwrap());
+            println!("stderr");
+            println!("{}",error_msg);
+            Err(warp::reject::reject())
+        }
+        Err(e) => {
+            println!("执行失败");
+            println!("{}",e);
+            Err(warp::reject::reject())
+        }
+    }
 }
 
 pub async fn handle_request_v5_single(data: RequestDataV5) -> Result<warp::reply::Json, warp::Rejection> {

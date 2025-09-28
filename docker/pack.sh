@@ -10,9 +10,16 @@ cd ..
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..
-ninja "cl_solver" -j4
-cd ..
-cd web_api/server
+ninja "main_json" -j4
+MAIN=main_json
+TARGET_DIR="../docker/binaries"
+cp $MAIN "$TARGET_DIR"
+ldd $MAIN | grep "=>" | awk '{print $3}' | while read lib; do
+    if [ -f "$lib" ]; then
+        cp "$lib" "$TARGET_DIR"
+    fi
+done
+cd ../web_api/server
 SERVER=server
 cargo build --release --bin $SERVER
 cd ..

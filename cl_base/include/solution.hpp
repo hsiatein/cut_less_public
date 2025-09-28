@@ -24,6 +24,7 @@ struct Solution
     void merge(Solution& other);
     ~Solution();
     json to_json() const;
+    void check_self(const Timer& timer) const;
 };
 
 struct Solutions

@@ -1,5 +1,5 @@
-#include "stage_patterns.hpp"
 #include <pattern_solution.hpp>
+#include <deque>
 
 PatternSolution::PatternSolution(Scheme scheme){
     for(auto [partnum,group,num]:scheme){
@@ -59,10 +59,10 @@ PatternSolution& PatternSolution::operator=(const PatternSolution& other){
     return *this;
 }
 
-int PatternSolution::placed_pattern(){
+int PatternSolution::placed_pattern() const{
     int result=0;
     for(auto blueprint:blueprints){
-        auto nodes=blueprint->top->traverse_mut();
+        auto nodes=blueprint->top->traverse();
         for(auto node:nodes){
             if(node->is_pattern()) result++;
         }
@@ -76,4 +76,23 @@ double PatternSolution::cal_util_rate() const{
         util+=blueprint->get_util_volume();
     }
     return util/get_volume();
+}
+
+void PatternSolution::check_self() const{
+    for(auto* blueprint:blueprints){
+        if(blueprint->top==nullptr) throw cleanAndError("PatternSolution::check_self(): blueprint top is nullptr");
+        std::deque<PatternNode*> Q;
+        Q.push_back(blueprint->top);
+        while (!Q.empty())
+        {
+            PatternNode* u=Q[0];
+            Q.pop_front();
+            for(auto child:u->childs){
+                Q.push_back(child);
+            }
+            if(!u->size.valid()){
+                throw cleanAndError("PatternSolution::check_self(): node size is invalid");
+            }
+        }
+    }
 }

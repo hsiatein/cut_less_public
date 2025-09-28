@@ -28,7 +28,7 @@ public:
     void insert(Option option);
 
     bool greater(PatternSolution* a,PatternSolution* b);
-    int cal_cutnum(PatternSolution* solution);
+    int cal_cutnum(PatternSolution* solution) const;
     void replace_best();
     void replace_solution();
 
@@ -61,8 +61,8 @@ public:
 
 
 private:
-    int cal_cutnum(Blueprint* blueprint);
-    inline const Pattern& get_pattern(StageLocation location){
+    int cal_cutnum(Blueprint* blueprint) const;
+    inline const Pattern& get_pattern(StageLocation location) const{
         return patterns[location.first][location.second];
     }
     Scheme scheme;

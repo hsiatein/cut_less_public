@@ -55,6 +55,13 @@ json Solution::to_json() const{
     return result;
 }
 
+void Solution::check_self(const Timer& timer) const{
+    for(const auto& unit:solution){
+        if(unit.root==nullptr) throw cleanAndError("Solution::check_self(): root is nullptr");
+        if(!unit.root->valid(timer)) throw cleanAndError("Solution::check_self(): root size is invalid");
+    }
+}
+
 Solutions::Solutions(){
 
 }

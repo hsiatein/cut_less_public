@@ -154,14 +154,14 @@ void PatternNode::insert(size_t groupID,StageLocation stageLocation,Size size,Ro
     current->set_pattern(groupID,stageLocation,new_size,rotate);
 }
 
-std::vector<CutOrients> PatternNode::match(const Size& size){
+std::vector<CutOrients> PatternNode::match(const Size& size,const SolverConfig& config){
     if(!can_contain(size)) return {};
     int noneNum=0;
     int cutNum=0;
     CutOrients cutOrients;
     std::vector<Orient> orients={Orient::X,Orient::Y,Orient::Z};
     for(Orient orient:orients){
-        if(size[orient].first+std::max(0,size[orient].second)>=this->size[orient].first){
+        if(size[orient].first+std::max(0,size[orient].second)+config.CUT_LOSS>=this->size[orient].first){
             cutOrients[2-noneNum]=Orient::NONE;
             noneNum++;
         }
@@ -197,6 +197,23 @@ std::vector<PatternNode*> PatternNode::traverse_mut(){
     if(childs.empty()) return {this};
     std::vector<PatternNode*> result;
     std::deque<PatternNode*> Q;
+    Q.push_back(this);
+    while (!Q.empty())
+    {
+        auto u=Q[0];
+        result.push_back(u);
+        Q.pop_front();
+        for(auto v:u->childs){
+            Q.push_back(v);
+        }
+    }
+    return result;
+}
+
+std::vector<const PatternNode*> PatternNode::traverse() const{
+    if(childs.empty()) return std::vector<const PatternNode*>({this});
+    std::vector<const PatternNode*> result;
+    std::deque<const PatternNode*> Q;
     Q.push_back(this);
     while (!Q.empty())
     {
@@ -265,11 +282,11 @@ void PatternNode::reform(){
     add_child(new_struct);
 }
 
-double PatternNode::cal_utilization_rate(){
+double PatternNode::cal_utilization_rate() const{
     double total=size.get_volume();
     double pattern=0;
-    std::vector<PatternNode *> childs=traverse_mut();
-    for(PatternNode* child:childs){
+    std::vector<const PatternNode *> childs=traverse();
+    for(const PatternNode* child:childs){
         if(child->is_pattern()){
             pattern+=child->size.get_volume();
         }
@@ -277,10 +294,10 @@ double PatternNode::cal_utilization_rate(){
     return pattern/total;
 }
 
-double PatternNode::cal_utilization_volume(){
+double PatternNode::cal_utilization_volume() const{
     double pattern=0;
-    std::vector<PatternNode *> childs=traverse_mut();
-    for(PatternNode* child:childs){
+    std::vector<const PatternNode *> childs=traverse();
+    for(const PatternNode* child:childs){
         if(child->is_pattern() || child->is_cutloss()){
             pattern+=child->size.get_volume();
         }

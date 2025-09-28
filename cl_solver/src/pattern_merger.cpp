@@ -107,7 +107,7 @@ void PatternMerger::resize_or_merge(Pattern& pattern,Orient orient,int newSize) 
         return;
     }
     // std::cout<<newStructSize<<std::endl;
-    pattern.resize(orient,pattern.top->size[orient].first+pattern.top->size[orient].second);
+    pattern.resize(orient,pattern.top->size[orient].first+std::max(pattern.top->size[orient].second,0));
     Size size=pattern.top->size;
     size.set(orient,{config.CUT_LOSS,0});
     Pattern cutLoss(pattern.PROBLEM_STRUCT,size.size[0],size.size[1],size.size[2],orient);
@@ -115,6 +115,7 @@ void PatternMerger::resize_or_merge(Pattern& pattern,Orient orient,int newSize) 
     // std::cout<<1<<std::endl;
     pattern.merge(cutLoss,orient);
     size.set(orient,{newStructSize,0});
+    if(newStructSize<0) throw cleanAndError("PatternMerger::resize_or_merge : 尺寸为负值");
     Pattern newStruct(pattern.PROBLEM_STRUCT,size,orient,pattern.level);
     newStruct.partsNum[pattern.PROBLEM_STRUCT]=1;
     pattern.merge(newStruct,orient);

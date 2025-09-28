@@ -8,6 +8,7 @@
 
 
 #define MAX_INT 2147483647
+std::runtime_error cleanAndError(std::string exception);
 
 
 enum class NodeType{
@@ -62,10 +63,38 @@ struct Size{
     Size(const Vec3i& size,int remain);
     Size(const Vec3i& size,const Vec3i& remain);
     Size rotate(RotateOrient rotateOrient) const;
+    inline bool valid() const{
+        return size[0]>=0 && size[1]>=0 && size[2]>=0;
+    }
     //bool operator==(const Size& other) const;
 
     inline bool operator==(const Size& other) const{
         return other.size==size && other.remain==remain;
+    }
+    inline Size merge(const Size& other,Orient orient) const{
+        if(orient==Orient::X){
+            if(size[1]!=other.size[1] || size[2]!=other.size[2]){
+                throw cleanAndError("Size::merge : 只能在相同宽厚的板材上合并");
+            }
+            return Size({size[0]+other.size[0],size[1],size[2]},{remain[0]+other.remain[0],std::min(size[1],other.size[1]),std::min(size[2],other.size[2])});
+        }
+        else if (orient==Orient::Y)
+        {
+            if(size[0]!=other.size[0] || size[2]!=other.size[2]){
+                throw cleanAndError("Size::merge : 只能在相同长厚的板材上合并");
+            }
+            return Size({size[0],size[1]+other.size[1],size[2]},{std::min(remain[0],other.remain[0]),remain[1]+other.remain[1],std::min(remain[2],other.remain[2])});
+        }
+        else if (orient==Orient::Z)
+        {
+            if(size[0]!=other.size[0] || size[1]!=other.size[1]){
+                throw cleanAndError("Size::merge : 只能在相同宽长的板材上合并");
+            }
+            return Size({size[0],size[1],size[2]+other.size[2]},{std::min(remain[0],other.remain[0]),std::min(remain[1],other.remain[1]),remain[2]+other.remain[2]});
+        }
+        else{
+            throw cleanAndError("Size::merge : 不能在NONE方向合并");
+        }
     }
     std::pair<int,int> operator[](const Orient orient) const;
     void set(const Orient orient,const std::pair<int,int>& value);
@@ -135,7 +164,6 @@ struct PartsNum{
 };
 
 
-std::runtime_error cleanAndError(std::string exception);
 
 using StageLocation=std::pair<size_t,size_t>;
 using PatternGroup=std::tuple<PartsNum,std::vector<StageLocation>,int>;

@@ -34,8 +34,8 @@ bool LNS::greater(PatternSolution* a,PatternSolution* b){
     return false;
 }
 
-int LNS::cal_cutnum(Blueprint* blueprint){
-    auto patternNodes=blueprint->top->traverse_mut();
+int LNS::cal_cutnum(Blueprint* blueprint) const{
+    auto patternNodes=blueprint->top->traverse();
     int result=0;
     for(auto patternNode:patternNodes){
         if(patternNode->is_cutloss()) result++;
@@ -46,7 +46,7 @@ int LNS::cal_cutnum(Blueprint* blueprint){
     return result;
 }
 
-int LNS::cal_cutnum(PatternSolution* solution){
+int LNS::cal_cutnum(PatternSolution* solution) const{
     int result=0;
     for(auto blueprint:solution->blueprints){
         result+=cal_cutnum(blueprint);
@@ -268,7 +268,7 @@ std::vector<Option> LNS::generate_options(size_t groupID,StageLocation stageLoca
         for(auto patternNode:structs){
             for(auto rotate:rotates){
                 Size new_size=size.rotate(rotate);
-                std::vector<CutOrients> cutOrients=patternNode->match(new_size);
+                std::vector<CutOrients> cutOrients=patternNode->match(new_size,config);
                 for(auto cutOrient:cutOrients){
                     OptionCost cost=patternNode->evaluate(new_size,cutOrient,config);
                     // Option option(blueprint,patternNode,stageLocation,new_size,rotate,cutOrient,cost);
@@ -286,7 +286,7 @@ std::vector<Option> LNS::generate_options(size_t groupID,StageLocation stageLoca
         PatternNode* patternNode=blueprint->top;
         for(auto rotate:rotates){
             Size new_size=size.rotate(rotate);
-            std::vector<CutOrients> cutOrients=patternNode->match(new_size);
+            std::vector<CutOrients> cutOrients=patternNode->match(new_size,config);
             for(auto cutOrient:cutOrients){
                 OptionCost cost=patternNode->evaluate(new_size,cutOrient,config);
                 result.emplace_back(blueprint,patternNode,groupID,stageLocation,new_size,rotate,cutOrient,cost);

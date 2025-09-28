@@ -340,3 +340,24 @@ std::vector<int> Node::distribute(int num){
     }
     return result;
 }
+
+bool Node::valid(const Timer& timer) const{
+    if(!size.valid()){
+        timer.print(Color::RED, "Node::valid : 节点尺寸不合法: ",size.to_string(),"\n");
+        return false;
+    }
+    if(childs.empty()) return true;
+    Size childs_size=size;
+    childs_size.set(next_cut_orient,{0,0});
+    for(auto child:childs){
+        childs_size=childs_size.merge(child->size, next_cut_orient);
+    }
+    if(childs_size.size!=size.size){
+        timer.print(Color::RED, "Node::valid : 子节点尺寸和不等于父节点尺寸: 父节点 ",size.to_string(),", 子节点合并后 ",childs_size.to_string(),"\n");
+        return false;
+    }
+    for(auto child:childs){
+        if(!child->valid(timer)) return false;
+    }
+    return true;
+}

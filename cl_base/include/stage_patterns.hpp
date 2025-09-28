@@ -24,4 +24,6 @@ struct StagePatterns{
     inline const std::vector<Pattern>& operator[](size_t stage) const{
         return patterns.at(stage);
     }
+    void check_self() const;
+    
 };

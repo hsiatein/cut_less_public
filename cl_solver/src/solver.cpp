@@ -18,6 +18,7 @@ Solution Solver::solve(){
 
     PatternMerger patternMerger(problem,timer,config);
     StagePatterns patterns=patternMerger.generate_patterns();
+    patterns.check_self();
     // time_limit=get_remain_time();
 
 
@@ -27,8 +28,10 @@ Solution Solver::solve(){
 
     LNS lns(problem,scheme,patterns,timer,config);
     lns.run();
+    lns.get_best().check_self();
     Solution lns_solution(*problem,patterns,lns.get_best());
     result.merge(lns_solution);
+    result.check_self(timer);
 
     timer.print(Color::YELLOW,"[Execution time: ",timer.get_runtime()," ms]\n");
     return result;

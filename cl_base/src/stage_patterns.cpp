@@ -1,3 +1,4 @@
+#include <deque>
 #include <stage_patterns.hpp>
 
 StagePatterns::StagePatterns(Problem* problem):problem(problem){
@@ -41,7 +42,7 @@ Node* StagePatterns::to_node(const PatternNode* patternNode) const{
 int StagePatterns::cal_parts(const PatternSolution* solution) const{
     int result=0;
     for(const Blueprint* blueprint:solution->blueprints){
-        auto patternNodes=blueprint->top->traverse_mut();
+        auto patternNodes=blueprint->top->traverse();
         for(auto patternNode:patternNodes){
             if(patternNode->is_pattern()){
                 const auto& partsNum=patterns.at(patternNode->stageLocation.first)[patternNode->stageLocation.second].partsNum;
@@ -82,4 +83,29 @@ json StagePatterns::to_json(const PatternSolution* solution){
         result.push_back(j);
     }
     return result;
+}
+
+void StagePatterns::check_self() const{
+    for(const auto& [stage,pattern_list]:patterns){
+        for(const auto& pattern:pattern_list){
+            if(pattern.top==nullptr){
+                throw cleanAndError("StagePatterns::check_self(): pattern top is nullptr");
+            }
+            std::deque<Node*> Q;
+            Q.push_back(pattern.top);
+            while (!Q.empty())
+            {
+                Node* u=Q[0];
+                Q.pop_front();
+                for(auto child:u->childs){
+                    Q.push_back(child);
+                }
+                if(!u->size.valid()){
+                    throw cleanAndError("StagePatterns::check_self(): node size is invalid");
+                }
+
+            }
+
+        }
+    }
 }

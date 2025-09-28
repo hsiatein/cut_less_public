@@ -40,4 +40,5 @@ struct Node{
     // only rotate itself
     void rotate(RotateOrient rotateOrient);
     json to_json() const;
+    bool valid(const Timer& timer) const;
 };
