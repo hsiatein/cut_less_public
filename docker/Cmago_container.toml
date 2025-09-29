@@ -5,12 +5,16 @@ cmake_minimum_required = "3.12"
 cpp_standard = "17"
 external_library_path = "./external/"
 
+[[bin]]
+name = "main_json"
+path = "./executables/main_json.cpp"
+dependencies = ["cl_solver","argparse"]
+
 [[lib]]
 name = "cl_solver"
 path = "./cl_solver/"
 lib_type = "dynamic"
 dependencies = ["highs","cl_base"]
-
 
 [[lib]]
 name = "cl_base"
@@ -29,3 +33,6 @@ url = "https://github.com/ERGO-Code/HiGHS.git"
 
 [dependencies.nlohmann_json]
 url = "https://github.com/nlohmann/json.git"
+
+[dependencies.argparse]
+url = "https://github.com/p-ranav/argparse.git"

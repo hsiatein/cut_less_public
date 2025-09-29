@@ -40,3 +40,10 @@ reqwest = { version = "0.11", features = ["json", "rustls"] }
 openssl = { version = "0.10", features = ["vendored"] }
 libc = "0.2.175"
 decimal = "2.0"
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1
+opt-level = "z"
+strip = true
