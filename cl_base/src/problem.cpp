@@ -60,7 +60,8 @@ json Problem::sheets_to_json() const{
 void Problem::check_self() const{
     for(auto sheet:sheets){
         if(sheet.size.size[0]<=sheet.size.size[1] && sheet.size.size[1]<=sheet.size.size[2]) continue;
-        throw cleanAndError("sheet尺寸排序错误");
+        else throw cleanAndError("sheet尺寸排序错误");
+        
     }
     if(sheets.size()!=sheetsNum.size() || sheets.size()!=need_rotates.size()) throw cleanAndError("向量尺寸错误");
 }
@@ -95,8 +96,11 @@ RotateOrient sort_size(Vec3i& size){
 Problem::Problem(json json):STRUCT(0),CUTLOSS(1),SHEET_ID(0){
     for(const auto& part:json["Parts"]){
         // std::cout<<part["Rotatable"].dump()<<std::endl;
-
-        addPart(std::stoi(part["Size"][0].dump()),std::stoi(part["Size"][1].dump()),std::stoi(part["Size"][2].dump()),part["Rotatable"].dump()=="true",std::stoi(part["qty"].dump()));
+        int x=std::stoi(part["Size"][0].dump());
+        int y=std::stoi(part["Size"][1].dump());
+        int z=std::stoi(part["Size"][2].dump());
+        if(x<=0 || y<=0 || z<=0) continue;
+        addPart(x,y,z,part["Rotatable"].dump()=="true",std::stoi(part["qty"].dump()));
     }
     for(const auto& sheet:json["Sheets"]){
         Vec3i size={std::stoi(sheet["Size"][0].dump()),std::stoi(sheet["Size"][1].dump()),std::stoi(sheet["Size"][2].dump())};

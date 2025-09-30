@@ -1,4 +1,5 @@
 
+use std::collections::{HashMap, VecDeque};
 use serde::{Deserialize, Serialize};
 use crate::part::raw_part_v4::{RawPartsV4,RawPartV4};
 use crate::request_data::request_data_v4::RequestDataV4;
@@ -90,6 +91,7 @@ impl BlueprintV4{
 
 #[derive(Serialize,Deserialize)]
 pub struct ResponseV4 {
+    unplanned: Vec<RawPartV4>,
     solution: Vec<BlueprintV4>,
 }
 
@@ -100,7 +102,32 @@ impl ResponseV4 {
         for blueprint in response.solution{
             solution.push(BlueprintV4::from_blueprint(request_data,&request_data_v3, &blueprint));
         }
-
-        ResponseV4 { solution }
+        let mut planned=HashMap::<String,usize>::new();
+        let mut unplanned=Vec::new();
+        for blueprint in &solution{
+            let mut openlist=VecDeque::new();
+            openlist.push_back(&blueprint.root);
+            while !openlist.is_empty() {
+                let node=openlist.pop_front().unwrap();
+                if node.node_type!="Struct" && node.node_type!="Leftover" && node.node_type!="Cutloss" {
+                    *planned.entry(node.node_type.clone()).or_insert(0)+=1;
+                }
+                for child in &node.children{
+                    openlist.push_back(child);
+                }
+            }
+        }
+        let regularized_parts=request_data.parts.regularize();
+        for part in regularized_parts.raw_parts{
+            let planned_qty=planned.get(&part.id);
+            let unplanned_qty=part.qty as i32 - *planned_qty.unwrap_or(&0) as i32;
+            if unplanned_qty>0 {
+                unplanned.push(RawPartV4{id:part.id, size:part.size, redundancy:part.redundancy, rotatable:part.rotatable, qty:unplanned_qty as usize});
+            }
+            else if unplanned_qty<0 {
+                println!("Warning: part {} overplanned",part.id);
+            }
+        }
+        ResponseV4 { unplanned,solution }
     }
 }

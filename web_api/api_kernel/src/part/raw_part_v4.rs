@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use crate::part::{AsParts};
 use super::raw_part_v3::{RawPartV3,RawPartsV3};
+use std::collections::HashMap;
 
 #[derive(Serialize,Deserialize)]
 pub struct RawPartsV4{
@@ -8,7 +9,7 @@ pub struct RawPartsV4{
     pub raw_parts:Vec<RawPartV4>,
 }
 
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize,Deserialize,Clone)]
 pub struct RawPartV4{
     #[serde(rename = "ID")]
     pub id:String,
@@ -42,6 +43,24 @@ impl RawPartsV4 {
         }
         
     }
+
+    pub fn regularize(&self)->Self {
+        let mut new_parts=vec!();
+        let mut id_table=HashMap::<String,usize>::new();
+        for next in &self.raw_parts {
+            match id_table.entry(next.id.clone()) {
+                std::collections::hash_map::Entry::Vacant(e) => {
+                    e.insert(new_parts.len());
+                    new_parts.push(next.clone());
+                }
+                std::collections::hash_map::Entry::Occupied(e) => {
+                    new_parts[*e.get()].qty += 1;
+                }
+            }
+        }
+        Self { raw_parts: new_parts }
+    }
+
 }
 
 impl AsParts for RawPartsV4 {
