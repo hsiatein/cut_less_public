@@ -7,6 +7,7 @@ struct Problem{
     std::vector<SheetType> sheets;
     std::vector<int> partsNum;
     std::vector<int> sheetsNum;
+    std::vector<RotateOrient> need_rotates;
     size_t STRUCT;
     size_t CUTLOSS;
     size_t SHEET_ID;
@@ -22,6 +23,7 @@ struct Problem{
     [[nodiscard]] json to_json() const;
     [[nodiscard]] json parts_to_json() const;
     [[nodiscard]] json sheets_to_json() const;
+    void check_self() const;
     // inline NodeStatus get_node_status(size_t partTypeID) const {
     //     if (partTypeID == STRUCT) {
     //         return {NodeType::STRUCT,partTypeID};

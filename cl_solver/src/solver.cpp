@@ -11,6 +11,7 @@ Solver::~Solver(){
 /// @brief 单线程求解
 /// @return CSP问题的解
 Solution Solver::solve(){
+    problem->check_self();
     Timer timer(config.TIME_LIMIT);
     timer.print(Color::YELLOW,"[start solving]\n");
     timer.print(Color::PURPLE,config.general_to_string(),"\n");

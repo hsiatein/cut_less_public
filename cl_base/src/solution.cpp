@@ -28,7 +28,10 @@ Solution::Solution(){
 Solution::Solution(const Problem& problem,const StagePatterns& patterns,const PatternSolution& p_solution){
     for(const auto blueprint:p_solution.blueprints){
         Node* node=patterns.to_node(blueprint->top);
-        solution.emplace_back(problem.get_sheet(blueprint->sheetID),node);
+        SheetType sheet=problem.get_sheet(blueprint->sheetID);
+        node->rotate(problem.need_rotates[sheet.id]);
+        sheet.size=sheet.size.rotate(problem.need_rotates[sheet.id]);
+        solution.emplace_back(sheet,node);
     }
 }
 

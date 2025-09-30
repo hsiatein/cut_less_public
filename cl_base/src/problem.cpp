@@ -1,3 +1,4 @@
+#include "utils.hpp"
 #include <problem.hpp>
 
 
@@ -56,6 +57,41 @@ json Problem::sheets_to_json() const{
     return j_array;
 }
 
+void Problem::check_self() const{
+    for(auto sheet:sheets){
+        if(sheet.size.size[0]<=sheet.size.size[1] && sheet.size.size[1]<=sheet.size.size[2]) continue;
+        throw cleanAndError("sheet尺寸排序错误");
+    }
+    if(sheets.size()!=sheetsNum.size() || sheets.size()!=need_rotates.size()) throw cleanAndError("向量尺寸错误");
+}
+
+RotateOrient sort_size(Vec3i& size){
+    RotateOrient result;
+    if(size[0]<=size[1] && size[1]<=size[2]){
+        return RotateOrient::I;
+    }
+    else if(size[0]<=size[2] && size[2]<=size[1]){
+        size=Size(size).rotate(RotateOrient::X).size;
+        return RotateOrient::X;
+    }
+    else if(size[1]<=size[0] && size[0]<=size[2]){
+        size=Size(size).rotate(RotateOrient::Z).size;
+        return RotateOrient::Z;
+    }
+    else if(size[1]<=size[2] && size[2]<=size[0]){
+        size=Size(size).rotate(RotateOrient::XY).size;
+        return RotateOrient::XZ;
+    }
+    else if(size[2]<=size[0] && size[0]<=size[1]){
+        size=Size(size).rotate(RotateOrient::XZ).size;
+        return RotateOrient::XY;
+    }
+    else{
+        size=Size(size).rotate(RotateOrient::Y).size;
+        return RotateOrient::Y;
+    }
+}
+
 Problem::Problem(json json):STRUCT(0),CUTLOSS(1),SHEET_ID(0){
     for(const auto& part:json["Parts"]){
         // std::cout<<part["Rotatable"].dump()<<std::endl;
@@ -64,7 +100,9 @@ Problem::Problem(json json):STRUCT(0),CUTLOSS(1),SHEET_ID(0){
     }
     for(const auto& sheet:json["Sheets"]){
         Vec3i size={std::stoi(sheet["Size"][0].dump()),std::stoi(sheet["Size"][1].dump()),std::stoi(sheet["Size"][2].dump())};
-        std::sort(size.begin(),size.end());
+        // std::sort(size.begin(),size.end());
+        auto o=sort_size(size);
+        need_rotates.push_back(o);
         addSheet(size[0],size[1],size[2],std::stoi(sheet["qty"].dump()),sheet["Small"].get<bool>());
     }
     std::sort(sheets.begin(),sheets.end(),[](const SheetType& a, const SheetType& b) {
