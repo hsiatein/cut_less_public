@@ -19,6 +19,7 @@ struct SolverConfig{
     size_t MAX_STAGE=8;
     double UTILIZATION_RATE_LIMIT=0.95;
     bool MERGE_SIZE_CHECK=false;
+    bool REMAIN_MERGE=false;
 
     // 选择器相关
 

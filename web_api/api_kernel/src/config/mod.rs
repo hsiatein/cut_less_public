@@ -22,6 +22,8 @@ pub struct SolverConfig {
     pub utilization_rate_limit: f64,
     #[serde(default = "default_merge_size_check", rename = "MERGE_SIZE_CHECK")]
     pub merge_size_check: bool,
+    #[serde(default = "default_remain_merge", rename = "REMAIN_MERGE")]
+    pub remain_merge: bool,
 
     // 选择器相关
     #[serde(default = "default_average_cut_punish", rename = "AVERAGE_CUT_PUNISH")]
@@ -68,6 +70,7 @@ fn default_coeff() -> f64 { crate::FACTOR }
 fn default_max_stage() -> usize { 8 }
 fn default_utilization_rate_limit() -> f64 { 0.95 }
 fn default_merge_size_check() -> bool { false }
+fn default_remain_merge() -> bool { false }
 
 fn default_average_cut_punish() -> f64 { 3.0 }
 fn default_highs_random_seed() -> i32 { 0 }
@@ -96,6 +99,7 @@ impl Default for SolverConfig {
             max_stage: 8,
             utilization_rate_limit: 0.95,
             merge_size_check: false,
+            remain_merge: false,
 
             average_cut_punish: 3.0,
             highs_random_seed: 0,

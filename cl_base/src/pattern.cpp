@@ -1,3 +1,4 @@
+#include "config.hpp"
 #include "utils.hpp"
 #include <algorithm>
 #include <pattern.hpp>
@@ -107,9 +108,9 @@ std::vector<OrientMatch> Pattern::collect_match_1D(const Pattern& other) const{
 //     return result;
 // }
 
-void Pattern::merge(Pattern& other,Orient orient){
+void Pattern::merge(Pattern& other,Orient orient,const SolverConfig& config){
     //logger.log_json("merge_other",other.top->to_json());
-    Size newSize=merge_size(*this,other,orient);
+    Size newSize=merge_size(*this,other,orient,config);
     Node* newTop=new Node(newSize,{NodeType::STRUCT,-1},orient);
     newTop->addChild(this->top);
     newTop->addChild(other.top);
@@ -164,7 +165,7 @@ double Pattern::get_parts_volume() const{
     return result;
 }
 
-Size Pattern::merge_size(const Pattern& p1,const Pattern& p2,const Orient orient){
+Size Pattern::merge_size(const Pattern& p1,const Pattern& p2,const Orient orient,const SolverConfig& config){
     Vec3i size;
     Vec3i remain;
     std::vector<Orient> orients={Orient::X,Orient::Y,Orient::Z};
@@ -179,7 +180,10 @@ Size Pattern::merge_size(const Pattern& p1,const Pattern& p2,const Orient orient
         else{
             size[i]=pair1.first+pair2.first;
             if (pair1.second==MAX_INT || pair2.second==MAX_INT) remain[i]=MAX_INT;
-            else remain[i]=pair1.second+pair2.second;
+            else{
+                if(config.REMAIN_MERGE) remain[i]=pair1.second+pair2.second;
+                else remain[i]=std::min(pair1.second,pair2.second);
+            }
         }
     }
     return Size(size,remain);

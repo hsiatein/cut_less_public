@@ -27,14 +27,14 @@ public:
     bool resize(Orient orient,int newSize);
     void resize_force(Orient orient,int newSize);
     // void resize_or_merge(Orient orient,int newSize);
-    void merge(Pattern& other,Orient orient);
+    void merge(Pattern& other,Orient orient,const SolverConfig& config);
     json to_json() const;
     Pattern& operator=(const Pattern& other);
     std::string to_string() const;
     double get_parts_volume() const;
 
     // static Pattern merge(Pattern& p1,Pattern& p2,Orient orient);
-    static Size merge_size(const Pattern& p1,const Pattern& p2,Orient orient);
+    static Size merge_size(const Pattern& p1,const Pattern& p2,Orient orient,const SolverConfig& config);
 
 
 private:

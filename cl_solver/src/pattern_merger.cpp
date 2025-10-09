@@ -1,6 +1,5 @@
 #include "utils.hpp"
 #include <algorithm>
-#include <deque>
 #include <pattern_merger.hpp>
 
 PatternMerger::PatternMerger(Problem* problem,Timer timer,SolverConfig config)
@@ -113,12 +112,12 @@ void PatternMerger::resize_or_merge(Pattern& pattern,Orient orient,int newSize) 
     Pattern cutLoss(pattern.PROBLEM_STRUCT,size.size[0],size.size[1],size.size[2],orient);
     // logger.log_json("resize_or_merge",cutLoss.top->to_json());
     // std::cout<<1<<std::endl;
-    pattern.merge(cutLoss,orient);
+    pattern.merge(cutLoss,orient,config);
     size.set(orient,{newStructSize,0});
     if(newStructSize<0) throw cleanAndError("PatternMerger::resize_or_merge : 尺寸为负值");
     Pattern newStruct(pattern.PROBLEM_STRUCT,size,orient,pattern.level);
     newStruct.partsNum[pattern.PROBLEM_STRUCT]=1;
-    pattern.merge(newStruct,orient);
+    pattern.merge(newStruct,orient,config);
 }
 
 std::vector<Pattern> PatternMerger::generate_merged_pattern(const Pattern& p1,const Pattern& p2) const{
@@ -145,8 +144,8 @@ std::vector<Pattern> PatternMerger::generate_merged_pattern(const Pattern& p1,co
         // 达到利用率界限的模式继续生成
 
         Pattern cutLoss(pattern_left.PROBLEM_STRUCT,pattern_left.top->size[Orient::X].first,config.CUT_LOSS,pattern_left.top->size[Orient::Z].first,Orient::Y);
-        pattern_left.merge(cutLoss,Orient::Y);
-        pattern_left.merge(pattern_right,Orient::Y);
+        pattern_left.merge(cutLoss,Orient::Y,config);
+        pattern_left.merge(pattern_right,Orient::Y,config);
         patterns.push_back(std::move(pattern_left));
     }
     return patterns;
@@ -176,8 +175,8 @@ std::vector<Pattern> PatternMerger::generate_merged_pattern_with_check(const Pat
         // 达到利用率界限的模式继续生成
 
         Pattern cutLoss(pattern_left.PROBLEM_STRUCT,pattern_left.top->size[Orient::X].first,config.CUT_LOSS,pattern_left.top->size[Orient::Z].first,Orient::Y);
-        pattern_left.merge(cutLoss,Orient::Y);
-        pattern_left.merge(pattern_right,Orient::Y);
+        pattern_left.merge(cutLoss,Orient::Y,config);
+        pattern_left.merge(pattern_right,Orient::Y,config);
         patterns.push_back(std::move(pattern_left));
     }
     return patterns;

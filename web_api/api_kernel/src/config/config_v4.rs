@@ -20,6 +20,8 @@ pub struct SolverConfigV4 {
     pub utilization_rate_limit: f64,
     #[serde(default = "super::default_merge_size_check", rename = "MERGE_SIZE_CHECK")]
     pub merge_size_check: bool,
+    #[serde(default = "super::default_remain_merge", rename = "REMAIN_MERGE")]
+    pub remain_merge: bool,
 
     // 选择器相关
     #[serde(default = "super::default_average_cut_punish", rename = "AVERAGE_CUT_PUNISH")]
@@ -71,6 +73,7 @@ impl Default for SolverConfigV4 {
             max_stage: 8,
             utilization_rate_limit: 0.95,
             merge_size_check: false,
+            remain_merge: false,
 
             average_cut_punish: 3.0,
             highs_random_seed: 0,
@@ -103,6 +106,7 @@ impl AsConfig for SolverConfigV4 {
             max_stage:self.max_stage,
             utilization_rate_limit:self.utilization_rate_limit,
             merge_size_check:self.merge_size_check,
+            remain_merge:self.remain_merge,
             average_cut_punish:self.average_cut_punish,
             highs_random_seed:self.highs_random_seed,
             lns_random_seed:self.lns_random_seed,

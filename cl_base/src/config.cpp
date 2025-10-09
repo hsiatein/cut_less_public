@@ -17,6 +17,7 @@ SolverConfig::SolverConfig(json config){
     this->MAX_STAGE=config["MAX_STAGE"].get<size_t>();
     this->UTILIZATION_RATE_LIMIT=config["UTILIZATION_RATE_LIMIT"].get<double>();
     this->MERGE_SIZE_CHECK=config["MERGE_SIZE_CHECK"].get<bool>();
+    this->REMAIN_MERGE=config["REMAIN_MERGE"].get<bool>();
 
     this->AVERAGE_CUT_PUNISH=config["AVERAGE_CUT_PUNISH"].get<double>();
     this->HIGHS_RANDOM_SEED=config["HIGHS_RANDOM_SEED"].get<int>();
