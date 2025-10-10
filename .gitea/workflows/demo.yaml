@@ -13,9 +13,6 @@ jobs:
       - name: Build Rust server
         working-directory: ./docker
         run: bash pack.sh
-      - name: Build Rust server
-        working-directory: ./docker
-        run: bash pack.sh
 
           
           
