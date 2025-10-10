@@ -10,7 +10,6 @@ jobs:
     steps:
       - name: Checkout
         uses: http://git.lovemugi.cloud/mugi/checkout@v4
-        
       - name: Build Rust server
         working-directory: ./docker
         run: bash pack.sh
