@@ -33,8 +33,8 @@ done
 
 cd ../docker
 
-docker build -t cut_less .
-docker save -o cut_less_image.tar cut_less:latest
+# docker build -t cut_less .
+# docker save -o cut_less_image.tar cut_less:latest
 # rm -rf ./binaries
 cd binaries
 ./$SERVER

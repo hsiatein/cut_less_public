@@ -84,6 +84,9 @@ Email: mugilovemilk@mail.ustc.edu.cn
     * 增加了算法自我检查的代码，来定位问题。
     * 错误原因：PatternNode::match在选取方案的时候没有考虑cutloss，导致PatternNode::split时，如果剩余尺寸在cutloss范围里，会得到一个cutloss与一个负尺寸的节点。
 
+* 2025.10.10
+    * 错误原因：使用sheet时，未减少对应的数量。
+
 ## License
 
 This project is licensed under the AGPLv3 License - see the LICENSE file for details

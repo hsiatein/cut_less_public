@@ -327,6 +327,7 @@ std::vector<Blueprint*> LNS::open_sheets(const std::vector<std::pair<StageLocati
             Vec3i s_size=sheet.size.size;
             if(s_size[0]>=p_size[0] && s_size[1]>=p_size[1] && s_size[2]>=p_size[2] && current_volume+sheet.get_volume()<min_volume){
                 new_sheets.push_back(sheet);
+                sheetsNum[sheet.id]--;
                 break;
             }
         }
