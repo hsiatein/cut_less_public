@@ -50,6 +50,8 @@ pub struct SolverConfigV4 {
     // 使用最优解初始化的概率
     #[serde(default = "super::default_solution_get_best_prob", rename = "SOLUTION_GET_BEST_PROB")]
     pub solution_get_best_prob: f64,
+    #[serde(default = "super::default_prefer_benchmark_mode", rename = "PREFER_BENCHMARK_MODE")]
+    pub prefer_benchmark_mode: usize,
 
     // 信息输出相关
     #[serde(default = "super::default_visualize", rename = "VISUALIZE")]
@@ -88,6 +90,7 @@ impl Default for SolverConfigV4 {
             close_sheet_prob: 0.8,
 
             solution_get_best_prob: 0.5,
+            prefer_benchmark_mode: 0,
 
             visualize: false,
             runtime_log: true,
@@ -117,6 +120,7 @@ impl AsConfig for SolverConfigV4 {
             destroy_rate:self.destroy_rate,
             close_sheet_prob:self.close_sheet_prob,
             solution_get_best_prob:self.solution_get_best_prob,
+            prefer_benchmark_mode:self.prefer_benchmark_mode,
             visualize:self.visualize,
             runtime_log:self.runtime_log,
             info:self.info.clone()

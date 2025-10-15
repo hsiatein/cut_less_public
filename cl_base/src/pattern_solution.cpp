@@ -70,12 +70,16 @@ int PatternSolution::placed_pattern() const{
     return result;
 }
 
-double PatternSolution::cal_util_rate() const{
+double PatternSolution::get_util_volume() const{
     double util=0;
     for(const auto blueprint:blueprints){
         util+=blueprint->get_util_volume();
     }
-    return util/get_volume();
+    return util;
+}
+
+double PatternSolution::cal_util_rate() const{
+    return get_util_volume()/get_volume();
 }
 
 void PatternSolution::check_self() const{

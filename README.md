@@ -87,6 +87,9 @@ Email: mugilovemilk@mail.ustc.edu.cn
 * 2025.10.10
     * 错误原因：使用sheet时，未减少对应的数量。
 
+* 2025.10.15
+    * 错误原因：没有进行尺寸检查导致sheet放不下pattern。
+
 ## License
 
 This project is licensed under the AGPLv3 License - see the LICENSE file for details

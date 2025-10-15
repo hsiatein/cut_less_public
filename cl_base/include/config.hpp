@@ -45,6 +45,8 @@ struct SolverConfig{
 
     // 使用最优解初始化的概率
     double SOLUTION_GET_BEST_PROB=0.5;
+    // "VOLUME","CUT",
+    size_t PREFER_BENCHMARK_MODE=0;
 
     // 信息输出相关
     bool VISUALIZE=false;

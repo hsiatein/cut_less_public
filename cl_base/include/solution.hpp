@@ -45,3 +45,15 @@ struct Solutions
         return solutions[i];
     }
 };
+
+
+struct Metadata{
+    double total_volume;
+    double util_volume;
+    double util_rate;
+    int parts;
+    int sheets;
+    int cuts;
+    Metadata(Solution* solution);
+    json to_json() const;
+};

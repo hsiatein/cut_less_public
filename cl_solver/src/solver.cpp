@@ -1,4 +1,5 @@
 #include "config.hpp"
+#include "solution.hpp"
 #include <solver.hpp>
 #include <thread>
 

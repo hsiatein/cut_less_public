@@ -32,6 +32,7 @@ SolverConfig::SolverConfig(json config){
     this->CLOSE_SHEET_PROB=config["CLOSE_SHEET_PROB"].get<double>();
 
     this->SOLUTION_GET_BEST_PROB=config["SOLUTION_GET_BEST_PROB"].get<double>();
+    this->PREFER_BENCHMARK_MODE=config["PREFER_BENCHMARK_MODE"].get<int>();
 
     this->VISUALIZE=config["VISUALIZE"].get<bool>();
     if(config["RUNTIME_LOG"].get<bool>()){

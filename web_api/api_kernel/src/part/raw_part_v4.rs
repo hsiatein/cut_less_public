@@ -3,7 +3,7 @@ use crate::part::{AsParts};
 use super::raw_part_v3::{RawPartV3,RawPartsV3};
 use std::collections::HashMap;
 
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize,Deserialize,Clone)]
 pub struct RawPartsV4{
     #[serde(rename = "Parts")]
     pub raw_parts:Vec<RawPartV4>,

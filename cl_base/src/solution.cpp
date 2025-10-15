@@ -1,4 +1,5 @@
 #include "utils.hpp"
+#include <deque>
 #include <solution.hpp>
 #include <utility>
 
@@ -18,6 +19,49 @@ json SolutionUnit::to_json() const{
     json result;
     result["Sheet"]=sheet.to_json();
     result["Root"]=root->to_json();
+    return result;
+}
+
+Metadata::Metadata(Solution* solution):
+total_volume(0),util_volume(0),util_rate(0),parts(0),sheets(solution->solution.size()),cuts(0){
+    for(const auto& unit:solution->solution){
+        total_volume+=unit.sheet.size.get_volume();
+        std::deque<Node*> Q;
+        Q.push_back(unit.root);
+        while (!Q.empty())
+        {
+            Node* u=Q[0];
+            Q.pop_front();
+            switch (u->getType())
+            {
+            case NodeType::PART:
+                parts++;
+                util_volume+=u->size.get_volume();
+                break;
+            case NodeType::CUTLOSS:
+                cuts++;
+                util_volume+=u->size.get_volume();
+                break;
+            default:
+                break;
+            }
+            for(auto child:u->childs){
+                Q.push_back(child);
+            }
+        }
+    }
+    if(total_volume>0) util_rate=util_volume/total_volume;
+
+}
+
+json Metadata::to_json() const{
+    json result;
+    result["TotalVolume"]=total_volume;
+    result["UtilVolume"]=util_volume;
+    result["UtilRate"]=util_rate;
+    result["PartsNum"]=parts;
+    result["SheetsNum"]=sheets;
+    result["CutsNum"]=cuts;
     return result;
 }
 

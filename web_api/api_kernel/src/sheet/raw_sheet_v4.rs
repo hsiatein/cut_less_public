@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::sheet::AsSheets;
 use crate::sheet::raw_sheet_v3::{RawSheetV3,RawSheetsV3};
 
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize,Deserialize,Clone)]
 pub struct RawSheetsV4{
     #[serde(rename = "Sheets")]
     pub raw_sheets:Vec<RawSheetV4>,

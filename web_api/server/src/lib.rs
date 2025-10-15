@@ -1,12 +1,12 @@
 use api_kernel::{config::AsConfig, request_data::ToProblem};
 use api_kernel::response::response_v3::ResponseV3;
-use api_kernel::CliError;
+use api_kernel::{response, CliError};
 use api_kernel::request_data::request_data_v3::RequestDataV3;
 use api_kernel::response::response_v4::ResponseV4;
 use api_kernel::response::response_v5::ResponseV5;
 use api_kernel::request_data::request_data_v4::RequestDataV4;
 use api_kernel::request_data::request_data_v5::RequestDataV5;
-use api_kernel::response::Response;
+use api_kernel::response::{Blueprint, Metadata, Response};
 use libc::{c_char, c_void};
 use std::ffi::{CStr, CString};
 use tokio::task;
@@ -14,6 +14,11 @@ use std::process::{Stdio};
 use tokio::process::{Command};
 use std::env;
 use std::fs;
+
+use futures::future::join_all;
+use std::sync::{Arc, Mutex};
+use tokio::io::AsyncReadExt;
+use warp::Rejection;
 
 unsafe extern "C" {
     fn solve(problem_string: *const c_char, config_string: *const c_char)->*mut c_void;
@@ -82,6 +87,7 @@ pub async fn handle_request_v4(data: RequestDataV4) -> Result<warp::reply::Json,
     Ok(warp::reply::json(&response_v4))
 }
 
+
 pub async fn handle_request_v4_cli(data: RequestDataV4) -> Result<warp::reply::Json, warp::Rejection> {
     let exe_path = env::current_exe().unwrap();
     let root_path=exe_path.parent().unwrap();
@@ -136,6 +142,165 @@ pub async fn handle_request_v4_cli(data: RequestDataV4) -> Result<warp::reply::J
         }
     }
 }
+
+pub async fn handle_request_v4_cli_mt(data: RequestDataV4) -> Result<warp::reply::Json, Rejection> {
+    let exe_path = env::current_exe().unwrap();
+    let root_path = exe_path.parent().unwrap();
+    let cl_path = root_path.join("main_json");
+    let output_path = root_path.join("output/");
+
+    // 准备所有任务
+    let tasks = [1,2,3,4,5,6].iter().map(|&i| {
+        let cl_path = cl_path.clone();
+        let output_path = output_path.clone();
+        let data = data.clone();
+
+        tokio::spawn(async move {
+            let name = i.to_string();
+            let mut config = data.config.to_config();
+            config.max_stage = i;
+
+            let output = Command::new(&cl_path)
+                .arg("-c").arg(serde_json::to_string(&config).unwrap())
+                .arg("-o").arg(output_path.to_str().unwrap())
+                .arg("-p").arg(serde_json::to_string(&data.to_problem()).unwrap())
+                .arg("-n").arg(&name)
+                .stdout(Stdio::piped())
+                .stderr(Stdio::piped())
+                .output()
+                .await;
+
+            (i, output)
+        })
+    });
+
+    // 并发执行所有任务
+    let results = join_all(tasks).await;
+
+    let mut best_response: Option<Response> = None;
+    let mut best_metadata = Metadata::new();
+
+    // 遍历任务结果
+    for result in results {
+        if let Ok((i, Ok(output))) = result {
+            if output.status.success() {
+                println!("Task {i} OK: {}", String::from_utf8_lossy(&output.stdout));
+                let solution_path = output_path.join(format!("main@{}.json", i));
+                let metadata_path = output_path.join(format!("main@{}_metadata.json", i));
+
+                if let (Ok(solution), Ok(metadata)) = (
+                    fs::read_to_string(&solution_path),
+                    fs::read_to_string(&metadata_path),
+                ) {
+                    if let (Ok(sol), Ok(meta)) =
+                        (serde_json::from_str::<Vec<Blueprint>>(&solution),
+                         serde_json::from_str::<Metadata>(&metadata))
+                    {
+                        if best_response.is_none() || meta.greater(&best_metadata) {
+                            best_metadata = meta;
+                            best_response = Some(Response { solution: sol });
+                        }
+                    }
+                }
+            } else {
+                println!("Task {i} failed: {}", String::from_utf8_lossy(&output.stderr));
+            }
+        }
+    }
+
+    if let Some(resp) = best_response {
+        let mut response_v4 = ResponseV4::from_response(&data, resp);
+        best_metadata.regularize();
+        response_v4.metadata = best_metadata;
+        Ok(warp::reply::json(&response_v4))
+    } else {
+        Err(warp::reject::reject())
+    }
+}
+
+
+// pub async fn handle_request_v4_cli_mt(data: RequestDataV4) -> Result<warp::reply::Json, warp::Rejection> {
+//     let exe_path = env::current_exe().unwrap();
+//     let root_path=exe_path.parent().unwrap();
+//     let cl_path = root_path.join("main_json");
+//     let output_path = root_path.join("output/");
+//     // let config = SolverConfig::default();
+//     // 调用cut_less
+//     let mut best_response:Option<Response>=None;
+//     let mut best_metadata=Metadata::new();
+//     for i in [1,6]{
+//         let name=i.to_string();
+//         let mut config=data.config.to_config();
+//         config.max_stage=i;
+//         let output = Command::new(&cl_path)
+//             .arg("-c").arg(serde_json::to_string(&config).unwrap())
+//             .arg("-o").arg(output_path.to_str().unwrap())
+//             .arg("-p").arg(serde_json::to_string(&data.to_problem()).unwrap())
+//             .arg("-n").arg(&name)
+//             .stdout(Stdio::piped())
+//             .output().await;
+
+//         match output {
+//             Ok(output) if output.status.success() => {
+//                 // 获得response
+//                 println!("{}",str::from_utf8(&output.stdout).unwrap());
+//                 let solution_path = output_path.join(format!("main@{}.json",name));
+//                 let metadata_path = output_path.join(format!("main@{}_metadata.json",name));
+//                 let solution  = fs::read_to_string(solution_path);
+//                 let metadata  = fs::read_to_string(metadata_path);
+//                 if let Err(e) = solution{
+//                     println!("{}",e);
+//                     continue;
+//                 }
+//                 if let Err(e) = metadata{
+//                     println!("{}",e);
+//                     continue;
+//                 } 
+//                 let solution=solution.unwrap();
+//                 let metadata = metadata.unwrap();
+//                 let solution_json = serde_json::from_str(&solution);
+//                 let metadata_json = serde_json::from_str::<Metadata>(&metadata);
+//                 if let Err(e) = solution_json{
+//                     println!("{}",e);
+//                     continue;
+//                 }
+//                 if let Err(e) = metadata_json{
+//                     println!("{}",e);
+//                     continue;
+//                 }
+//                 let metadata_json=metadata_json.unwrap();
+//                 if best_response.is_none() || metadata_json.greater(&best_metadata){
+//                     best_metadata=metadata_json;
+//                     let solution_json=solution_json.unwrap();
+//                     best_response=Some(Response {
+//                         solution:solution_json,
+//                     });
+//                 }
+                
+//             }
+//             Ok(output) => {
+//                 // println!("{}",serde_json::to_string_pretty(&data.config.to_config()).unwrap());
+//                 // println!("{}",serde_json::to_string_pretty(&data.to_problem()).unwrap());
+//                 let error_msg = String::from_utf8_lossy(&output.stderr).to_string();
+//                 println!("{}",str::from_utf8(&output.stdout).unwrap());
+//                 println!("stderr");
+//                 println!("{}",error_msg);
+//             }
+//             Err(e) => {
+//                 println!("执行失败");
+//                 println!("{}",e);
+//             }
+//         }
+        
+//     }
+//     // 处理response
+//     if best_response.is_none(){
+//         return Err(warp::reject::reject());
+//     }
+//     let response_v4=ResponseV4::from_response(&data, best_response.unwrap());
+//     Ok(warp::reply::json(&response_v4))
+
+// }
 
 pub async fn handle_request_v5_single(data: RequestDataV5) -> Result<warp::reply::Json, warp::Rejection> {
     println!("start handle");

@@ -52,6 +52,8 @@ pub struct SolverConfig {
     // 使用最优解初始化的概率
     #[serde(default = "default_solution_get_best_prob", rename = "SOLUTION_GET_BEST_PROB")]
     pub solution_get_best_prob: f64,
+    #[serde(default = "default_prefer_benchmark_mode", rename = "PREFER_BENCHMARK_MODE")]
+    pub prefer_benchmark_mode: usize,
 
     // 信息输出相关
     #[serde(default = "default_visualize", rename = "VISUALIZE")]
@@ -69,7 +71,7 @@ fn default_coeff() -> f64 { crate::FACTOR }
 
 fn default_max_stage() -> usize { 8 }
 fn default_utilization_rate_limit() -> f64 { 0.95 }
-fn default_merge_size_check() -> bool { false }
+fn default_merge_size_check() -> bool { true }
 fn default_remain_merge() -> bool { false }
 
 fn default_average_cut_punish() -> f64 { 3.0 }
@@ -85,6 +87,8 @@ fn default_destroy_rate() -> f64 { 0.8 }
 fn default_close_sheet_prob() -> f64 { 0.8 }
 
 fn default_solution_get_best_prob() -> f64 { 0.5 }
+fn default_prefer_benchmark_mode() -> usize { 0 }
+
 fn default_visualize() -> bool { false }
 fn default_runtime_log() -> bool { true }
 
@@ -114,6 +118,7 @@ impl Default for SolverConfig {
             close_sheet_prob: 0.8,
 
             solution_get_best_prob: 0.5,
+            prefer_benchmark_mode: 0,
 
             visualize: false,
             runtime_log: true,

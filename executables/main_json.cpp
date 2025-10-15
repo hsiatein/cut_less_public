@@ -1,4 +1,5 @@
 #include "config.hpp"
+#include "solution.hpp"
 #include <solver.hpp>
 #include <argparse/argparse.hpp>
 
@@ -24,10 +25,12 @@ int main(int argc, char *argv[]){
     // 求解
     Solver solver(&problem,config);
     Solution solution=solver.solve();
+    Metadata metadata(&solution);
 
     // 保存解为json
     Logger logger("main",output_path);
     logger.log_json(name,solution.to_json());
+    logger.log_json(name+"_metadata",metadata.to_json());
 
     return 0;
 }

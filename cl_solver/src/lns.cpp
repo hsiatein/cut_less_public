@@ -34,6 +34,19 @@ bool LNS::greater(PatternSolution* a,PatternSolution* b){
     return false;
 }
 
+bool LNS::greater_cut(PatternSolution* a,PatternSolution* b){
+    int a_remain=a->parts_num;
+    int b_remain=b->parts_num;
+    if(a_remain!=b_remain) return a_remain>b_remain;
+    int a_cut=cal_cutnum(a);
+    int b_cut=cal_cutnum(b);
+    if(a_cut!=b_cut) return a_cut<b_cut;
+    double a_volume=a->get_volume();
+    double b_volume=b->get_volume();
+    if(a_volume!=b_volume) return a_volume<b_volume;
+    return false;
+}
+
 int LNS::cal_cutnum(Blueprint* blueprint) const{
     auto patternNodes=blueprint->top->traverse();
     int result=0;
@@ -72,7 +85,18 @@ void LNS::run(){
         recreate(process);
 
         solution->parts_num=patterns.cal_parts(solution);
-        if(history.empty() || greater(solution,history.back())){
+        bool is_greater;
+        if(history.empty()) is_greater=true;
+        else if(config.PREFER_BENCHMARK_MODE==1){
+            is_greater=greater_cut(solution,history.empty()?nullptr:history.back());
+        }
+        else if(config.PREFER_BENCHMARK_MODE==0){
+            is_greater=greater(solution,history.empty()?nullptr:history.back());
+        }
+        else {
+            throw cleanAndError("LNS::run(): 未知的PREFER_BENCHMARK");
+        }
+        if(is_greater){
             replace_best();
             if(history.back()->parts_num>=max_patterns && history.back()->get_volume()<min_volume){
                 min_volume=history.back()->get_volume();
@@ -80,7 +104,12 @@ void LNS::run(){
             }
             timer.print_time(Color::GREEN);
             double volume_coeff=1e-9/(config.COEFF*config.COEFF*config.COEFF);
-            timer.print(Color::BLUE,"\ntotal volume: ",history.back()->get_volume()*volume_coeff,"\ntotal cuts: ",cal_cutnum(history.back()),"\ntotal parts: ",history.back()->parts_num,"\nutilization rate: ",history.back()->cal_util_rate(),"\n");
+            timer.print(Color::BLUE,"\ntotal volume: ",history.back()->get_volume()*volume_coeff,
+            "\ntotal cuts: ",cal_cutnum(history.back()),
+            "\ntotal parts: ",history.back()->parts_num,
+            "\ntotal sheets: ",history.back()->blueprints.size(),
+            "\nutilization rate: ",history.back()->cal_util_rate(),
+            "\n");
 
             delete lastProcess;
             lastProcess=new Process(process);

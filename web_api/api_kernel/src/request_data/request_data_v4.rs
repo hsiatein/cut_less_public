@@ -6,7 +6,7 @@ use crate::sheet::raw_sheet_v4::RawSheetsV4;
 use crate::part::raw_part_v4::RawPartsV4;
 use crate::request_data::request_data_v3::RequestDataV3;
 
-#[derive(Serialize,Deserialize)]
+#[derive(Serialize,Deserialize,Clone)]
 pub struct RequestDataV4 {
     #[serde(default, rename = "Config")]
     pub config: SolverConfigV4,

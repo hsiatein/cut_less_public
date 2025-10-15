@@ -28,6 +28,7 @@ public:
     void insert(Option option);
 
     bool greater(PatternSolution* a,PatternSolution* b);
+    bool greater_cut(PatternSolution* a,PatternSolution* b);
     int cal_cutnum(PatternSolution* solution) const;
     void replace_best();
     void replace_solution();
@@ -58,10 +59,10 @@ public:
     // json to_json(Solution* solution);
 
     Process* lastProcess;
+    int cal_cutnum(Blueprint* blueprint) const;
 
 
 private:
-    int cal_cutnum(Blueprint* blueprint) const;
     inline const Pattern& get_pattern(StageLocation location) const{
         return patterns[location.first][location.second];
     }

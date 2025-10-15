@@ -5,6 +5,7 @@ use crate::part::raw_part_v4::{RawPartsV4,RawPartV4};
 use crate::request_data::request_data_v4::RequestDataV4;
 use crate::request_data::request_data_v3::RequestDataV3;
 use crate::response::response_v3::NodeV3;
+use crate::response::Metadata;
 use crate::sheet::raw_sheet_v4::RawSheetV4;
 
 
@@ -91,6 +92,7 @@ impl BlueprintV4{
 
 #[derive(Serialize,Deserialize)]
 pub struct ResponseV4 {
+    pub metadata: Metadata,
     unplanned: Vec<RawPartV4>,
     solution: Vec<BlueprintV4>,
 }
@@ -128,6 +130,6 @@ impl ResponseV4 {
                 println!("Warning: part {} overplanned",part.id);
             }
         }
-        ResponseV4 { unplanned,solution }
+        ResponseV4 { metadata:Metadata::new(),unplanned,solution }
     }
 }
