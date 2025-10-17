@@ -24,6 +24,8 @@ struct Problem{
     [[nodiscard]] json parts_to_json() const;
     [[nodiscard]] json sheets_to_json() const;
     void check_self() const;
+    bool parts_num_fit(const PartsNum& left,const PartsNum& right) const;
+    bool complete(const PartsNum& parts_num) const;
     // inline NodeStatus get_node_status(size_t partTypeID) const {
     //     if (partTypeID == STRUCT) {
     //         return {NodeType::STRUCT,partTypeID};

@@ -23,6 +23,7 @@ struct SolverConfig{
 
     // 选择器相关
 
+    bool ENABLE_SELECTOR=true;
     double AVERAGE_CUT_PUNISH=3;
     int HIGHS_RANDOM_SEED=0;
 

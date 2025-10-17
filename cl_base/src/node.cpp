@@ -326,7 +326,7 @@ std::vector<int> Node::distribute(int num){
     int r=num%no_cutloss;
     std::vector<int> result(childs.size());
     for(int i=0;i<childs.size();i++){
-        if(childs[i]->getType()==NodeType::LEFTOVER){
+        if(childs[i]->getType()==NodeType::CUTLOSS){
             result[i]=0;
         }
         else if(r>0){
@@ -338,6 +338,15 @@ std::vector<int> Node::distribute(int num){
         }
         
     }
+
+    #ifdef DEBUG
+    int sum=0;
+    for(auto a:result){
+        sum=sum+a;
+    }
+    if(sum!=num) throw cleanAndError("Node::distribute "+json(result).dump()+","+std::to_string(num));
+    #endif
+    
     return result;
 }
 
@@ -354,6 +363,9 @@ bool Node::valid(const Timer& timer) const{
     }
     if(childs_size.size!=size.size){
         timer.print(Color::RED, "Node::valid : 子节点尺寸和不等于父节点尺寸: 父节点 ",size.to_string(),", 子节点合并后 ",childs_size.to_string(),"\n");
+        for(auto child:childs){
+            timer.print(Color::RED, child->size.to_json().dump(),"\n");
+        }
         return false;
     }
     for(auto child:childs){

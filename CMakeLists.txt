@@ -4,7 +4,7 @@ set(PROJECT_VERSION 0.1.0)
 if (MSVC)
     add_compile_options(/utf-8)
 endif()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti -flto -ffunction-sections -fdata-sections")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -flto -ffunction-sections -fdata-sections")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections")
 
 add_subdirectory(./external/argparse)

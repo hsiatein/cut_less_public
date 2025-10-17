@@ -15,7 +15,7 @@ ENV CMAKE_CXX_FLAGS="-fno-rtti -fno-exceptions -flto -ffunction-sections -fdata-
 ENV CMAKE_EXE_LINKER_FLAGS="-Wl,--gc-sections"
 RUN cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 ENV MAIN_NAME=main_json
-RUN cmake --build build -j4 --target $MAIN_NAME
+RUN cmake --build build -j8 --target $MAIN_NAME
 COPY sources/web_api ./web_api
 ENV RUSTFLAGS="-C target-feature=-crt-static"
 WORKDIR /cut_less/web_api/${SERVER_NAME}

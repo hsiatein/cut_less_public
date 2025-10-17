@@ -1,4 +1,5 @@
 #pragma once
+#include "utils.hpp"
 #include <pattern_solution.hpp>
 #include <process.hpp>
 #include <stage_patterns.hpp>
@@ -18,7 +19,9 @@ public:
     void run();
     
     LNSStatus recreate(Process& process);
+    LNSStatus recreate_no_selector(Process& process);
     std::vector<std::pair<StageLocation,Size>> get_batch_patterns(const std::vector<StageLocation>& group);
+    std::vector<std::pair<StageLocation,Size>> get_batch_patterns_no_selector();
     std::pair<size_t,std::vector<StageLocation>> get_next_group();
     std::vector<Option> generate_options(size_t groupID,StageLocation stageLocation,Size size);
     std::vector<Option> generate_options(size_t groupID,StageLocation stageLocation,Size size,std::vector<Blueprint*>& blueprints);
@@ -78,4 +81,6 @@ private:
     Random randomEngine;
     double min_volume=1e100;
     int max_patterns=0;
+    std::vector<StageLocation> valid_stage_location_cache;
+    PartsNum parts_num_cache;
 };

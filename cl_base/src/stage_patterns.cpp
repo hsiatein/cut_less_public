@@ -1,3 +1,6 @@
+#include "node.hpp"
+#include "utils.hpp"
+#include <algorithm>
 #include <deque>
 #include <stage_patterns.hpp>
 
@@ -27,7 +30,7 @@ Node* StagePatterns::to_node(const PatternNode* patternNode) const{
     std::sort(new_size.begin(),new_size.end());
     if(old_size!=new_size){
         std::cout<<json(old_size).dump()<<", "<<json(new_size).dump()<<std::endl;
-        throw cleanAndError("尺寸不匹配");
+        throw cleanAndError("StagePatterns::to_node 尺寸不匹配");
     }
     #endif
     pattern.resize_force(Orient::X,patternNode->size.size[0]);
@@ -35,6 +38,18 @@ Node* StagePatterns::to_node(const PatternNode* patternNode) const{
     pattern.resize_force(Orient::Z,patternNode->size.size[2]);
     Node* top=pattern.top;
     pattern.top=nullptr;
+    // #ifdef DEBUG
+    // auto node_size=top->size.size;
+    // std::sort(node_size.begin(),node_size.end());
+    // if(node_size==Vec3i({950,1750,5270})){
+    //     Timer timer(0);
+    //     timer.print(Color::RED, patternNode->size.to_json().dump(),"\n");
+    // }
+    // #endif
+    
+    if(top->size.size!=patternNode->size.size){
+        throw cleanAndError("StagePatterns::to_node 变换完尺寸不对");
+    }
     return top;
     
 }

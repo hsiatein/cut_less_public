@@ -82,21 +82,9 @@ double PatternSolution::cal_util_rate() const{
     return get_util_volume()/get_volume();
 }
 
-void PatternSolution::check_self() const{
+void PatternSolution::check_self(const Timer &timer) const{
     for(auto* blueprint:blueprints){
         if(blueprint->top==nullptr) throw cleanAndError("PatternSolution::check_self(): blueprint top is nullptr");
-        std::deque<PatternNode*> Q;
-        Q.push_back(blueprint->top);
-        while (!Q.empty())
-        {
-            PatternNode* u=Q[0];
-            Q.pop_front();
-            for(auto child:u->childs){
-                Q.push_back(child);
-            }
-            if(!u->size.valid()){
-                throw cleanAndError("PatternSolution::check_self(): node size is invalid");
-            }
-        }
+        if(!blueprint->top->valid(timer)) throw cleanAndError("PatternSolution::check_self(): blueprint top size is invalid");
     }
 }

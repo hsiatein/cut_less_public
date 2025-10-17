@@ -19,6 +19,7 @@ SolverConfig::SolverConfig(json config){
     this->MERGE_SIZE_CHECK=config["MERGE_SIZE_CHECK"].get<bool>();
     this->REMAIN_MERGE=config["REMAIN_MERGE"].get<bool>();
 
+    this->ENABLE_SELECTOR=config["ENABLE_SELECTOR"].get<bool>();
     this->AVERAGE_CUT_PUNISH=config["AVERAGE_CUT_PUNISH"].get<double>();
     this->HIGHS_RANDOM_SEED=config["HIGHS_RANDOM_SEED"].get<int>();
 

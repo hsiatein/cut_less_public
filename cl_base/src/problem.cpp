@@ -1,5 +1,8 @@
 #include "utils.hpp"
+#include <cstddef>
 #include <problem.hpp>
+#include <string>
+#include <vector>
 
 
 Problem::Problem():STRUCT(0),CUTLOSS(1),SHEET_ID(0){
@@ -61,9 +64,48 @@ void Problem::check_self() const{
     for(auto sheet:sheets){
         if(sheet.size.size[0]<=sheet.size.size[1] && sheet.size.size[1]<=sheet.size.size[2]) continue;
         else throw cleanAndError("sheet尺寸排序错误");
-        
+
     }
     if(sheets.size()!=sheetsNum.size() || sheets.size()!=need_rotates.size()) throw cleanAndError("向量尺寸错误");
+}
+
+PartsNum to_parts_num(std::vector<int> parts){
+    PartsNum result;
+    for(size_t i=0;i<parts.size();i++){
+        result[i]=parts[i];
+    }
+    return result;
+}
+
+
+/// @brief 检查两个PartsNum合并后是否不超过problem的数量要求
+/// @param left 左PartsNum
+/// @param right 右PartsNum
+/// @return 超过返回false，不超过返回true
+bool Problem::parts_num_fit(const PartsNum& left,const PartsNum& right) const{
+    PartsNum num=left+right;
+    for(const auto& pair:num.partsNum){
+        if(pair.first>=STRUCT) continue;
+        if(pair.second>partsNum[pair.first]){
+            return false;
+        }
+    }
+    // Timer timer(0);
+    // timer.print(Color::RED, num.to_json().dump(),"  ",to_parts_num(partsNum).to_json(),"\n");
+    return true;
+}
+
+
+bool Problem::complete(const PartsNum& parts_num) const{
+    for(size_t i=0;i<partsNum.size();i++){
+        if(partsNum[i]>parts_num.get(i)) return false;
+        // Timer timer(0);
+        // timer.print(Color::RED, parts_num.to_json().dump(),"  ",to_parts_num(partsNum).to_json(),"\n");
+        if(partsNum[i]<parts_num.get(i)){
+            throw cleanAndError("Problem::complete "+std::to_string(i)+"超额规划");
+        }
+    }
+    return true;
 }
 
 RotateOrient sort_size(Vec3i& size){

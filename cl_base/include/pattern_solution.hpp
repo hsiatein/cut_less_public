@@ -22,7 +22,7 @@ public:
         return remain_groups()==0;
     }
     double cal_util_rate() const;
-    void check_self() const;
+    void check_self(const Timer &timer) const;
 private:
     
 

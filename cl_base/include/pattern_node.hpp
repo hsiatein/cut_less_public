@@ -49,6 +49,7 @@ struct PatternNode{
     void reform();
     std::vector<PatternNode*> traverse_mut();
     std::vector<const PatternNode*> traverse() const;
+    bool valid(const Timer& timer) const;
     ~PatternNode();
 
 

@@ -36,22 +36,20 @@ MergeChecker::MergeChecker(Problem* problem):problem(problem){
 
 }
 
-/// @brief 检查两个PartsNum合并后是否不超过problem的数量要求
-/// @param left 左PartsNum
-/// @param right 右PartsNum
-/// @return 超过返回false，不超过返回true
-bool MergeChecker::parts_num_fit(const PartsNum& left,const PartsNum& right) const{
-    PartsNum num=left+right;
-    bool result=true;
-    for(const auto& pair:num.partsNum){
-        if(pair.first>=problem->STRUCT) continue;
-        if(pair.second>problem->partsNum[pair.first]){
-            result=false;
-            break;
-        }
-    }
-    return result;
-}
+// /// @brief 检查两个PartsNum合并后是否不超过problem的数量要求
+// /// @param left 左PartsNum
+// /// @param right 右PartsNum
+// /// @return 超过返回false，不超过返回true
+// bool MergeChecker::parts_num_fit(const PartsNum& left,const PartsNum& right) const{
+//     PartsNum num=left+right;
+//     for(const auto& pair:num.partsNum){
+//         if(pair.first>=problem->STRUCT) continue;
+//         if(pair.second>problem->partsNum[pair.first]){
+//             return false;
+//         }
+//     }
+//     return true;
+// }
 
 void MergeChecker::add_sheet(const SheetType& sheet){
     Vec3i size=sheet.size.size;

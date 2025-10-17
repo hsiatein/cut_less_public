@@ -1,7 +1,9 @@
 #include "blueprint.hpp"
+#include "utils.hpp"
 #include <algorithm>
 #include <lns.hpp>
 #include <deque>
+#include <vector>
 
 const std::array<RotateOrient,6> LNS::rotates={RotateOrient::I,RotateOrient::X,RotateOrient::Y,RotateOrient::Z,RotateOrient::XY,RotateOrient::XZ};
 
@@ -24,9 +26,11 @@ LNS::~LNS(){
 bool LNS::greater(PatternSolution* a,PatternSolution* b){
     int a_remain=a->parts_num;
     int b_remain=b->parts_num;
+    // timer.print(Color::RED, a_remain,",",b_remain);
     if(a_remain!=b_remain) return a_remain>b_remain;
     double a_volume=a->get_volume();
     double b_volume=b->get_volume();
+    // timer.print(Color::RED, a_volume,",",b_volume);
     if(a_volume!=b_volume) return a_volume<b_volume;
     int a_cut=cal_cutnum(a);
     int b_cut=cal_cutnum(b);
@@ -82,16 +86,21 @@ void LNS::run(){
     while(!timer.is_overtime(config.TIME_LIMIT)){
         Process process;
 
-        recreate(process);
+        if(config.ENABLE_SELECTOR){
+            recreate(process);
+        }
+        else {
+            recreate_no_selector(process);
+        }
 
         solution->parts_num=patterns.cal_parts(solution);
         bool is_greater;
         if(history.empty()) is_greater=true;
-        else if(config.PREFER_BENCHMARK_MODE==1){
-            is_greater=greater_cut(solution,history.empty()?nullptr:history.back());
-        }
         else if(config.PREFER_BENCHMARK_MODE==0){
-            is_greater=greater(solution,history.empty()?nullptr:history.back());
+            is_greater=greater(solution,history.back());
+        }
+        else if(config.PREFER_BENCHMARK_MODE==1){
+            is_greater=greater_cut(solution,history.back());
         }
         else {
             throw cleanAndError("LNS::run(): 未知的PREFER_BENCHMARK");
@@ -157,6 +166,11 @@ void LNS::ruin(){
 void LNS::ruin_all(){
     delete solution;
     solution=new PatternSolution(scheme);
+    sheetsNum=problem->sheetsNum;
+    if(!config.ENABLE_SELECTOR){
+        valid_stage_location_cache.clear();
+        parts_num_cache.clear();
+    }
 }
 
 LNSStatus LNS::recreate(Process& process){
@@ -250,8 +264,122 @@ LNSStatus LNS::recreate(Process& process){
     else return LNSStatus::FAIL;
 }
 
+LNSStatus LNS::recreate_no_selector(Process& process){
+    // std::cout<<"sheet num: "<<solution->blueprints.size()<<std::endl;
+    while(!timer.is_overtime(config.TIME_LIMIT)){
+        // 选择一批模式
+        // timer.print(Color::PURPLE, parts_num_cache.to_json().dump());
+        std::vector<std::pair<StageLocation,Size>> batch_patterns=get_batch_patterns_no_selector();
+        if(batch_patterns.empty()) break;
+
+        // 为这批模式生成插入选项
+        std::vector<Option> options;
+        for(auto [stageLocation,size]:batch_patterns){
+            std::vector<Option> tempOptions=generate_options(problem->STRUCT,stageLocation,size);
+            // std::cout<<tempOptions.size()<<std::endl;
+            options.insert(options.end(),tempOptions.begin(),tempOptions.end());
+        }
+        if(config.INFO_RECREATE){
+            timer.print(Color::CYAN,"首次生成Options数量 ",options.size(),"\n");
+        }
+
+        // 当前使用的母板找不到选项时使用新母板
+        std::vector<Blueprint*> blueprints;
+        if(options.empty()){
+            blueprints=open_sheets(batch_patterns);
+            for(auto [stageLocation,size]:batch_patterns){
+                std::vector<Option> tempOptions=generate_options(problem->STRUCT,stageLocation,size,blueprints);
+                // std::cout<<tempOptions.size()<<std::endl;
+                options.insert(options.end(),tempOptions.begin(),tempOptions.end());
+            }
+            if(config.INFO_RECREATE){
+                timer.print(Color::CYAN,"再次生成Options数量 ",options.size(),"\n");
+            }
+        }
+
+        // std::cout<<"remain num: "<<process.history.back()->remain_groups()<<std::endl;
+        // std::cout<<"placed num: "<<process.history.back()->placed_pattern()<<std::endl;
+
+        // 获得一个选项，插入
+        if(!options.empty()) {
+            Option bestOption=select_option(options);
+            if(config.INFO_RECREATE){
+                timer.print(Color::CYAN,"选择的option: ",to_string(bestOption),"\n");
+            }
+            insert(bestOption);
+            // timer.print(Color::PURPLE, get_pattern(std::get<3>(bestOption)).partsNum.to_json().dump());
+            // timer.print(Color::PURPLE, parts_num_cache.to_json().dump());
+            parts_num_cache=parts_num_cache+get_pattern(std::get<3>(bestOption)).partsNum;
+            // 记录过程
+            if(config.INFO_OPERATION){
+                auto p_node=std::get<0>(bestOption)->top;
+                Node* node=patterns.to_node(p_node);
+                process.log(node->to_json().dump());
+                timer.print(Color::CYAN, node->to_json().dump());
+                delete node;
+                process.log_operation(bestOption);
+                std::vector<Option> record;
+                for(auto op:options){
+                    if(std::get<0>(op)!=std::get<0>(bestOption) || std::get<1>(op)!=std::get<1>(bestOption)) continue;
+                    record.push_back(op);
+                }
+                process.log_options(record);
+            }
+            process.log_solution(solution);
+        }
+        else{
+            if(config.INFO_RECREATE){
+                timer.print(Color::CYAN,"生成options失败退出, blueprints数量: ",blueprints.size(),"\n");
+            }
+            break;
+        }
+
+        // 关闭没有使用的原料，把使用了的原料加入solution
+        if(blueprints.size()>0){
+            auto keeped=keep_nonempty_sheets(blueprints);
+            solution->blueprints.insert(solution->blueprints.end(),keeped.begin(),keeped.end());
+        }
+        if(problem->complete(parts_num_cache)) return LNSStatus::SUCCESS;
+
+    }
+    // for(auto solution:process.history){
+    //     std::cout<<"placed num: "<<solution->placed_pattern()<<std::endl;
+    // }
+    return LNSStatus::FAIL;
+}
+
 std::vector<std::pair<StageLocation,Size>> LNS::get_batch_patterns(const std::vector<StageLocation>& group){
     std::vector<StageLocation> stageLocations=randomEngine.rand_batch_elements<StageLocation>(group,config.PATTERN_BATCH_SIZE);
+    std::vector<std::pair<StageLocation,Size>> result;
+    for(auto stageLocation:stageLocations){
+        result.emplace_back(stageLocation,get_pattern(stageLocation).top->size);
+    }
+    return result;
+}
+
+std::vector<std::pair<StageLocation,Size>> LNS::get_batch_patterns_no_selector(){
+    bool need_init=true;//valid_stage_location_cache.empty();
+    if(need_init){
+        valid_stage_location_cache.clear();
+        for(auto [stage,stage_patterns]:patterns.patterns){
+            for(int j=0;j<stage_patterns.size();j++){
+                StageLocation loc(stage,j);
+                if(problem->parts_num_fit(get_pattern(loc).partsNum, parts_num_cache)){
+                    valid_stage_location_cache.push_back(loc);
+                }
+            }
+        }
+    }
+    else{
+        std::vector<StageLocation> new_cache;
+        for(auto loc:valid_stage_location_cache){
+            if(problem->parts_num_fit(get_pattern(loc).partsNum, parts_num_cache)){
+                new_cache.push_back(loc);
+            }
+        }
+        valid_stage_location_cache=new_cache;
+    }
+    std::vector<StageLocation> stageLocations=randomEngine.rand_batch_elements<StageLocation>(valid_stage_location_cache,config.PATTERN_BATCH_SIZE);
     std::vector<std::pair<StageLocation,Size>> result;
     for(auto stageLocation:stageLocations){
         result.emplace_back(stageLocation,get_pattern(stageLocation).top->size);

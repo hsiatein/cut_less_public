@@ -23,14 +23,16 @@ Solution Solver::solve(){
     patterns.check_self();
     // time_limit=get_remain_time();
 
-
-    PatternSelector patternSelector(*problem,timer,config);
-    patternSelector.partsnum_register(patterns);
-    Scheme scheme=patternSelector.select();
-
+    Scheme scheme;
+    if(config.ENABLE_SELECTOR){
+        PatternSelector patternSelector(*problem,timer,config);
+        patternSelector.partsnum_register(patterns);
+        scheme=patternSelector.select();
+    }
+    
     LNS lns(problem,scheme,patterns,timer,config);
     lns.run();
-    lns.get_best().check_self();
+    lns.get_best().check_self(timer);
     Solution lns_solution(*problem,patterns,lns.get_best());
     result.merge(lns_solution);
     result.check_self(timer);

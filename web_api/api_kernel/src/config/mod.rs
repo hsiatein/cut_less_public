@@ -26,6 +26,8 @@ pub struct SolverConfig {
     pub remain_merge: bool,
 
     // 选择器相关
+    #[serde(default = "default_enable_selector", rename = "ENABLE_SELECTOR")]
+    pub enable_selector: bool,
     #[serde(default = "default_average_cut_punish", rename = "AVERAGE_CUT_PUNISH")]
     pub average_cut_punish: f64,
     #[serde(default = "default_highs_random_seed", rename = "HIGHS_RANDOM_SEED")]
@@ -74,6 +76,7 @@ fn default_utilization_rate_limit() -> f64 { 0.95 }
 fn default_merge_size_check() -> bool { true }
 fn default_remain_merge() -> bool { false }
 
+fn default_enable_selector() -> bool { true }
 fn default_average_cut_punish() -> f64 { 3.0 }
 fn default_highs_random_seed() -> i32 { 0 }
 
@@ -105,6 +108,7 @@ impl Default for SolverConfig {
             merge_size_check: false,
             remain_merge: false,
 
+            enable_selector:true,
             average_cut_punish: 3.0,
             highs_random_seed: 0,
 

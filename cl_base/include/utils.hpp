@@ -161,6 +161,9 @@ struct PartsNum{
         return partsNum == other.partsNum;
     }
     int get(const size_t& id) const;
+    inline void clear(){
+        partsNum.clear();
+    }
 };
 
 

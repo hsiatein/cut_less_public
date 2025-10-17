@@ -90,6 +90,9 @@ Email: mugilovemilk@mail.ustc.edu.cn
 * 2025.10.15
     * 错误原因：没有进行尺寸检查导致sheet放不下pattern。
 
+* 2025.10.17
+    * 错误原因：distribute计算错误，本来cutloss不需要分配，但是实际是leftover不分配，导致部分问题尺寸对不上。
+
 ## License
 
 This project is licensed under the AGPLv3 License - see the LICENSE file for details

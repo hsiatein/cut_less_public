@@ -1,6 +1,7 @@
 #include "utils.hpp"
 #include <algorithm>
 #include <pattern_merger.hpp>
+#include <deque>
 
 PatternMerger::PatternMerger(Problem* problem,Timer timer,SolverConfig config)
 :problem(problem),mergeChecker(this->problem),timer(timer),config(config){
@@ -51,7 +52,7 @@ StagePatterns PatternMerger::generate_patterns(const int level) const{
                 if(timer.is_overtime(time_limit)) break;
                 for(const auto& right:patterns[rightStage]){
                     if(timer.is_overtime(time_limit)) break;
-                    if(!mergeChecker.parts_num_fit(left.partsNum,right.partsNum)) continue;
+                    if(!problem->parts_num_fit(left.partsNum,right.partsNum)) continue;
                     std::vector<Pattern> generatedPatterns;
                     if(config.MERGE_SIZE_CHECK){
                         generatedPatterns=generate_merged_pattern_with_check(left,right);
