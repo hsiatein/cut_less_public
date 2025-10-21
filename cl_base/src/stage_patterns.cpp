@@ -100,6 +100,15 @@ json StagePatterns::to_json(const PatternSolution* solution){
     return result;
 }
 
+Scheme StagePatterns::get_order1_scheme() const{
+    Scheme scheme;
+    for(int i=0;i<patterns.at(1).size();i++){
+        auto pattern=patterns.at(1)[i];
+        scheme.emplace_back(pattern.partsNum,std::pair<size_t,size_t>(1,i),problem->partsNum[i]);
+    }
+    return scheme;
+}
+
 void StagePatterns::check_self() const{
     for(const auto& [stage,pattern_list]:patterns){
         for(const auto& pattern:pattern_list){

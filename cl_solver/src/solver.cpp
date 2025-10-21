@@ -23,6 +23,9 @@ Solution Solver::solve(){
     patterns.check_self();
     // time_limit=get_remain_time();
 
+    Scheme pre_process_scheme=patterns.get_order1_scheme();
+    
+
     Scheme scheme;
     if(config.ENABLE_SELECTOR){
         PatternSelector patternSelector(*problem,timer,config);

@@ -1,4 +1,5 @@
 #pragma once
+#include "utils.hpp"
 #include <pattern_solution.hpp>
 
 
@@ -17,6 +18,7 @@ struct StagePatterns{
     json to_json(const PatternNode* patternNode);
     json to_json(const Blueprint* blueprint);
     json to_json(const PatternSolution* solution);
+    Scheme get_order1_scheme() const;
 
     inline std::vector<Pattern>& operator[](size_t stage){
         return patterns[stage];
