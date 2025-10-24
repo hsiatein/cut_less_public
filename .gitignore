@@ -11,3 +11,6 @@ web_api/target
 binaries/
 cut_less_image.tar
 sources/
+**.csv
+**.png
+report.md
