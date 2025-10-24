@@ -41,4 +41,6 @@ struct Node{
     void rotate(RotateOrient rotateOrient);
     json to_json() const;
     bool valid(const Timer& timer) const;
+    size_t get_cuts_num() const;
+    PartsNum get_parts_num() const;
 };

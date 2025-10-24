@@ -10,14 +10,14 @@ struct SolutionUnit
     
     SolutionUnit(SheetType sheet,Node* root);
     SolutionUnit(const SolutionUnit& other);
-    SolutionUnit(SolutionUnit&& other);
     ~SolutionUnit();
     json to_json() const;
+    bool is_simple() const;
 };
 
 struct Solution
 {
-    std::vector<SolutionUnit> solution;
+    std::vector<SolutionUnit*> solution;
     Solution();
     Solution(const Problem& problem,const StagePatterns& patterns,const PatternSolution& p_solution);
     Solution(const Solution& other);
@@ -25,6 +25,8 @@ struct Solution
     ~Solution();
     json to_json() const;
     void check_self(const Timer& timer) const;
+    void delete_complex_node();
+    PartsNum get_parts_num() const;
 };
 
 struct Solutions

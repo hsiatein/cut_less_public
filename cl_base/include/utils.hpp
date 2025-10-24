@@ -164,6 +164,7 @@ struct PartsNum{
     inline void clear(){
         partsNum.clear();
     }
+    size_t to_num() const;
 };
 
 

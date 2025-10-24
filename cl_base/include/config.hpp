@@ -13,6 +13,7 @@ struct SolverConfig{
     size_t CUT_LOSS=30;
     std::vector<int> REMAIN={50,80,100,150,200};
     double COEFF=10;
+    size_t MODE=0;
 
     // 组合器相关
 

@@ -9,7 +9,9 @@ Problem::Problem():STRUCT(0),CUTLOSS(1),SHEET_ID(0){
 
 }
 
-Problem::Problem(const Problem& other):parts(other.parts),sheets(other.sheets),partsNum(other.partsNum),sheetsNum(other.sheetsNum),STRUCT(other.STRUCT),CUTLOSS(other.CUTLOSS),SHEET_ID(other.SHEET_ID){
+Problem::Problem(const Problem& other)
+:parts(other.parts),sheets(other.sheets),partsNum(other.partsNum),sheetsNum(other.sheetsNum),
+need_rotates(other.need_rotates),STRUCT(other.STRUCT),CUTLOSS(other.CUTLOSS),SHEET_ID(other.SHEET_ID){
 
 }
 
@@ -106,6 +108,15 @@ bool Problem::complete(const PartsNum& parts_num) const{
         }
     }
     return true;
+}
+
+Problem Problem::minus(PartsNum parts_num) const{
+    Problem new_problem(*this);
+    for(auto [k,v]:parts_num.partsNum){
+        if(k>=STRUCT) continue;
+        new_problem.partsNum[k]=new_problem.partsNum[k]-v;
+    }
+    return new_problem;
 }
 
 RotateOrient sort_size(Vec3i& size){

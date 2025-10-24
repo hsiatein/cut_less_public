@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <deque>
 #include <stage_patterns.hpp>
+#include <vector>
 
 StagePatterns::StagePatterns(Problem* problem):problem(problem){
 
@@ -104,7 +105,7 @@ Scheme StagePatterns::get_order1_scheme() const{
     Scheme scheme;
     for(int i=0;i<patterns.at(1).size();i++){
         auto pattern=patterns.at(1)[i];
-        scheme.emplace_back(pattern.partsNum,std::pair<size_t,size_t>(1,i),problem->partsNum[i]);
+        scheme.emplace_back(pattern.partsNum,std::vector<StageLocation>({std::pair<size_t,size_t>(1,i)}),problem->partsNum[i]);
     }
     return scheme;
 }

@@ -59,6 +59,15 @@ json PartsNum::to_json() const{
     return j;
 }
 
+size_t PartsNum::to_num() const{
+    size_t result=0;
+    for(auto [key,value]:partsNum){
+        if(value<0) throw cleanAndError("PartsNum::to_num part "+std::to_string(key)+" num is negative");
+        result+=value;
+    }
+    return result;
+}
+
 std::runtime_error cleanAndError(std::string exception){
 
     return std::runtime_error(exception);

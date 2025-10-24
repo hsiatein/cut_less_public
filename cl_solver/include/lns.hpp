@@ -16,7 +16,7 @@ class LNS{
 public:
     LNS(const Problem* problem,Scheme scheme,const StagePatterns& patterns,Timer timer,SolverConfig config);
     ~LNS();
-    void run();
+    void run(double time=0);
     
     LNSStatus recreate(Process& process);
     LNSStatus recreate_no_selector(Process& process);

@@ -81,9 +81,9 @@ void LNS::replace_solution(){
     solution=new PatternSolution(*history.back());
 }
 
-void LNS::run(){
+void LNS::run(double time){
     int n=0;
-    while(!timer.is_overtime(config.TIME_LIMIT)){
+    while(!timer.is_overtime(time==0?config.TIME_LIMIT:time)){
         Process process;
 
         if(config.ENABLE_SELECTOR){

@@ -14,6 +14,8 @@ pub struct SolverConfig {
     pub remain: Vec<i32>,
     #[serde(default = "default_coeff", rename = "COEFF")]
     pub coeff: f64,
+    #[serde(default = "default_mode", rename = "MODE")]
+    pub mode: usize,
 
     // 组合器相关
     #[serde(default = "default_max_stage", rename = "MAX_STAGE")]
@@ -70,6 +72,7 @@ fn default_time_limit() -> f64 { 1000.0 }
 fn default_cut_loss() -> usize { 30 }
 fn default_remain() -> Vec<i32> { vec![50, 80, 100, 150, 200] }
 fn default_coeff() -> f64 { crate::FACTOR }
+fn default_mode() -> usize {0}
 
 fn default_max_stage() -> usize { 8 }
 fn default_utilization_rate_limit() -> f64 { 0.95 }
@@ -102,6 +105,7 @@ impl Default for SolverConfig {
             cut_loss: 30,
             remain: vec![50, 80, 100, 150, 200],
             coeff: default_coeff(),
+            mode: 0,
 
             max_stage: 8,
             utilization_rate_limit: 0.95,

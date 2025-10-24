@@ -7,7 +7,7 @@ use api_kernel::response::response_v5::ResponseV5;
 use api_kernel::request_data::request_data_v4::RequestDataV4;
 use api_kernel::request_data::request_data_v5::RequestDataV5;
 use api_kernel::response::{Blueprint, Metadata, Response};
-use libc::{c_char, c_void};
+use libc::{c_char, c_void, rand};
 use std::ffi::{CStr, CString};
 use tokio::task;
 use std::process::{Stdio};
@@ -17,7 +17,7 @@ use std::fs;
 
 use futures::future::join_all;
 use std::sync::{Arc, Mutex};
-use tokio::io::AsyncReadExt;
+use rand::Rng;
 use warp::Rejection;
 
 unsafe extern "C" {
@@ -154,11 +154,12 @@ pub async fn handle_request_v4_cli_mt(data: RequestDataV4) -> Result<warp::reply
         let cl_path = cl_path.clone();
         let output_path = output_path.clone();
         let data = data.clone();
-
+        let seed = rand::thread_rng().r#gen();
         tokio::spawn(async move {
             let name = i.to_string();
             let mut config = data.config.to_config();
             config.max_stage = i;
+            config.lns_random_seed = seed;
 
             let output = Command::new(&cl_path)
                 .arg("-c").arg(serde_json::to_string(&config).unwrap())

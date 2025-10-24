@@ -13,6 +13,7 @@ SolverConfig::SolverConfig(json config){
     }
     this->REMAIN=TEMP_REMAIN;
     this->COEFF=config["COEFF"].get<double>();
+    this->MODE=config["MODE"].get<size_t>();
     
     this->MAX_STAGE=config["MAX_STAGE"].get<size_t>();
     this->UTILIZATION_RATE_LIMIT=config["UTILIZATION_RATE_LIMIT"].get<double>();

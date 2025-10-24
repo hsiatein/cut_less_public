@@ -12,6 +12,8 @@ pub struct SolverConfigV4 {
     pub cut_loss: f64,
     #[serde(default = "default_remain", rename = "REMAIN")]
     pub remain: Vec<f64>,
+    #[serde(default = "super::default_mode", rename = "MODE")]
+    pub mode: usize,
 
     // 组合器相关
     #[serde(default = "super::default_max_stage", rename = "MAX_STAGE")]
@@ -73,6 +75,7 @@ impl Default for SolverConfigV4 {
             time_limit: 1000.0,
             cut_loss: 3.,
             remain: vec![5., 8., 10., 15., 20.],
+            mode: 0,
 
             max_stage: 8,
             utilization_rate_limit: 0.95,
@@ -109,6 +112,7 @@ impl AsConfig for SolverConfigV4 {
             cut_loss:(self.cut_loss*crate::FACTOR).round() as usize,
             remain:self.remain.iter().map(|remain|(remain*crate::FACTOR).round() as i32).collect(),
             coeff:super::default_coeff(),
+            mode:self.mode,
             max_stage:self.max_stage,
             utilization_rate_limit:self.utilization_rate_limit,
             merge_size_check:self.merge_size_check,

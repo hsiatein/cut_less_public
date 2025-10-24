@@ -111,7 +111,7 @@ std::vector<OrientMatch> Pattern::collect_match_1D(const Pattern& other) const{
 void Pattern::merge(Pattern& other,Orient orient,const SolverConfig& config){
     //logger.log_json("merge_other",other.top->to_json());
     Size newSize=merge_size(*this,other,orient,config);
-    Node* newTop=new Node(newSize,{NodeType::STRUCT,-1},orient);
+    Node* newTop=new Node(newSize,{NodeType::STRUCT,PROBLEM_STRUCT},orient);
     newTop->addChild(this->top);
     newTop->addChild(other.top);
     this->top=newTop;

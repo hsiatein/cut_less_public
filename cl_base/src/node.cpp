@@ -1,4 +1,5 @@
 #include "utils.hpp"
+#include <cstddef>
 #include <deque>
 #include <node.hpp>
 
@@ -372,4 +373,39 @@ bool Node::valid(const Timer& timer) const{
         if(!child->valid(timer)) return false;
     }
     return true;
+}
+
+size_t Node::get_cuts_num() const{
+    if(getType()==NodeType::STRUCT){
+        size_t result=0;
+        for(auto child:childs){
+            result+=child->get_cuts_num();
+        }
+        return result;
+    }
+    else if(getType()==NodeType::CUTLOSS){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+PartsNum Node::get_parts_num() const{
+    std::deque<const Node*> Q;
+    Q.push_back(this);
+    PartsNum result;
+    while(!Q.empty()){
+        auto u=Q[0];
+        Q.pop_front();
+        if(u->getType()==NodeType::PART){
+            result[u->status.second]++;
+        }
+        else if (u->getType()==NodeType::STRUCT){
+            for(const Node* v:u->childs){
+                Q.push_back(v);
+            }
+        }
+    }
+    return result;
 }

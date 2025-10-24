@@ -1,7 +1,7 @@
 {
     "Config": {
         "CUT_LOSS": 3.0,
-        "TIME_LIMIT": 2000,
+        "TIME_LIMIT": 300,
         "REMAIN": [
             10.0,
             10.0,
