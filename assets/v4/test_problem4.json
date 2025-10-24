@@ -9,6 +9,7 @@
       15.0,
       20.0
     ],
+    "MODE":1,
     "MAX_STAGE": 8,
     "UTILIZATION_RATE_LIMIT": 0.95,
     "MERGE_SIZE_CHECK": false,

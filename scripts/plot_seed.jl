@@ -3,40 +3,42 @@ using DataFrames
 using Plots
 using StatsBase
 using Statistics   # ✅ 用于 var()
+using Distributions
 
-name = "input7"
+
+# name = "input7"
 df = CSV.read("$(name).csv", DataFrame)
 
 cols = ["TotalVolume", "UtilVolume", "UtilRate", "PartsNum", "SheetsNum", "CutsNum"]
 
-plot_layout = (2, 3)
-p = plot(layout = plot_layout, size = (1000, 600))
+plot(title = "Normal Distributions with μ=1 and different cv",
+     xlabel = "x", ylabel = "Density", legend = :top)
 
 println("$(name)各字段变异系数：")
+x = 0:0.001:2
 
 for (i, col) in enumerate(cols)
+    if(col ∉ ["TotalVolume","CutsNum","PartsNum"])
+        continue
+    end
     data = df[!, col]
-    μ = mean(data)
-    σ = std(data)
-    cv = σ / μ
+    cv = std(data) / mean(data)
     println(rpad(col, 12), " = ", cv)
 
-    vals = sort(unique(data))
-    counts = countmap(data)
+    dist = Normal(1, cv)
+    y=pdf.(dist, x)
+    plot!(x, y, label = "$(col) = $(cv)")
 
-    bar!(
-        p[i],
-        vals,
-        [counts[v] for v in vals],
-        xlabel = col,
-        ylabel = "Count",
-        title = col,
-        legend = false
-    )
+    mask = (x .>= 0.95) .& (x .<= 1.05)
+    x_fill = x[mask]
+    y_fill = y[mask]
+
+    plot!(x_fill, y_fill, fillrange = 0, fillalpha = 0.3,
+          label = false)
 end
 
 savefig("$(name).png")
-println("✅ 分布图已保存为 metadata_distributions.png")
+println("✅ 已保存为 $(name).png")
 
 
 # include("plot_seed.jl")

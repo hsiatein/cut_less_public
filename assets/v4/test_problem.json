@@ -1,6 +1,6 @@
 {
   "Config": {
-    "TIME_LIMIT": 1000.0,
+    "TIME_LIMIT": 500.0,
     "CUT_LOSS": 3.0,
     "REMAIN": [
       5.0,
@@ -9,6 +9,7 @@
       15.0,
       20.0
     ],
+    "MODE":1,
     "MAX_STAGE": 8,
     "UTILIZATION_RATE_LIMIT": 0.95,
     "MERGE_SIZE_CHECK": false,

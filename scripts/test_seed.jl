@@ -3,7 +3,7 @@ using JSON3
 using CSV
 using DataFrames
 
-name="input6"
+name="test_problem2"
 json_text = read("../assets/v4/$name.json", String)
 json_data = JSON3.read(json_text)
 
@@ -18,7 +18,7 @@ results = DataFrame(TotalVolume = Float64[],
                     SheetsNum = Int32[],
                     CutsNum = Int32[])
 
-for i in 1:50
+for i in 1:100
     try
         println("📤 第 $i 次请求中...")
         response = HTTP.post(url; body=JSON3.write(json_data), headers = ["Content-Type" => "application/json"])
@@ -44,3 +44,5 @@ end
 println("💾 已保存到 ", outfile)
 
 # include("test_seed.jl")
+
+include("plot_seed.jl")

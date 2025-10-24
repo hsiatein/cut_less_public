@@ -1,14 +1,15 @@
 {
     "Config": {
         "CUT_LOSS": 0.0,
-        "TIME_LIMIT": 2000,
+        "TIME_LIMIT": 500,
         "REMAIN": [
             5.0,
             8.0,
             10.0,
             15.0,
             20.0
-        ]
+        ],
+        "MODE": 1
     },
     "Parts": [
         {
