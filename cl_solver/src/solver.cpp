@@ -12,7 +12,7 @@ Solver::~Solver(){
 }
 
 Solution Solver::solve(){
-    if(config.MODE==0) return solve_normal();
+    if(config.MODE==0 || config.MODE==2) return solve_normal();
     else if(config.MODE==1) return solve_with_pre_process();
     else throw cleanAndError("Solver::solve 非法MODE");
 }

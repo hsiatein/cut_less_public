@@ -22,6 +22,7 @@
     "BLINK_PROB": 0.1,
     "DESTROY_RATE": 0.8,
     "CLOSE_SHEET_PROB": 0.8,
+    "PREFER_BENCHMARK_MODE":1,
     "SOLUTION_GET_BEST_PROB": 0.5,
     "VISUALIZE": false,
     "RUNTIME_LOG": true,

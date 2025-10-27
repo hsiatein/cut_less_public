@@ -150,10 +150,23 @@ pub async fn handle_request_v4_cli_mt(data: RequestDataV4) -> Result<warp::reply
     let output_path = root_path.join("output/");
 
     // 准备所有任务
-    let params:Vec<(usize,usize)>=[1,2,3,4,5,6].iter().flat_map(|&i|{
-        [(i,0),(i,1)]
-    }).collect();
-    let tasks = params.iter().map(|&(i,mode)| {
+    let params:Vec<(usize,usize)>=match data.config.mode {
+        0 => {
+            [1,2,3,4,5,6].iter().flat_map(|&i|{
+                [(i,0)]
+            }).collect()
+        },
+        1 => {
+            [1,2,3,4,5,6].iter().flat_map(|&i|{
+                [(i,0),(i,1)]
+            }).collect()
+        },
+        _ => {
+            vec![(data.config.max_stage,0)]
+        }
+    };
+    
+    let tasks = params.iter().enumerate().map(|(i,&(stage,mode))| {
         let cl_path = cl_path.clone();
         let output_path = output_path.clone();
         let data = data.clone();
@@ -161,8 +174,8 @@ pub async fn handle_request_v4_cli_mt(data: RequestDataV4) -> Result<warp::reply
         tokio::spawn(async move {
             let name = i.to_string();
             let mut config = data.config.to_config();
-            // config.mode=mode;
-            config.max_stage = i;
+            config.mode=mode;
+            config.max_stage = stage;
             config.lns_random_seed = seed;
 
             let output = Command::new(&cl_path)
@@ -175,7 +188,7 @@ pub async fn handle_request_v4_cli_mt(data: RequestDataV4) -> Result<warp::reply
                 .output()
                 .await;
 
-            (i+6*mode, output)
+            (i, output)
         })
     });
 
