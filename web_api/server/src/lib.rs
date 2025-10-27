@@ -152,12 +152,12 @@ pub async fn handle_request_v4_cli_mt(data: RequestDataV4) -> Result<warp::reply
     // 准备所有任务
     let params:Vec<(usize,usize)>=match data.config.mode {
         0 => {
-            [1,2,3,4,5,6].iter().flat_map(|&i|{
+            [1,2,3,4,6,8].iter().flat_map(|&i|{
                 [(i,0)]
             }).collect()
         },
         1 => {
-            [1,2,3,4,5,6].iter().flat_map(|&i|{
+            [1,2,3,4,6,8].iter().flat_map(|&i|{
                 [(i,0),(i,1)]
             }).collect()
         },
