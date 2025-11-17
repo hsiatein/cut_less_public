@@ -165,6 +165,7 @@ pub async fn handle_request_v4_cli_mt(data: RequestDataV4) -> Result<warp::reply
             vec![(data.config.max_stage,0)]
         }
     };
+    let name_prefix:usize=rand::thread_rng().r#gen();
     
     let tasks = params.iter().enumerate().map(|(i,&(stage,mode))| {
         let cl_path = cl_path.clone();
@@ -172,7 +173,7 @@ pub async fn handle_request_v4_cli_mt(data: RequestDataV4) -> Result<warp::reply
         let data = data.clone();
         let seed = rand::thread_rng().r#gen();
         tokio::spawn(async move {
-            let name = i.to_string();
+            let name = format!("{}_{}",name_prefix,i);
             let mut config = data.config.to_config();
             config.mode=mode;
             config.max_stage = stage;
@@ -203,9 +204,9 @@ pub async fn handle_request_v4_cli_mt(data: RequestDataV4) -> Result<warp::reply
         if let Ok((i, Ok(output))) = result {
             if output.status.success() {
                 println!("Task {i} OK: {}", String::from_utf8_lossy(&output.stdout));
-                let solution_path = output_path.join(format!("main@{}.json", i));
-                let metadata_path = output_path.join(format!("main@{}_metadata.json", i));
-
+                let solution_path = output_path.join(format!("main@{}_{}.json", name_prefix,i));
+                let metadata_path = output_path.join(format!("main@{}_{}_metadata.json", name_prefix,i));
+                
                 if let (Ok(solution), Ok(metadata)) = (
                     fs::read_to_string(&solution_path),
                     fs::read_to_string(&metadata_path),
@@ -219,6 +220,8 @@ pub async fn handle_request_v4_cli_mt(data: RequestDataV4) -> Result<warp::reply
                             best_response = Some(Response { solution: sol });
                         }
                     }
+                    fs::remove_file(&solution_path).unwrap();
+                    fs::remove_file(&metadata_path).unwrap();
                 }
             } else {
                 println!("Task {i} failed: {}", String::from_utf8_lossy(&output.stderr));

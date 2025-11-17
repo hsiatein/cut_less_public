@@ -4,7 +4,7 @@ using CSV
 using DataFrames
 using Statistics
 
-name="test_problem3"
+name="input5"
 json_text = read("../assets/v4/$(name).json", String)
 json_data = JSON3.read(json_text)
 url = "http://127.0.0.1:6002/cut_less"
