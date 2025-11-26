@@ -3,6 +3,7 @@ use api_kernel::response::response_v3::ResponseV3;
 use api_kernel::{response, CliError};
 use api_kernel::request_data::request_data_v3::RequestDataV3;
 use api_kernel::response::response_v4::ResponseV4;
+use api_kernel::response::response_v4_plus::ResponseV4Plus;
 use api_kernel::response::response_v5::ResponseV5;
 use api_kernel::request_data::request_data_v4::RequestDataV4;
 use api_kernel::request_data::request_data_v5::RequestDataV5;
@@ -236,6 +237,109 @@ pub async fn handle_request_v4_cli_mt(data: RequestDataV4) -> Result<warp::reply
         Ok(warp::reply::json(&response_v4))
     } else {
         Err(warp::reject::reject())
+    }
+}
+
+pub async fn handle_request_v4_cli_mt_multi(data: RequestDataV4) -> Result<warp::reply::Json, Rejection> {
+    let exe_path = env::current_exe().unwrap();
+    let root_path = exe_path.parent().unwrap();
+    let cl_path = root_path.join("main_json");
+    let output_path = root_path.join("output/");
+
+    let params: Vec<(usize, usize)> = match data.config.mode {
+        0 => [1, 2, 3, 4, 6, 8].iter().map(|&i| (i, 0)).collect(),
+        1 => [1, 2, 3, 4, 6, 8]
+            .iter()
+            .flat_map(|&i| [(i, 0), (i, 1)])
+            .collect(),
+        _ => vec![(data.config.max_stage, 0)],
+    };
+
+    let name_prefix: usize = rand::thread_rng().r#gen();
+
+    let tasks = params.iter().enumerate().map(|(i, &(stage, mode))| {
+        let cl_path = cl_path.clone();
+        let output_path = output_path.clone();
+        let data = data.clone();
+        let seed = rand::thread_rng().r#gen();
+        tokio::spawn(async move {
+            let name = format!("{}_{}", name_prefix, i);
+            let mut config = data.config.to_config();
+            config.mode = mode;
+            config.max_stage = stage;
+            config.lns_random_seed = seed;
+
+            let output = Command::new(&cl_path)
+                .arg("-c")
+                .arg(serde_json::to_string(&config).unwrap())
+                .arg("-o")
+                .arg(output_path.to_str().unwrap())
+                .arg("-p")
+                .arg(serde_json::to_string(&data.to_problem()).unwrap())
+                .arg("-n")
+                .arg(&name)
+                .stdout(Stdio::piped())
+                .stderr(Stdio::piped())
+                .output()
+                .await;
+
+            (i, output)
+        })
+    });
+
+    let results = join_all(tasks).await;
+    let mut collected = Vec::new();
+
+    for result in results {
+        if let Ok((i, Ok(output))) = result {
+            if output.status.success() {
+                println!(
+                    "Task {i} OK: {}",
+                    String::from_utf8_lossy(&output.stdout)
+                );
+                let solution_path =
+                    output_path.join(format!("main@{}_{}.json", name_prefix, i));
+                let metadata_path =
+                    output_path.join(format!("main@{}_{}_metadata.json", name_prefix, i));
+
+                match (
+                    fs::read_to_string(&solution_path),
+                    fs::read_to_string(&metadata_path),
+                ) {
+                    (Ok(solution), Ok(metadata)) => {
+                        let parsed_solution =
+                            serde_json::from_str::<Vec<Blueprint>>(&solution);
+                        let parsed_metadata =
+                            serde_json::from_str::<Metadata>(&metadata);
+
+                        if let (Ok(sol), Ok(mut meta)) =
+                            (parsed_solution, parsed_metadata)
+                        {
+                            meta.regularize();
+                            let mut response_v4 =
+                                ResponseV4::from_response(&data, Response { solution: sol });
+                            response_v4.metadata = meta;
+                            collected.push(response_v4);
+                        }
+                    }
+                    _ => {}
+                }
+
+                let _ = fs::remove_file(&solution_path);
+                let _ = fs::remove_file(&metadata_path);
+            } else {
+                println!(
+                    "Task {i} failed: {}",
+                    String::from_utf8_lossy(&output.stderr)
+                );
+            }
+        }
+    }
+
+    if collected.is_empty() {
+        Err(warp::reject::reject())
+    } else {
+        Ok(warp::reply::json(&ResponseV4Plus::from_responses(collected)))
     }
 }
 

@@ -13,6 +13,7 @@ cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..
 ninja "main_json" -j4
 MAIN=main_json
 TARGET_DIR="../docker/binaries"
+mkdir $TARGET_DIR
 cp $MAIN "$TARGET_DIR"
 ldd $MAIN | grep "=>" | awk '{print $3}' | while read lib; do
     if [ -f "$lib" ]; then
@@ -33,8 +34,8 @@ done
 
 cd ../docker
 
-# docker build -t cut_less .
-# docker save -o cut_less_image.tar cut_less:latest
-# rm -rf ./binaries
-cd binaries
-./$SERVER
+docker build -t cut_less .
+docker save -o cut_less_image.tar cut_less:latest
+rm -rf ./binaries
+# cd binaries
+# ./$SERVER
