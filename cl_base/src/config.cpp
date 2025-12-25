@@ -1,4 +1,5 @@
 #include <config.hpp>
+#include <cstddef>
 #include <fstream>
 
 SolverConfig::SolverConfig(){
@@ -29,6 +30,7 @@ SolverConfig::SolverConfig(json config){
     this->SHEET_BATCH_SIZE=config["SHEET_BATCH_SIZE"].get<size_t>();
     this->SHEET_DISCARD_PROB=config["SHEET_DISCARD_PROB"].get<double>();
     this->BLINK_PROB=config["BLINK_PROB"].get<double>();
+    this->SIZE_USAGE=config["SIZE_USAGE"].get<size_t>();
 
     this->DESTROY_RATE=config["DESTROY_RATE"].get<double>();
     this->CLOSE_SHEET_PROB=config["CLOSE_SHEET_PROB"].get<double>();

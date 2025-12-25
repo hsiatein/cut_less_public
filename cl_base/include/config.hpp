@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include <vector>
 #include <string>
 #include <nlohmann/json.hpp>
@@ -39,6 +40,8 @@ struct SolverConfig{
     double SHEET_DISCARD_PROB=0.5;
     // 不按启发函数选择插入选项的概率（纯随机选择）
     double BLINK_PROB=0.1;
+    // 使用大小相符的sheet，0不强制，1软，2硬
+    size_t SIZE_USAGE=2;
 
     // 破坏解的比例
     double DESTROY_RATE=0.8;

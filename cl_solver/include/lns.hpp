@@ -3,6 +3,7 @@
 #include <pattern_solution.hpp>
 #include <process.hpp>
 #include <stage_patterns.hpp>
+#include <unordered_map>
 
 enum class LNSStatus{
     SUCCESS,
@@ -83,4 +84,5 @@ private:
     int max_patterns=0;
     std::vector<StageLocation> valid_stage_location_cache;
     PartsNum parts_num_cache;
+    std::unordered_map<size_t, double> limit_map;
 };

@@ -46,6 +46,8 @@ pub struct SolverConfig {
     pub sheet_discard_prob: f64,
     #[serde(default = "default_blink_prob", rename = "BLINK_PROB")]
     pub blink_prob: f64,
+    #[serde(default = "default_size_usage", rename = "SIZE_USAGE")]
+    pub size_usage: usize,
 
     // 破坏解的比例
     #[serde(default = "default_destroy_rate", rename = "DESTROY_RATE")]
@@ -88,6 +90,7 @@ fn default_pattern_batch_size() -> usize { 5 }
 fn default_sheet_batch_size() -> usize { 5 }
 fn default_sheet_discard_prob() -> f64 { 0.5 }
 fn default_blink_prob() -> f64 { 0.1 }
+fn default_size_usage() -> usize { 2 }
 
 fn default_destroy_rate() -> f64 { 0.8 }
 fn default_close_sheet_prob() -> f64 { 0.8 }
@@ -120,7 +123,8 @@ impl Default for SolverConfig {
             pattern_batch_size: 5,
             sheet_batch_size: 5,
             sheet_discard_prob: 0.5,
-            blink_prob: 0.1,
+            blink_prob: default_blink_prob(),
+            size_usage: default_size_usage(),
 
             destroy_rate: 0.8,
             close_sheet_prob: 0.8,

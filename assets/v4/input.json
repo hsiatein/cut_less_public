@@ -1,6 +1,6 @@
 {
     "Config": {
-        "CUT_LOSS": 0.0,
+        "CUT_LOSS": 3.0,
         "TIME_LIMIT": 500,
         "REMAIN": [
             5.0,

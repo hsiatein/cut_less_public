@@ -1,6 +1,7 @@
 #include "blueprint.hpp"
 #include "utils.hpp"
 #include <algorithm>
+#include <cmath>
 #include <lns.hpp>
 #include <deque>
 #include <vector>
@@ -418,9 +419,35 @@ std::pair<size_t,std::vector<StageLocation>> LNS::get_next_group(){
 std::vector<Option> LNS::generate_options(size_t groupID,StageLocation stageLocation,Size size){
     std::vector<Option> result;
     std::map<Blueprint*,std::vector<PatternNode*>> emptyStructs;
+
+    // =========================== 限制sheet使用 ==============================
+    double limit=32;
+    if(config.SIZE_USAGE==1){
+        auto iter=this->limit_map.find(groupID);
+        if(iter==this->limit_map.end()){
+            this->limit_map[groupID]=limit;
+        }
+        else{
+            limit=iter->second;
+        }
+    }
     for(auto blueprint:solution->blueprints){
+        if(config.SIZE_USAGE==1){
+            if(blueprint->top->size.get_volume()>limit*get_pattern(stageLocation).top->size.get_volume()){
+                continue;
+            }
+        }else if(config.SIZE_USAGE==2){
+            if(blueprint->top->size.get_volume()>64*get_pattern(stageLocation).top->size.get_volume()){
+                continue;
+            }
+        }
         emptyStructs[blueprint]=blueprint->get_empty_structs();
     }
+    if(config.SIZE_USAGE==1){
+        if(emptyStructs.empty()) this->limit_map[groupID]=this->limit_map[groupID]*std::sqrt(2);
+    }
+    // ======================================================================
+
     for(auto [blueprint,structs]:emptyStructs){
         for(auto patternNode:structs){
             for(auto rotate:rotates){
